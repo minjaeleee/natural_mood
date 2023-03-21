@@ -1,0 +1,14 @@
+.layout {
+  height: 100vh;
+}
+
+.main{
+  display: flex;
+  height: 100%;
+
+  .content {
+    padding-top: 20px;
+    width: 640px;
+    margin: 0 auto;
+  }
+}
