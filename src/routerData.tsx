@@ -9,7 +9,7 @@ interface IRouterData {
   path: string, // 페이지 경로
   label: string, // 페이지 이름
   element: React.ReactNode // 페이지 엘리먼트
-  isNavBar: boolean // 네비게이션 바에 포함 여부
+  isSideBar: boolean // 네비게이션 바에 포함 여부
 }
 
 export const routerData: IRouterData[] = [
@@ -18,34 +18,34 @@ export const routerData: IRouterData[] = [
     path: "/",
     label: "Home",
     element: <Home/>,
-    isNavBar: false
+    isSideBar: false
   },
   {
     id: 1,
     path: "/beverage",
     label: "식음료",
     element: <ListPage/>,
-    isNavBar: true
+    isSideBar: true
   },
   {
     id: 2,
     path: "/article",
     label: "아티클",
     element: <Article/>,
-    isNavBar: true
+    isSideBar: true
   },
   {
     id: 3,
     path: "/review",
     label: "고객후기",
     element: <Review/>,
-    isNavBar: true
+    isSideBar: true
   },
   {
     id: 2,
     path: "/cart",
     label: "장바구니",
     element: <Cart/>,
-    isNavBar: true
+    isSideBar: true
   },
 ]

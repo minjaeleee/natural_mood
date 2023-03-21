@@ -6,14 +6,14 @@ interface ISidebarContent {
   id: number,
   path: string,
   label: string
-  isNavBar: boolean;
+  isSideBar: boolean;
 }
 
 export const router = createBrowserRouter(
   routerData.map(router => {
       return {
         path: router.path,
-        element: <Layout isNavBar={router.isNavBar}> {router.element} </Layout>
+        element: <Layout isSideBar={router.isSideBar}> {router.element} </Layout>
       }
   })
 )
@@ -25,7 +25,7 @@ export const SidebarContent: ISidebarContent[] = routerData.reduce((prev, router
       id: router.id,
       path: router.path,
       label: router.label,
-      isNavBar: router.isNavBar
+      isSideBar: router.isSideBar
     }
   ]
 }, [] as ISidebarContent[])

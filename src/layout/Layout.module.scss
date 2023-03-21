@@ -1,9 +1,14 @@
 .layout {
-  display: flex;
-  flex-direction: column;
-  margin: 20px 50px;
   height: 100vh;
 }
 
-.content {
+.main{
+  display: flex;
+  height: 100%;
+
+  .content {
+    padding-top: 20px;
+    width: 640px;
+    margin: 0 auto;
+  }
 }

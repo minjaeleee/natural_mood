@@ -1,23 +1,30 @@
 import { Header } from './Header'
 
 import styles from './Layout.module.scss'
+import { SideBar } from './SideBar'
 
 interface ILayout {
   children: React.ReactNode,
-  isNavBar: boolean
+  isSideBar: boolean
 }
 
-export const Layout: React.FC<ILayout> = ({children, isNavBar}) => {
+export const Layout: React.FC<ILayout> = ({children, isSideBar}) => {
 
   return (
     <div className={styles.layout}>
       <Header/>
+      <main className={styles.main}>
       { 
-        isNavBar &&
-        <div className={styles.content}>
-          {children}
-        </div>
+        isSideBar &&
+        <>
+          <SideBar/>
+          <div className={styles.content}>
+            {children}
+          </div>
+        </>
       }
+      </main>
+
     </div>
   )
 }

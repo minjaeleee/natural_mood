@@ -1,16 +1,30 @@
+@import '/src/styles/color.scss';
+
 .header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  position: fixed;
   width: 100%;
-  height: 150px;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  border: 0;
+  background-color: $white;
+  border-bottom: 1px solid $grey200;
+}
 
-  .headerTitle {
-    height: 50%;
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 952px;
+  height: 72px;
 
-    .title {
-      cursor: pointer;
-    }
+  .title {
+    cursor: pointer;
+  }
+
+  .headerImgs{
+    display: flex;
   }
 }
