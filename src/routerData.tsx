@@ -3,13 +3,14 @@ import { Cart } from "./pages/Cart";
 import { Home } from "./pages/Home";
 import { ListPage } from "./pages/ListPage";
 import { Review } from "./pages/Review";
-
+import { IRouterChildren } from "./types/sidebar";
 interface IRouterData {
   id: number, // 고유 id
   path: string, // 페이지 경로
   label: string, // 페이지 이름
   element: React.ReactNode // 페이지 엘리먼트
-  isSideBar: boolean // 네비게이션 바에 포함 여부
+  isSideBar: boolean // 네비게이션 바에 포함 여부,
+  children?: IRouterChildren[]
 }
 
 export const routerData: IRouterData[] = [
@@ -25,7 +26,24 @@ export const routerData: IRouterData[] = [
     path: "/beverage",
     label: "식음료",
     element: <ListPage/>,
-    isSideBar: true
+    isSideBar: true,
+    children: [
+      {
+        path: 'beers',
+        label: '맥주',
+        element: <ListPage/>
+      },
+      {
+        path: 'wines',
+        label: '와인',
+        element: <ListPage/>
+      },
+      {
+        path: 'coffee',
+        label: '커피',
+        element: <ListPage/>
+      },
+    ]
   },
   {
     id: 2,
@@ -42,10 +60,11 @@ export const routerData: IRouterData[] = [
     isSideBar: true
   },
   {
-    id: 2,
+    id: 4,
     path: "/cart",
     label: "장바구니",
     element: <Cart/>,
     isSideBar: true
   },
+
 ]

@@ -1,31 +1,53 @@
-import { createBrowserRouter } from "react-router-dom";
-import { Layout } from "./layout/Layout";
-import { routerData } from "./routerData";
+import { createBrowserRouter } from "react-router-dom"
+import { Layout } from "./layout/Layout"
+import { routerData } from "./routerData"
+import { IRouterChildren } from "./types/sidebar"
 
 interface ISidebarContent {
   id: number,
   path: string,
   label: string
-  isSideBar: boolean;
+  isSideBar: boolean,
+  sideBarItem?: IRouterChildren[]
 }
 
 export const router = createBrowserRouter(
-  routerData.map(router => {
+  routerData.map(route => {
+    if(route.children) {
       return {
-        path: router.path,
-        element: <Layout isSideBar={router.isSideBar}> {router.element} </Layout>
+        path: route.path,
+        element: <Layout isSideBar={route.isSideBar}> {route.element} </Layout>,
+        children: route.children
+      }
+    }
+      return {
+        path: route.path,
+        element: <Layout isSideBar={route.isSideBar}> {route.element} </Layout>,
       }
   })
 )
 
 export const SidebarContent: ISidebarContent[] = routerData.reduce((prev, router) => {
+  if(router.children) {
+    return [
+      ...prev,
+      {
+        id: router.id,
+        path: router.path,
+        label: router.label,
+        isSideBar: router.isSideBar,
+        sideBarItem: router.children
+      }
+    ]
+  }
+  
   return [
     ...prev,
     {
       id: router.id,
       path: router.path,
       label: router.label,
-      isSideBar: router.isSideBar
+      isSideBar: router.isSideBar,
     }
   ]
 }, [] as ISidebarContent[])

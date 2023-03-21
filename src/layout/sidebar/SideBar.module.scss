@@ -10,6 +10,7 @@
     padding: 1rem;
     cursor: pointer;
     transition: .5s ease;
+    border-bottom: 1px solid $grey100;
 
     &:hover {
       background-color: $grey100;
@@ -18,7 +19,12 @@
   
   .selected {
     background-color: $primary100;
+    border-radius: 10px;
     color: $primary500;
     font-weight: bold;
+
+    &:hover {
+      background-color: $primary100;
+    }
   }
 }

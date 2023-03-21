@@ -1,7 +1,7 @@
 import { Header } from './Header'
+import { SideBar } from './sidebar/SideBar'
 
 import styles from './Layout.module.scss'
-import { SideBar } from './SideBar'
 
 interface ILayout {
   children: React.ReactNode,
@@ -14,15 +14,15 @@ export const Layout: React.FC<ILayout> = ({children, isSideBar}) => {
     <div className={styles.layout}>
       <Header/>
       <main className={styles.main}>
-      { 
-        isSideBar &&
-        <>
-          <SideBar/>
-          <div className={styles.content}>
-            {children}
-          </div>
-        </>
-      }
+        { 
+          isSideBar &&
+          <>
+            <SideBar/>
+            <div className={styles.content}>
+              {children}
+            </div>
+          </>
+        }
       </main>
 
     </div>
