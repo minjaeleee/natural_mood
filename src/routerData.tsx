@@ -1,7 +1,10 @@
 import { Article } from "./pages/Article";
 import { Cart } from "./pages/Cart";
 import { Home } from "./pages/Home";
+import { BeerList } from "./pages/List/BeerList";
+import { CoffeeList } from "./pages/List/CoffeeList";
 import { ListPage } from "./pages/ListPage";
+import { WineList } from "./pages/List/WineList";
 import { Review } from "./pages/Review";
 import { IRouterChildren } from "./types/sidebar";
 interface IRouterData {
@@ -29,19 +32,19 @@ export const routerData: IRouterData[] = [
     isSideBar: true,
     children: [
       {
-        path: 'beers',
-        label: '맥주',
-        element: <ListPage/>
-      },
-      {
         path: 'wines',
         label: '와인',
-        element: <ListPage/>
+        element: <WineList/>
+      },
+      {
+        path: 'beers',
+        label: '맥주',
+        element: <BeerList/>
       },
       {
         path: 'coffee',
         label: '커피',
-        element: <ListPage/>
+        element: <CoffeeList/>
       },
     ]
   },

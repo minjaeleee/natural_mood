@@ -1,5 +1,9 @@
+import { Outlet } from "react-router-dom"
+
 export const ListPage = () => {
   return (
-    <div>ListPage</div>
+    <div>
+      <Outlet/>
+    </div>
   )
 }
