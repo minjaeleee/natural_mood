@@ -1,29 +1,30 @@
-.header {
-  text-align: center;
-  margin-top: 150px;
-  margin-bottom: 50px;
-}
-
-.itemWrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  margin: 50px auto;
-}
-
-.items {
+@import 'src/styles/color.scss';
+.imgBox {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  border: 1px solid $grey100;
+  background-color: #fff;
+  border-radius: 5px;
 
   .img {
-    max-width: 100px;
-    height: 200px;
+    max-width: 150px;
+    height: 250px;
+  }
+}
+
+
+.itemDesc {
+  display: flex;
+  flex-direction: column; 
+  margin-top: 10px;
+
+  .title {
+    font-size: 16px;
   }
 
-  .itemDesc {
-    display: flex;
-    flex-direction: column;
-    
+  .info {
+    margin-top: 5px;
+    font-size: 14px;
+    color: $grey400;
   }
-
 }

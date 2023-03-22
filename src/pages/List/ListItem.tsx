@@ -1,35 +1,24 @@
-import { IWine } from "../../types/beverage"
 import styles from './ListItem.module.scss'
 
-type dataType = IWine
-
-export const ListItem = ({data}) => {
+export const ListItem = ({src, title,info, options}) => {
+  const handleErrorImg = (e) => {
+    e.target.src = "/img/default-beer.jpg"
+    e.target.style.height = "150px"
+  }
   return (
-    <>
-      <section>
-        <h1 className={styles.header}> 레드와인을 알아봐요 </h1>
-        <h3> 고기랑 먹으면 맛있어요와 같은 description도 넣어줄까해요 </h3>
-      </section>
-      <section className={styles.itemWrapper}>
-        {data.map((beverage:IWine) => {
-          console.log(beverage)
-          return (
-            <div className={styles.items}>
-              <img
-                className={styles.img}
-                src={beverage.image}
-                alt={beverage.wine}
-              />
-              <div className={styles.itemDesc}>
-                <span>{beverage.winery}</span>
-                <span>{beverage.wine}</span>
-                <span>{beverage.rating.average}</span>
-                <span>{beverage.rating.reviews}</span>
-              </div>
-            </div>
-          )
-        })}
-      </section>
-    </>
+    <div className={styles.items}>
+      <div className={styles.imgBox}>
+        <img
+          className={styles.img}
+          onError={handleErrorImg}
+          src={src}
+          alt={title}
+        />
+      </div>
+      <div className={styles.itemDesc}>
+        <span className={styles.title}>{title}</span>
+        <span className={styles.info}>{info}</span>
+      </div>
+    </div>
   )
 }

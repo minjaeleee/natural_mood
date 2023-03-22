@@ -1,6 +1,12 @@
 @import 'src/styles/color.scss';
 
 .wrapper {
+  padding: 2rem;
+  border: 1px solid $grey200;
+  border-radius: 15px;
+}
+
+.itemWrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }

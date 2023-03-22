@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react"
 import { getCoffee } from "../../api/beverage"
-import { IBeverageType, IWine } from "../../types/beverage"
+import { IBeverageType, ICoffee } from "../../types/beverage"
 import { useRouter } from "../../useHook/useRouter"
+import { ListItem } from "./ListItem"
 import { TypeList } from "./TypeList"
+
+import styles from'./WineList.module.scss'
 
 export const coffeTypes: IBeverageType[] = [
   {
@@ -20,7 +23,7 @@ export const coffeTypes: IBeverageType[] = [
 ]
 
 export const CoffeeList = () => {
-  const [data, setData] = useState<IWine | []>([])
+  const [data, setData] = useState<ICoffee[] | []>([])
   // const {currentPath} = useRouter()
   // const types = ['beers', 'wines', 'coffee']
   // const pathArray = currentPath.split('/')
@@ -29,9 +32,9 @@ export const CoffeeList = () => {
   useEffect(()=>{
     (
       async()=>{
-        // const getWineData = await getBeer(types.includes(lastPath) ? lastPath : null)
-        const getWineData = await getCoffee(null)
-        setData(getWineData)
+        // const getCoffeeData = await getBeer(types.includes(lastPath) ? lastPath : null)
+        const getCoffeeData = await getCoffee(null)
+        setData(getCoffeeData)
       }
     )()
   },[])
@@ -39,10 +42,23 @@ export const CoffeeList = () => {
   console.log("data",data)
   return (   
     <div>
-      <aside>
-        <h1>어떤 커피를 찾으시나요?</h1>
-        <TypeList typeList={coffeTypes}/>
-      </aside>
+      <TypeList title={"커피"} typeList={coffeTypes}/>
+      <h1 className={styles.header}> 커피를 알아봐요 </h1>
+      <section className={styles.itemWrapper}>
+          {
+            data?.map((el:ICoffee) => {
+              return (
+                  <ListItem 
+                    key={el.image+el.id}
+                    src={el.image}
+                    title={el.title} 
+                    info={el.description} 
+                    options={null} 
+                  /> 
+              )
+            })
+          }
+        </section>
   </div>
   )
 }

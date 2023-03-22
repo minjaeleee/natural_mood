@@ -2,7 +2,10 @@ import { useEffect, useState } from "react"
 import { getBeer } from "../../api/beverage"
 import { IBeer, IBeverageType } from "../../types/beverage"
 import { useRouter } from "../../useHook/useRouter"
+import { ListItem } from "./ListItem"
 import { TypeList } from "./TypeList"
+
+import styles from './WineList.module.scss'
 
 export const beerTypes:IBeverageType[] = [
   {
@@ -26,7 +29,7 @@ export const beerTypes:IBeverageType[] = [
 ]
 
 export const BeerList = () => {
-  const [data, setData] = useState<IBeer | []>([])
+  const [data, setData] = useState<IBeer[] | []>([])
   // const {currentPath} = useRouter()
   // const types = ['beers', 'wines', 'coffee']
   // const pathArray = currentPath.split('/')
@@ -42,13 +45,25 @@ export const BeerList = () => {
     )()
   },[])
   
-  console.log("data",data)
   return (   
       <div>
-        <aside>
-          <h1>어떤 맥주를 찾으시나요?</h1>
-          <TypeList typeList={beerTypes}/>
-        </aside>
+        <TypeList title={"맥주"} typeList={beerTypes}/>
+        <h1 className={styles.header}> 레드와인을 알아봐요 </h1>
+        <section className={styles.itemWrapper}>
+          {
+            data?.map((el:IBeer) => {
+              return (
+                  <ListItem 
+                    key={el.image+el.name}
+                    src={el.image}
+                    title={el.name} 
+                    info={el.price} 
+                    options={el.rating} 
+                  /> 
+              )
+            })
+          }
+      </section>
       </div>
   )
 }

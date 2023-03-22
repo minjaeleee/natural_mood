@@ -5,6 +5,8 @@ import { ListItem } from "./ListItem"
 // import {FaWineGlassAlt} from 'react-icons/fa'
 import { TypeList } from "./TypeList"
 
+import styles from './WineList.module.scss'
+
 export const wineTypes: IBeverageType[] = [
   {
     id: 0,
@@ -45,14 +47,14 @@ export const wineTypes: IBeverageType[] = [
 ]
 
 export const WineList = () => {
-  const [data, setData] = useState<IWine | []>([])
+  const [data, setData] = useState<IWine[] | []>([])
   // const {currentPath} = useRouter()
   // const types = ['beers', 'wines', 'coffee']
   // const pathArray = currentPath.split('/')
   // const lastPath = pathArray[pathArray.length-1]
 
   useEffect(()=>{
-    (
+    ( 
       async()=>{
         // const getWineData = await getBeer(types.includes(lastPath) ? lastPath : null)
         const getWineData = await getWine(null)
@@ -60,14 +62,26 @@ export const WineList = () => {
       }
     )()
   },[])
-  
+
   return (   
       <div>
-        <aside>
-          <h1>어떤 와인을 찾으시나요?</h1>
-          <TypeList typeList={wineTypes}/>
-        </aside>
-        <ListItem data={data}/>
+        <TypeList title={"와인"} typeList={wineTypes}/>
+        <h1 className={styles.header}> 레드와인을 알아봐요 </h1>
+        <section className={styles.itemWrapper}>
+          {
+            data?.map((el:IWine) => {
+              return (
+                  <ListItem 
+                    key={el.image+el.wine}
+                    src={el.image}
+                    title={el.wine} 
+                    info={el.winery} 
+                    options={el.rating} 
+                  /> 
+              )
+            })
+          }
+        </section>
       </div>
   )
 }

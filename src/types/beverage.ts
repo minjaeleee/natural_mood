@@ -10,6 +10,7 @@ export interface IBeer {
 }
 
 export interface IWine {
+  id:number,
   winery: string,
   wine: string,
   rating: {
@@ -18,7 +19,14 @@ export interface IWine {
   },
   location: string,
   image:string,
-  id:number
+}
+
+export interface ICoffee {
+  id:number,
+  title: string,
+  description: string,
+  image: string,
+  ingredients: [string]
 }
 
 export interface IBeverageType {
