@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useLocation } from "react-router-dom"
-import { getWine } from "../../api/beverage"
+import { getMultiWine, getSingletWine } from "../../api/beverage"
 import { IWine, IBeverageType } from "../../types/beverage"
 import { useFilterType } from "../../useHook/useFilterType"
 import useInfiniteScroll from "../../useHook/useInfiniteScroll"
@@ -60,28 +60,53 @@ export const WineList = () => {
   const {search} = useLocation()
   const {getQueryStringValue} = useFilterType({search})
   const fetchMoreEl = useRef<HTMLDivElement | null>(null)
-  const isFetchedData = useRef<boolean>(false)
   const intersecting = useInfiniteScroll(fetchMoreEl)
 
-  const fetchData = useCallback(async(mutate?:string|null)=>{
-    console.log("intersecting",intersecting)
-    const getWineData = await getWine(getQueryStringValue || [], mutate ? {from:data.length,size:data.length+20} : null)
-    setData(prev => [...prev, ...getWineData])
-    isFetchedData.current = true
+  const fetchSingleWineAPI = useCallback(async(from:number, size:number)=>{
+    const getData = await getSingletWine(getQueryStringValue, from, size)
+    if(from === 0) {
+      setData(getData)
+    } else {
+      setData(prev => [...prev, ...getData])
+    }
+  },[getQueryStringValue])
 
-  },[data, getQueryStringValue])
+  const fetchMultiWineAPI = useCallback(async(from:number, size:number)=>{
+    const getData = await getMultiWine(getQueryStringValue, from, size)
+    if(from === 0) {
+      setData(getData)
+    } else {
+      setData(prev => [...prev, ...getData])
+    }
+  },[getQueryStringValue])
+  
+  useEffect(()=>{
+    // 무한 스크롤 
+    const singleQueryStringValue = !getQueryStringValue || getQueryStringValue?.length < 2
+    const multiQueryStringValues = getQueryStringValue?.length > 1 
+    if(data?.length > 0 && intersecting) {
+      if(singleQueryStringValue) {
+          fetchSingleWineAPI(data?.length, data.length+20)
+        }
+      if(multiQueryStringValues) {
+        fetchMultiWineAPI(data?.length, data?.length+20)
+      }
+    }
 
-    useEffect(()=>{ 
-      // 초기 기본 데이터 페칭
-      if(!isFetchedData.current) fetchData()
-    }, [])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[intersecting])
 
     useEffect(()=>{
-      // 무한 스크롤을 위한 mutate
-      if(data?.length>0 && intersecting) fetchData("mutate")
-
+      const singleQueryStringValue = !getQueryStringValue || getQueryStringValue?.length < 2
+      const multiQueryStringValues = getQueryStringValue?.length > 1 
+      if(singleQueryStringValue) {
+        fetchSingleWineAPI(0,20)
+      }
+      if(multiQueryStringValues) {
+        fetchMultiWineAPI(0,20)
+      }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[intersecting])
+    },[search])
 
   return (   
       <div>
