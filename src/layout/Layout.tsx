@@ -2,6 +2,7 @@ import { Header } from './Header'
 import { SideBar } from './sidebar/SideBar'
 
 import styles from './Layout.module.scss'
+import { Outlet } from 'react-router-dom'
 
 interface ILayout {
   children: React.ReactNode,
@@ -9,7 +10,6 @@ interface ILayout {
 }
 
 export const Layout: React.FC<ILayout> = ({children, isSideBar}) => {
-
   return (
     <div className={styles.layout}>
       <Header/>
@@ -19,12 +19,12 @@ export const Layout: React.FC<ILayout> = ({children, isSideBar}) => {
           <>
             <SideBar/>
             <div className={styles.content}>
+              <Outlet/>
               {children}
             </div>
           </>
         }
       </main>
-
     </div>
   )
 }

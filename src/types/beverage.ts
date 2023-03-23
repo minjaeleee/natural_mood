@@ -32,6 +32,7 @@ export interface ICoffee {
 export interface IBeverageType {
   id: number,
   label: string,
+  type: string,
   src: string,
   alt: string
 }

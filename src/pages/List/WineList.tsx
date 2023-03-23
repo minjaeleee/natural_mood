@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
+import { useLocation } from "react-router-dom"
 import { getWine } from "../../api/beverage"
 import { IWine, IBeverageType } from "../../types/beverage"
+import { useFilterType } from "../../useHook/useFilterType"
+import useInfiniteScroll from "../../useHook/useInfiniteScroll"
 import { ListItem } from "./ListItem"
 // import {FaWineGlassAlt} from 'react-icons/fa'
 import { TypeList } from "./TypeList"
@@ -12,56 +15,73 @@ export const wineTypes: IBeverageType[] = [
     id: 0,
     label: '레드 와인',
     src: '/img/red-wine.jpg',
+    type: 'reds',
     alt: 'red wine'
   },
   {
     id: 1,
     label: '화이트 와인',
     src: '/img/white-wine.jpg',
+    type: 'whites',
     alt: 'white wine'
   },
   {
     id: 2,
     label: '로제 와인',
     src: '/img/rose-wine.jpg',
+    type: 'rose',
     alt: 'rose wine'
   },
   {
     id: 3,
     label: '스파클링 와인',
     src: '/img/sparkling-wine.jpg',
+    type: 'sparkling',
     alt: 'sparkling wine'
   },
   {
     id: 4,
     label: '포트 와인',
     src: '/img/port-wine.jpg',
+    type: 'port',
     alt: 'port wine'
   },
   {
     id: 5,
     label: '디저트',
     src: '/img/dessert.jpg',
+    type: 'dessert',
     alt: 'dessert'
   },
 ]
 
 export const WineList = () => {
   const [data, setData] = useState<IWine[] | []>([])
-  // const {currentPath} = useRouter()
-  // const types = ['beers', 'wines', 'coffee']
-  // const pathArray = currentPath.split('/')
-  // const lastPath = pathArray[pathArray.length-1]
+  const {search} = useLocation()
+  const {getQueryStringValue} = useFilterType({search})
+  const fetchMoreEl = useRef<HTMLDivElement | null>(null)
+  const isFetchedData = useRef<boolean>(false)
+  const intersecting = useInfiniteScroll(fetchMoreEl)
 
-  useEffect(()=>{
-    ( 
-      async()=>{
-        // const getWineData = await getBeer(types.includes(lastPath) ? lastPath : null)
-        const getWineData = await getWine(null)
-        setData(getWineData)
-      }
-    )()
-  },[])
+  const fetchData = useCallback(async(mutate?:string|null)=>{
+    console.log("intersecting",intersecting)
+    const getWineData = await getWine(getQueryStringValue || [], mutate ? {from:data.length,size:data.length+20} : null)
+    setData(prev => [...prev, ...getWineData])
+    isFetchedData.current = true
+
+  },[data, getQueryStringValue])
+
+    useEffect(()=>{ 
+      // 초기 기본 데이터 페칭
+      if(!isFetchedData.current) fetchData()
+    }, [])
+
+    useEffect(()=>{
+      // 무한 스크롤을 위한 mutate
+      if(data?.length>0 && intersecting) fetchData("mutate")
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[intersecting])
 
   return (   
       <div>
@@ -69,7 +89,8 @@ export const WineList = () => {
         <h1 className={styles.header}> 레드와인을 알아봐요 </h1>
         <section className={styles.itemWrapper}>
           {
-            data?.map((el:IWine) => {
+            data?.length > 0
+            ? data.map((el:IWine) => {
               return (
                   <ListItem 
                     key={el.image+el.wine}
@@ -80,8 +101,10 @@ export const WineList = () => {
                   /> 
               )
             })
+            : <div>loading...</div>
           }
         </section>
+        <div ref={fetchMoreEl} style={{ height: "200px" }} />
       </div>
   )
 }

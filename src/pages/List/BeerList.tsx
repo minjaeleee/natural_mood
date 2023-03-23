@@ -12,18 +12,21 @@ export const beerTypes:IBeverageType[] = [
     id: 0,
     label: '에일',
     src: '/img/ale-beer.jpg',
+    type: 'ale',
     alt: 'ale beer'
   },
   {
     id: 1,
     label: '흑맥주',
     src: '/img/stouts-beer.jpg',
+    type: 'stout',
     alt: 'stouts beer'
   },
   {
     id: 2,
     label: '레드 에일',
     src: '/img/red-ale-beer.jpg',
+    type: 'red-ale',
     alt: 're ale beer'
   },
 ]
