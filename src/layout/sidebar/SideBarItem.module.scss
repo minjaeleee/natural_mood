@@ -1,0 +1,55 @@
+@import 'src/styles/color.scss';
+
+.itemWrapper {
+  display: none;
+}
+
+.selectedWrapper {
+  // 열릴 때
+  animation-name: slide-down;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  overflow: hidden;
+  animation-fill-mode: forwards;
+
+  @keyframes slide-down {
+    0% {
+      max-height: 0;
+    }
+
+    95% {
+      max-height: 90px;
+    }
+
+    100% {
+      height: auto;
+    }
+  }
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  margin-top: 1px;
+  height: 35px;
+  background-color: $grey100;
+  padding-left: 1rem;
+  border-radius: 5px;
+
+  &:hover {
+   background-color: $grey200; 
+   font-weight: bold;
+   cursor: pointer;
+  }
+}
+
+.selected {
+  color: #2f8fea;
+  background-color: #2f8fea20;
+  font-weight: bold;
+  
+  &:hover {
+    color: #2f8fea;
+    background-color: #2f8fea20;
+  }
+}
