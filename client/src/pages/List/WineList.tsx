@@ -119,7 +119,6 @@ export const WineList = () => {
                     src={el.image}
                     title={el.wine} 
                     info={el.winery} 
-                    options={el.rating} 
                   /> 
               )
             })

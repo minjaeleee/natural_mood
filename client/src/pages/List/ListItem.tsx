@@ -4,7 +4,7 @@ import {AiOutlineHeart} from 'react-icons/ai'
 import styles from './ListItem.module.scss'
 import { increase } from '../../store/modules/cart'
 
-export const ListItem = ({src, title,info, options}) => {
+export const ListItem = ({src, title,info}) => {
   const dispatch = useDispatch()
   const handleErrorImg = (e) => {
     e.target.src = "/img/default.jpg"

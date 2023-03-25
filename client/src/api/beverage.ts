@@ -16,7 +16,7 @@ export const getMultiWine = async (values: value, from: number, size: number): P
   for(const value of values) {
     const res = await fetch(`${BASE_URL}/wines/${value}`)
     if(!res.ok) return list;
-    const resJson:JSON = await res.json()
+    const resJson:string[] = await res.json()
     list.push(...resJson)
   }
   const result = list.slice(from, size)
