@@ -1,8 +1,5 @@
 import { Article } from "./pages/Article";
 import { Cart } from "./pages/Cart";
-import { Home } from "./pages/Home";
-import { BeerList } from "./pages/List/BeerList";
-import { CoffeeList } from "./pages/List/CoffeeList";
 import { ListPage } from "./pages/ListPage";
 import { WineList } from "./pages/List/WineList";
 import { Review } from "./pages/Review";
@@ -18,13 +15,6 @@ interface IRouterData {
 
 export const routerData: IRouterData[] = [
   {
-    id: 0,
-    path: "/",
-    label: "Home",
-    element: <Home/>,
-    isSideBar: false
-  },
-  {
     id: 1,
     path: "/beverage",
     label: "식음료",
@@ -35,16 +25,6 @@ export const routerData: IRouterData[] = [
         path: 'wines',
         label: '와인',
         element: <WineList/>
-      },
-      {
-        path: 'beers',
-        label: '맥주',
-        element: <BeerList/>
-      },
-      {
-        path: 'coffee',
-        label: '커피',
-        element: <CoffeeList/>
       },
     ]
   },
