@@ -19,12 +19,13 @@ export const Layout: React.FC<ILayout> = ({children, isSideBar}) => {
           <>
             <SideBar/>
             <div className={styles.content}>
-              <Outlet/>
               {children}
+              <Outlet/>
             </div>
           </>
         }
       </main>
+      <div>sfsfsfdfdfdddd</div>
     </div>
   )
 }

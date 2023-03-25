@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://api.sampleapis.com'
+export const BASE_URL = process.env.BASE_URL_DEV

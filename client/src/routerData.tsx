@@ -1,9 +1,17 @@
 import { Article } from "./pages/Article";
 import { Cart } from "./pages/Cart";
-import { ListPage } from "./pages/ListPage";
 import { WineList } from "./pages/List/WineList";
 import { Review } from "./pages/Review";
 import { IRouterChildren } from "./types/sidebar";
+import { TotalWineList } from "./pages/List/TotalWineList";
+import { RedWine } from "./pages/List/RedWine";
+import { WhiteWine } from "./pages/List/WhiteWine";
+import { SparklingWine } from "./pages/List/SparklingWine";
+import { RoseWine } from "./pages/List/RoseWine";
+import { PortWine } from "./pages/List/PortWine";
+import { DessertWine } from "./pages/List/DessertWine";
+import { ListPage } from "./pages/ListPage";
+
 interface IRouterData {
   id: number, // 고유 id
   path: string, // 페이지 경로
@@ -17,14 +25,44 @@ export const routerData: IRouterData[] = [
   {
     id: 1,
     path: "/beverage",
-    label: "식음료",
+    label: "와인",
     element: <ListPage/>,
     isSideBar: true,
     children: [
       {
-        path: 'wines',
-        label: '와인',
-        element: <WineList/>
+        path: 'all',
+        label: '전체',
+        element: <TotalWineList/>
+      },
+      {
+        path: 'reds',
+        label: '레드 와인',
+        element: <RedWine/>
+      },
+      {
+        path: 'whites',
+        label: '화이트 와인',
+        element: <WhiteWine/>
+      },
+      {
+        path: 'sparkling',
+        label: '스파클링 와인',
+        element: <SparklingWine/>
+      },
+      {
+        path: 'rose',
+        label: '로제 와인',
+        element: <RoseWine/>
+      },
+      {
+        path: 'port',
+        label: '포트 와인',
+        element: <PortWine/>
+      },
+      {
+        path: 'dessert',
+        label: '디저트 와인',
+        element: <DessertWine/>
       },
     ]
   },

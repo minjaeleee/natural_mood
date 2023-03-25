@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useLocation } from "react-router-dom"
-import { getMultiWine, getSingletWine } from "../../api/beverage"
+import { getMultiWine, getSingletWine } from "../../api/wineAPI"
 import { IWine, IBeverageType } from "../../types/beverage"
 import { useFilterType } from "../../useHook/useFilterType"
 import useInfiniteScroll from "../../useHook/useInfiniteScroll"
@@ -55,59 +55,59 @@ export const wineTypes: IBeverageType[] = [
 ]
 
 export const WineList = () => {
-  const [data, setData] = useState<IWine[] | []>([])
-  const {search} = useLocation()
-  const {getQueryStringValue} = useFilterType({search})
-  const fetchMoreEl = useRef<HTMLDivElement | null>(null)
-  const intersecting = useInfiniteScroll(fetchMoreEl)
+  // const [data, setData] = useState<IWine[] | []>([])
+  // const {search} = useLocation()
+  // const {getQueryStringValue} = useFilterType({search})
+  // const fetchMoreEl = useRef<HTMLDivElement | null>(null)
+  // const intersecting = useInfiniteScroll(fetchMoreEl)
 
-  const fetchSingleWineAPI = useCallback(async(from:number, size:number)=>{
-    const getData = await getSingletWine(getQueryStringValue, from, size)
-    if(from === 0) {
-      setData(getData)
-    } else {
-      setData(prev => [...prev, ...getData])
-    }
-  },[getQueryStringValue])
+  // const fetchSingleWineAPI = useCallback(async(from:number, size:number)=>{
+  //   const getData = await getSingletWine(getQueryStringValue, from, size)
+  //   if(from === 0) {
+  //     setData(getData)
+  //   } else {
+  //     setData(prev => [...prev, ...getData])
+  //   }
+  // },[getQueryStringValue])
 
-  const fetchMultiWineAPI = useCallback(async(from:number, size:number)=>{
-    const getData = await getMultiWine(getQueryStringValue, from, size)
-    if(from === 0) {
-      setData(getData)
-    } else {
-      setData(prev => [...prev, ...getData])
-    }
-  },[getQueryStringValue])
+  // const fetchMultiWineAPI = useCallback(async(from:number, size:number)=>{
+  //   const getData = await getMultiWine(getQueryStringValue, from, size)
+  //   if(from === 0) {
+  //     setData(getData)
+  //   } else {
+  //     setData(prev => [...prev, ...getData])
+  //   }
+  // },[getQueryStringValue])
   
-  useEffect(()=>{
-    // 무한 스크롤 
-    const singleQueryStringValue = !getQueryStringValue || getQueryStringValue?.length < 2
-    const multiQueryStringValues = getQueryStringValue?.length > 1 
-    if(data?.length > 0 && intersecting) {
-      if(singleQueryStringValue) {
-          fetchSingleWineAPI(data?.length, data.length+20)
-        }
-      if(multiQueryStringValues) {
-        fetchMultiWineAPI(data?.length, data?.length+20)
-      }
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[intersecting])
+  // useEffect(()=>{
+  //   // 무한 스크롤 
+  //   const singleQueryStringValue = !getQueryStringValue || getQueryStringValue?.length < 2
+  //   const multiQueryStringValues = getQueryStringValue?.length > 1 
+  //   if(data?.length > 0 && intersecting) {
+  //     if(singleQueryStringValue) {
+  //         fetchSingleWineAPI(data?.length, data.length+20)
+  //       }
+  //     if(multiQueryStringValues) {
+  //       fetchMultiWineAPI(data?.length, data?.length+20)
+  //     }
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // },[intersecting])
 
-  useEffect(()=>{
-    const singleQueryStringValue = !getQueryStringValue || getQueryStringValue?.length < 2
-    const multiQueryStringValues = getQueryStringValue?.length > 1 
-    if(singleQueryStringValue) {
-      fetchSingleWineAPI(0,20)
-    }
-    if(multiQueryStringValues) {
-      fetchMultiWineAPI(0,20)
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[search])
+  // useEffect(()=>{
+  //   const singleQueryStringValue = !getQueryStringValue || getQueryStringValue?.length < 2
+  //   const multiQueryStringValues = getQueryStringValue?.length > 1 
+  //   if(singleQueryStringValue) {
+  //     fetchSingleWineAPI(0,20)
+  //   }
+  //   if(multiQueryStringValues) {
+  //     fetchMultiWineAPI(0,20)
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // },[search])
   return (   
       <div>
-        <TypeList title={"와인"} typeList={wineTypes}/>
+        {/* <TypeList title={"와인"} typeList={wineTypes}/>
         <h1 className={styles.header}> 레드와인을 알아봐요 </h1>
         <section className={styles.itemWrapper}>
           {
@@ -125,7 +125,8 @@ export const WineList = () => {
             : <div>loading...</div>
           }
         </section>
-        <div ref={fetchMoreEl} style={{ height: "200px" }} />
+        <div ref={fetchMoreEl} style={{ height: "200px" }} /> */}
+        ddd
       </div>
   )
 }
