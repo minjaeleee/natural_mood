@@ -5,7 +5,6 @@ import { IWine, IBeverageType } from "../../types/beverage"
 import { useFilterType } from "../../useHook/useFilterType"
 import useInfiniteScroll from "../../useHook/useInfiniteScroll"
 import { ListItem } from "./ListItem"
-// import {FaWineGlassAlt} from 'react-icons/fa'
 import { TypeList } from "./TypeList"
 
 import styles from './WineList.module.scss'
@@ -92,22 +91,20 @@ export const WineList = () => {
         fetchMultiWineAPI(data?.length, data?.length+20)
       }
     }
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[intersecting])
 
-    useEffect(()=>{
-      const singleQueryStringValue = !getQueryStringValue || getQueryStringValue?.length < 2
-      const multiQueryStringValues = getQueryStringValue?.length > 1 
-      if(singleQueryStringValue) {
-        fetchSingleWineAPI(0,20)
-      }
-      if(multiQueryStringValues) {
-        fetchMultiWineAPI(0,20)
-      }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[search])
-
+  useEffect(()=>{
+    const singleQueryStringValue = !getQueryStringValue || getQueryStringValue?.length < 2
+    const multiQueryStringValues = getQueryStringValue?.length > 1 
+    if(singleQueryStringValue) {
+      fetchSingleWineAPI(0,20)
+    }
+    if(multiQueryStringValues) {
+      fetchMultiWineAPI(0,20)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[search])
   return (   
       <div>
         <TypeList title={"와인"} typeList={wineTypes}/>
