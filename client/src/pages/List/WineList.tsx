@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { getMultiWine, getSingletWine } from "../../api/wineAPI"
-import { IWine, IBeverageType } from "../../types/beverage"
+import { IWine, IWineType } from "../../types/wine"
 import { useFilterType } from "../../useHook/useFilterType"
 import useInfiniteScroll from "../../useHook/useInfiniteScroll"
 import { ListItem } from "./ListItem"
@@ -9,7 +9,7 @@ import { TypeList } from "./TypeList"
 
 import styles from './WineList.module.scss'
 
-export const wineTypes: IBeverageType[] = [
+export const wineTypes: IWineType[] = [
   {
     id: 0,
     label: '레드 와인',

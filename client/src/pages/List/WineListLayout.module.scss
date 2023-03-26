@@ -1,0 +1,31 @@
+@import 'src/styles/color.scss';
+
+.header {
+  text-align: center;
+  margin-top: 150px;
+  margin-bottom: 50px;
+}
+
+.itemNavWrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  .itemSort {
+    display: flex;
+    gap: 25px;
+    color: $grey500;
+    // font-weight: bold;
+    font-size: 14px;
+
+    li {
+      cursor: pointer;
+    }
+  }
+}
+
+.itemWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}

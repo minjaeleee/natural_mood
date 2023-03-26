@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom'
-import { IBeverageType } from '../../types/beverage'
+import { IWineType } from '../../types/wine'
 import { useFilterType } from '../../useHook/useFilterType'
 
 import styles from './TypeList.module.scss'
@@ -17,7 +17,7 @@ export const TypeList = ({title, typeList}) => {
       <h1> 어떤 {title}을 찾으시나요? </h1>
       <ul className={styles.itemWrapper}>
         {
-          typeList.map((list:IBeverageType) => {
+          typeList.map((list:IWineType) => {
             const {label, src, alt, type} = list
             return (
               <li 

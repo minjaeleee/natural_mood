@@ -6,10 +6,18 @@ export interface IWine {
   price: number
 }
 
-export interface IBeverageType {
+export interface IWineType {
   id: number,
   label: string,
   type: string,
   src: string,
   alt: string
+}
+
+export interface IWineApiOpt {
+  value: string, 
+  start?: number,
+  limit?: number, 
+  sort?: string, 
+  order?: string,
 }
