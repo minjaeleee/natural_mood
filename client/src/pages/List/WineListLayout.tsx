@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { useLocation } from 'react-router-dom'
 import { getSingletWine } from '../../api/wineAPI'
-import { IWine, IWineApiOpt } from '../../types/wine'
+import { IWine, IWineSingleApiOpt } from '../../types/wine'
 import useInfiniteScroll from '../../useHook/useInfiniteScroll'
 import { useRouter } from '../../useHook/useRouter'
 import { ListItem } from './ListItem'
@@ -19,7 +19,7 @@ export const WineListLayout = ({value, label}) => {
   const { routeTo } = useRouter()
 
   const fetchData = useCallback(async(order:string, start?: number)=>{
-    const options: IWineApiOpt = {
+    const options: IWineSingleApiOpt = {
       value,
       order,
     }
@@ -64,13 +64,13 @@ export const WineListLayout = ({value, label}) => {
           <li onClick={()=>onClickSorting("asc")}>낮은 가격순</li>
         </ul>
       </section>
-      <section className={styles.itemWrapper}>
+      <main className={styles.itemWrapper}>
         {
           data?.length > 0
           ? data.map((element:IWine) => <ListItem key={element.image + element.wine} {...{...element}} /> )
           : <div>loading...</div>
         }
-      </section>
+      </main>
       <div ref={fetchMoreEl} style={{ height: "200px" }} />
     </div>
   )

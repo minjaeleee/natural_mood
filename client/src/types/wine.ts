@@ -14,10 +14,14 @@ export interface IWineType {
   alt: string
 }
 
-export interface IWineApiOpt {
+export interface IWineSingleApiOpt {
   value: string, 
   start?: number,
-  limit?: number, 
   sort?: string, 
   order?: string,
+}
+
+export interface IWineMultiApiOpt {
+  values: string[] | [],
+  start?: number
 }

@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { getMultiWine, getSingletWine } from "../../api/wineAPI"
-import { IWine, IWineType } from "../../types/wine"
+import { IWine, IWineMultiApiOpt, IWineSingleApiOpt, IWineType } from "../../types/wine"
 import { useFilterType } from "../../useHook/useFilterType"
 import useInfiniteScroll from "../../useHook/useInfiniteScroll"
 import { ListItem } from "./ListItem"
 import { TypeList } from "./TypeList"
 
-import styles from './WineList.module.scss'
+import styles from './TotalWineList.module.scss'
 
 export const wineTypes: IWineType[] = [
   {
@@ -55,29 +55,39 @@ export const wineTypes: IWineType[] = [
 ]
 
 export const TotalWineList = () => {
-  // const [data, setData] = useState<IWine[] | []>([])
-  // const {search} = useLocation()
-  // const {getQueryStringValue} = useFilterType({search})
-  // const fetchMoreEl = useRef<HTMLDivElement | null>(null)
-  // const intersecting = useInfiniteScroll(fetchMoreEl)
+  const [data, setData] = useState<IWine[] | []>([])
+  const {search} = useLocation()
+  const {getQueryStringValue} = useFilterType({search})
+  const fetchMoreEl = useRef<HTMLDivElement | null>(null)
+  const intersecting = useInfiniteScroll(fetchMoreEl)
 
-  // const fetchSingleWineAPI = useCallback(async(from:number, size:number)=>{
-  //   const getData = await getSingletWine(getQueryStringValue, from, size)
-  //   if(from === 0) {
-  //     setData(getData)
-  //   } else {
-  //     setData(prev => [...prev, ...getData])
-  //   }
-  // },[getQueryStringValue])
+  const fetchSingleWineAPI = useCallback(async(start?: number)=>{
+    const wineApiOpt:IWineSingleApiOpt = {
+      value: getQueryStringValue ? getQueryStringValue.toString() : 'reds'
+    }
+    if(start) {
+      wineApiOpt["start"] = start
+      const getData = await getSingletWine(wineApiOpt)
+      setData(prev => [...prev, ...getData])
+    }else {
+      const getData = await getSingletWine(wineApiOpt)
+      setData(prev => [...getData])
+    }
+  },[getQueryStringValue])
 
-  // const fetchMultiWineAPI = useCallback(async(from:number, size:number)=>{
-  //   const getData = await getMultiWine(getQueryStringValue, from, size)
-  //   if(from === 0) {
-  //     setData(getData)
-  //   } else {
-  //     setData(prev => [...prev, ...getData])
-  //   }
-  // },[getQueryStringValue])
+  const fetchMultiWineAPI = useCallback(async(start?: number)=>{
+    const wineApiOpt:IWineMultiApiOpt = {
+      values: getQueryStringValue
+    }
+    if(start) {
+      wineApiOpt["start"] = start
+      const getData = await getMultiWine(wineApiOpt)
+      setData(prev => [...prev, ...getData])
+    } else {
+      const getData = await getMultiWine(wineApiOpt)
+      setData(prev => [...getData])
+    }
+  },[getQueryStringValue])
   
   // useEffect(()=>{
   //   // 무한 스크롤 
@@ -94,38 +104,30 @@ export const TotalWineList = () => {
   // // eslint-disable-next-line react-hooks/exhaustive-deps
   // },[intersecting])
 
-  // useEffect(()=>{
-  //   const singleQueryStringValue = !getQueryStringValue || getQueryStringValue?.length < 2
-  //   const multiQueryStringValues = getQueryStringValue?.length > 1 
-  //   if(singleQueryStringValue) {
-  //     fetchSingleWineAPI(0,20)
-  //   }
-  //   if(multiQueryStringValues) {
-  //     fetchMultiWineAPI(0,20)
-  //   }
+  useEffect(()=>{
+    const singleQueryStringValue = !getQueryStringValue || getQueryStringValue?.length < 2
+    const multiQueryStringValues = getQueryStringValue?.length > 1 
+    if(singleQueryStringValue) {
+      fetchSingleWineAPI()
+    }
+    if(multiQueryStringValues) {
+      fetchMultiWineAPI()
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // },[search])
+  },[search])
+
   return (   
       <div>
-        {/* <TypeList title={"와인"} typeList={wineTypes}/>
-        <h1 className={styles.header}> 레드와인을 알아봐요 </h1>
-        <section className={styles.itemWrapper}>
-          {
-            data?.length > 0
-            ? data.map((el:IWine) => {
-              return (
-                  <ListItem 
-                    key={el.image+el.wine}
-                    src={el.image}
-                    title={el.wine} 
-                    info={el.winery} 
-                  /> 
-              )
-            })
-            : <div>loading...</div>
-          }
-        </section>
-        <div ref={fetchMoreEl} style={{ height: "200px" }} /> */}
+        <TypeList title={"와인"} typeList={wineTypes}/>
+        {/* <h1 className={styles.header}> 어떤 와인을 알아볼까요? </h1> */}
+        <main className={styles.itemWrapper}>
+        {
+          data?.length > 0
+          ? data.map((element:IWine) => <ListItem key={element.image + element.wine} {...{...element}} /> )
+          : <div>loading...</div>
+        }
+      </main>
+        <div ref={fetchMoreEl} style={{ height: "200px" }} />
       </div>
   )
 }
