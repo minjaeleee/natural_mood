@@ -45,20 +45,23 @@ export const WineListLayout = ({value, label}) => {
     fetchData(order || "asc")
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[search])
-
+  console.log(data)
   return (
     <div>
+      <header className={styles.header}>
+        <h1>{label}</h1>
+      </header>
       <section className={styles.itemNavWrapper}>
-        <div>총 100개</div>
-          <ul className={styles.itemSort}>
-            <li>높은 가격순</li>
-            <li>낮은 가격순</li>
-          </ul>
+        <div>총 <span className={styles.highlightingNum}>100</span> 개</div>
+        <ul className={styles.itemSort}>
+          <li>높은 가격순</li>
+          <li>낮은 가격순</li>
+        </ul>
       </section>
       <section className={styles.itemWrapper}>
         {
           data?.length > 0
-          ? data.map(element => <ListItem key={element.image + element.wine} {...{...element, fetchMoreEl}} /> )
+          ? data.map((element:IWine) => <ListItem key={element.image + element.wine} {...{...element}} /> )
           : <div>loading...</div>
         }
       </section>

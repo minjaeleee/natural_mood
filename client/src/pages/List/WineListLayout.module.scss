@@ -2,17 +2,24 @@
 
 .header {
   text-align: center;
-  margin-top: 150px;
+  margin-top: 40px;
   margin-bottom: 50px;
 }
 
 .itemNavWrapper {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  // width: 100%;
+
+  .highlightingNum {
+    font-weight: bold;
+    font-size: 17px;
+    color: $gold;
+  }
 
   .itemSort {
     display: flex;
+    padding: 0 5px;
     gap: 25px;
     color: $grey500;
     // font-weight: bold;

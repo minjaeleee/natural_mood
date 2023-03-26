@@ -1,6 +1,5 @@
 import { Article } from "./pages/Article";
 import { Cart } from "./pages/Cart";
-import { WineList } from "./pages/List/WineList";
 import { Review } from "./pages/Review";
 import { IRouterChildren } from "./types/sidebar";
 import { TotalWineList } from "./pages/List/TotalWineList";
