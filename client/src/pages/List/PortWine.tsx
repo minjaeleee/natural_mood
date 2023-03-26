@@ -1,7 +1,8 @@
 import React from 'react'
+import { WineListLayout } from './WineListLayout'
 
 export const PortWine = () => {
   return (
-    <div>PortWine</div>
+    <WineListLayout value={"port"} label={"포트와인"}/>
   )
 }

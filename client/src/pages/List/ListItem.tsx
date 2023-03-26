@@ -1,39 +1,40 @@
-import {useDispatch} from 'react-redux'
-import {AiOutlineHeart} from 'react-icons/ai'
+import { useDispatch } from 'react-redux'
+import { AiOutlineShoppingCart } from 'react-icons/ai'
 import { increase } from '../../store/modules/cart'
 import { IWine } from '../../types/wine'
+import numeral from 'numeral'
 
 import styles from './ListItem.module.scss'
 
-export const ListItem:React.FC<IWine> = ({id,image, wine, winery, price}) => {
+export const ListItem:React.FC<IWine> = ({image, price, wine, winery}) => {
   const dispatch = useDispatch()
   const handleErrorImg = (e) => {
-    e.target.src = "/img/default.jpg"
+    e.target.src = "/img/default.png"
   }
   const onClickHeart = (wine: string) => {
     dispatch(increase(wine))
   }
-  console.log("price", price)
+
   return (
     <div className={styles.item}>
       <div className={styles.imgBox}>
       {/* https://www.builder.io/blog/fast-images?_host=www.builder.io */}
         <img
-          className={styles.img}
+          className={styles.mainImg}
           onError={handleErrorImg}
-          sizes="(max-width: 800px) 100vw, 50vw"
           loading="lazy"
           decoding='async'
           src={image}
           alt={wine}
         />
-      {/* 찜하기 기능 여기서 구현해보고 이후 장바구니 구현하자. */}
-      <AiOutlineHeart onClick={() => onClickHeart(wine)}/>        
+      <div className={styles.cartImgBox}>
+        <AiOutlineShoppingCart width={"5em"} className={styles.cartImg} onClick={() => onClickHeart(wine)}/>        
+      </div>
       </div>
       <div className={styles.itemDesc}>
+        <span className={styles.winery}>{`[Winery] ${winery}`}</span>
         <span className={styles.wine}>{wine}</span>
-        <span className={styles.winery}>{winery}</span>
-        <span className={styles.price}>{price}</span>
+        <span className={styles.price}>{numeral(price).format(0,0)}원</span>
       </div>
     </div>
   )

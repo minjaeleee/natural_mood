@@ -1,7 +1,8 @@
 import React from 'react'
+import { WineListLayout } from './WineListLayout'
 
 export const WhiteWine = () => {
   return (
-    <div>WhiteWine</div>
+    <WineListLayout value={"whites"} label={"화이트와인"}/>
   )
 }

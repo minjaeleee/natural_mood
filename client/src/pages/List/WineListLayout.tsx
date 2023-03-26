@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { getSingletWine } from '../../api/wineAPI'
 import { IWine, IWineApiOpt } from '../../types/wine'
 import useInfiniteScroll from '../../useHook/useInfiniteScroll'
+import { useRouter } from '../../useHook/useRouter'
 import { ListItem } from './ListItem'
 
 import styles from './WineListLayout.module.scss'
@@ -10,10 +11,12 @@ import styles from './WineListLayout.module.scss'
 export const WineListLayout = ({value, label}) => {
   const {search} = useLocation()
   const params = new URLSearchParams(search)
+  const orderParams = params.get('_order')
   // redux-persist로 기본값 변경해야함
   const [data, setData] = useState<IWine[] | []>([])
   const fetchMoreEl = useRef<HTMLDivElement | null>(null)
   const intersecting = useInfiniteScroll(fetchMoreEl)
+  const { routeTo } = useRouter()
 
   const fetchData = useCallback(async(order:string, start?: number)=>{
     const options: IWineApiOpt = {
@@ -32,20 +35,23 @@ export const WineListLayout = ({value, label}) => {
 
   useEffect(()=>{
     // 무한 스크롤 
-    const order = params.get('_order')
     if(data.length >= 100) return;
     if(data?.length > 0 && intersecting) {
-      fetchData(order || "asc", data?.length )
+      fetchData(orderParams || "asc", data?.length )
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[intersecting])
 
   useEffect(()=>{
-    const order = params.get('_order')
-    fetchData(order || "asc")
+    fetchData(orderParams || "asc")
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[search])
-  console.log(data)
+
+  const onClickSorting = (arg:string) => {
+    params.set('_order', arg)
+    routeTo(`?${params.toString()}`)
+  }
+
   return (
     <div>
       <header className={styles.header}>
@@ -54,8 +60,8 @@ export const WineListLayout = ({value, label}) => {
       <section className={styles.itemNavWrapper}>
         <div>총 <span className={styles.highlightingNum}>100</span> 개</div>
         <ul className={styles.itemSort}>
-          <li>높은 가격순</li>
-          <li>낮은 가격순</li>
+          <li onClick={()=>onClickSorting("desc")}>높은 가격순</li>
+          <li onClick={()=>onClickSorting("asc")}>낮은 가격순</li>
         </ul>
       </section>
       <section className={styles.itemWrapper}>

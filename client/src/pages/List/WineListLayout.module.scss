@@ -33,6 +33,7 @@
 
 .itemWrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 250px 250px 250px;
   gap: 10px;
+  margin: 30px 0;
 }
