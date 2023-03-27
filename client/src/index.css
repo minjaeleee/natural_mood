@@ -1,3 +1,8 @@
+/* 모든 default 초기화
+body > * {
+  all: unset;
+} */
+
 body {
   /* header 높이에 맞게 지정 */
   padding-top: 72px; 
