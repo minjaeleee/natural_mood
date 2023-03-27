@@ -13,4 +13,10 @@
 .innerWrapper {
   background-color: #fff;
   border-radius: 5px;
+  overflow-x: hidden;
+}
+
+.contentWrapper {
+  width: 86%;
+  padding: 30px;
 }

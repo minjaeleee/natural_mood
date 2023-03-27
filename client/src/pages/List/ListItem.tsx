@@ -46,7 +46,7 @@ export const ListItem:React.FC<IWine> = ({image, price, wine, winery, type}) => 
           <span className={styles.price}>{numeral(price).format(0,0)}원</span>
         </div>
       </div>
-      {isOpenModal && <CartModal/>}
+      {isOpenModal && <CartModal {...{price, wine, winery, setIsOpenModal}}/>}
     </>
   )
 }

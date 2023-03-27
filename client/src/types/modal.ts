@@ -1,6 +1,7 @@
 export interface IModal {
   children: React.ReactNode,
   isOpen?: boolean,
+  setIsOpen?: (arg:boolean)=>{},
   width?: string,
   height?: string,
   xAxis?: "left" | "center" | "right",
