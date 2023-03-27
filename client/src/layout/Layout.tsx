@@ -25,7 +25,6 @@ export const Layout: React.FC<ILayout> = ({children, isSideBar}) => {
           </>
         }
       </main>
-      <div>sfsfsfdfdfdddd</div>
     </div>
   )
 }

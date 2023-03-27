@@ -1,5 +1,6 @@
 export interface IWine {
   id: number,
+  type: string,
   winery: string,
   wine: string,
   image:string,
@@ -23,5 +24,4 @@ export interface IWineSingleApiOpt {
 
 export interface IWineMultiApiOpt {
   values: string[] | [],
-  start?: number
 }

@@ -4,7 +4,7 @@ import { useFilterType } from '../../useHook/useFilterType'
 
 import styles from './TypeList.module.scss'
 
-export const TypeList = ({title, typeList}) => {
+export const TypeList = ({title, typeList, selectedWineLabels}) => {
   const {search} = useLocation()
   const {handleTypeQueryString} = useFilterType({search})
 
@@ -21,7 +21,7 @@ export const TypeList = ({title, typeList}) => {
             const {label, src, alt, type} = list
             return (
               <li 
-                className={styles.list} 
+                className={`${styles.list} ${selectedWineLabels.includes(label) ? styles.selectedList : ""}`} 
                 key={src+label}
                 onClick={()=>onClickType(type)}
               >
