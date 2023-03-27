@@ -39,10 +39,6 @@
   margin: 10px 15px;
   width: 90%;
   gap: 3px;
-  
-  .af {
-    color: salmon;
-  }
 
   .winery {
     margin-top: 5px;
@@ -59,5 +55,27 @@
   .price {
    font-size: 17px;
    font-weight: bold; 
+  }
+}
+
+// $highlightingColors: "#B70055", "#FFD2CC", "#F4B000", "#FF9B99", "#7A0050", "#FFE100";
+$winetypes: "Red", "White", "Sparkling", "Rose", "Port", "Dessert";
+
+@each $type in $winetypes {
+  .winetype-#{$type} {
+    font-weight: bold;
+    @if $type == "Red" {
+      color: #B70055;
+    } @else if $type == "White" {
+      color: #FFD2CC;
+    } @else if $type == "Sparkling" {
+      color: #F4B000;
+    } @else if $type == "Rose" {
+      color: #FF9B99;
+    } @else if $type == "Port" {
+      color: #7A0050;
+    } @else if $type == "Dessert" {
+      color: #FFE100;
+    }
   }
 }

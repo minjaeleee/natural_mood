@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 import { increase } from '../../store/modules/cart'
@@ -8,7 +7,6 @@ import numeral from 'numeral'
 import styles from './ListItem.module.scss'
 
 export const ListItem:React.FC<IWine> = ({image, price, wine, winery, type}) => {
-  const wineTypeRef = useRef(null)
   const dispatch = useDispatch()
   const handleErrorImg = (e) => {
     e.target.src = "/img/default.png"
@@ -16,33 +14,7 @@ export const ListItem:React.FC<IWine> = ({image, price, wine, winery, type}) => 
   const onClickHeart = (wine: string) => {
     dispatch(increase(wine))
   }
-
-  useEffect(()=>{
-    switch(type) {
-      case "Red Wine":
-        wineTypeRef.current.style.color = "#B70055"
-        break;
-      case "White Wine":
-        wineTypeRef.current.style.color = "#FFD2CC"
-        break;
-      case "Sparkling Wine":
-        wineTypeRef.current.style.color = "#F4B000"
-        break;
-      case "Rose Wine":
-        wineTypeRef.current.style.color = "#FF9B99"
-        break;
-      case "Port Wine":
-        wineTypeRef.current.style.color = "#7A0050"
-        break;
-      case "Dessert Wine":
-        wineTypeRef.current.style.color = "#FFE100"
-        break;
-      default:
-        wineTypeRef.current.style.color = "#000000"
-        break;
-    }
-  },[type])
-  
+  const simpleType = type.split(' ')[0]
   return (
     <div className={styles.item}>
       <div className={styles.imgBox}>
@@ -60,7 +32,8 @@ export const ListItem:React.FC<IWine> = ({image, price, wine, winery, type}) => 
       </div>
       </div>
       <div className={styles.itemDesc}>
-        <span ref={wineTypeRef}>
+        {/* <span className={styles[`winetype_${type}`]}> */}
+        <span className={styles[`winetype-${simpleType}`]}>
           {type}
         </span>
         <span className={styles.winery}>{`[Winery] ${winery}`}</span>
