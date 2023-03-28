@@ -1,60 +1,56 @@
 @import 'src/styles/color.scss';
 @import 'src/styles/common.scss';
 
-.item{
+.listWrapper {
+  display: flex;
+  margin-top: 15px;
+  border: 1px solid $grey200;
+  border-radius: 5px;
+}
+
+.imageBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 120px;
+  min-height: 120px;
+
+  .mainImg {
+    object-fit: contain;
+    height: 100px;
+  }
+}
+
+.info {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
-  border-radius: 5px;
-  border: 1px solid $grey100;
-  background-color: #fff;
-  position: relative;
-}
-
-.imgBox {  
-  .mainImg {
-    max-width: 150px;
-    height: 250px;
-    object-fit: contain;
-  }
-  
-  .cartImgBox {
-    cursor: pointer;
-    .cartImg {
-      position: absolute;
-      bottom: 75px;
-      right: 10px;
-      padding: 10px;
-      background-color: $grey100;
-      border-radius: 50%;
-      font-size: 30px;
-    }
-  }
-}
-
-.itemDesc {
-  display: flex;
-  flex-direction: column; 
-  margin: 10px 15px;
-  width: 90%;
-  gap: 3px;
+  justify-content: center;
 
   .winery {
-    margin-top: 5px;
+    margin: 3px 0;
     font-size: 14px;
     color: $grey400;
     @include ellipsis(1);
   }
-
+  
   .wine {
+    max-width: 310px;
     font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
     @include ellipsis(1);
   }
 
-  .price {
-   font-size: 17px;
-   font-weight: bold; 
+  .priceAndAmountBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 50px;
+    .totalPrice {
+      font-size: 20px;
+      font-weight: bold;
+    }
   }
 }
 

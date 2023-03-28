@@ -3,6 +3,7 @@ export interface IWineCartState {
   winery: string,
   wine: string,
   wineType: string,
-  amount: number,
-  totalPrice: number
+  originalPrice?: number,
+  amount?: number,
+  totalPrice?: number,
 }

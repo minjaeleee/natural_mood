@@ -1,0 +1,11 @@
+.wrapper {
+  position: relative;
+  padding-top: 70px;
+  
+  .innerWrapper {
+    position: absolute;
+    width: 100%;
+    min-height: 942px;
+    background-color: beige;
+  }
+}

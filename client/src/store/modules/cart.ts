@@ -2,68 +2,74 @@ import { IWineCartState } from "../../types/cartTypes"
 
 // 액션 타입
 const ADD_CART = 'cart/ADD' as const
-const DELETE_CART = 'cart/REMOVE' as const
+const UPDATE_CART = 'cart/UPDATE' as const
+const REMOVE_CART = 'cart/REMOVE' as const
 
 //액션 생성 함수
 export const addCart = (args:IWineCartState) => ({
   type: ADD_CART,
-  image: args.image,
-  winery: args.winery,
-  wine: args.wine,
-  wineType: args.wineType,
-  amount: args.amount,
-  totalPrice: args.totalPrice
+  wineList: args
 })
-export const removeCart = (args:IWineCartState) => ({
-  type: DELETE_CART,
-  image: args.image,
-  winery: args.winery,
-  wine: args.wine,
-  wineType: args.wineType,
-  amount: args.amount,
-  totalPrice: args.totalPrice
+export const updateCart = (args:IWineCartState, operator: "plus" | "minus") => ({
+  type: UPDATE_CART,
+  wineList: {...args, operator}
 })
-
-// 초기 상태
-// const initialState = [{
-//   image: '',
-//   winery: '',
-//   wine: '',
-//   amount: 0,
-//   totalPrice: 0
-// }]
+export const removeCart = (args?:IWineCartState | null, type?: "all") => ({
+  type: REMOVE_CART,
+  wineList: {...args, type}
+})
 
 const isStoredLocalStorage = localStorage.getItem('persist:cart')
 const getLocalStorageList = isStoredLocalStorage ? JSON.parse(JSON.parse(isStoredLocalStorage).cart) : []
 
-type CartAction = | ReturnType<typeof addCart> | ReturnType<typeof removeCart>
+type CartAction = | ReturnType<typeof addCart> | ReturnType<typeof removeCart> | ReturnType<typeof updateCart>
 
 export const cart = (state: IWineCartState[] | [], action: CartAction) => {
   switch(action.type) {
     case ADD_CART:
-      const addCartList = [...state]
-      const addedList = {
-        image: action.image,
-        winery: action.winery,
-        wine: action.wine,
-        wineType: action.wineType,
-        amount: action.amount,
-        totalPrice: action.totalPrice,
+      const addedCartList = [...state]
+      const newAddedCartList = {
+        image: action.wineList.image,
+        winery: action.wineList.winery,
+        wine: action.wineList.wine,
+        wineType: action.wineList.wineType,
+        originalPrice: action.wineList.originalPrice,
+        amount: action.wineList.amount,
+        totalPrice: action.wineList.totalPrice,
       }
-      addCartList.push(addedList)
-      return addCartList
-    case DELETE_CART: 
-      const removeCartList = [...state]
-      const removedList = {
-        image: action.image,
-        winery: action.winery,
-        wine: action.wine,
-        wineType: action.wineType,
-        amount: action.amount,
-        totalPrice: action.totalPrice,
-      }
-      removeCartList.push(removedList)
-      return removeCartList
+      addedCartList.push(newAddedCartList)
+      return addedCartList
+    case UPDATE_CART:
+        const updatedCartList = [...state]
+        if(action.wineList.operator === "plus") {
+          updatedCartList.map(list => {
+            const isRepeatedList = list.image === action.wineList.image && list.winery === action.wineList.winery && list.wine === action.wineList.wine 
+            if(isRepeatedList) {
+              list.amount +=  action.wineList.amount
+              list.totalPrice +=  action.wineList.totalPrice
+            }
+            return list
+          })
+          return updatedCartList
+        }
+        if(action.wineList.operator === "minus") {
+          updatedCartList.map(list => {
+            const isRepeatedList = list.image === action.wineList.image && list.winery === action.wineList.winery && list.wine === action.wineList.wine 
+            if(isRepeatedList) {
+              list.amount -= action.wineList.amount
+              list.totalPrice -= action.wineList.totalPrice
+            }
+            return list
+          })
+          return updatedCartList
+        }
+        return updatedCartList
+    case REMOVE_CART: 
+      let removeCartList = [...state]
+      if(action.wineList.type === "all") return removeCartList = []
+      return removeCartList.filter(list => {
+        return list.image !== action.wineList.image
+      })
     default: 
       return [...getLocalStorageList]
   }   
