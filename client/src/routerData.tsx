@@ -1,5 +1,5 @@
 import { Article } from "./pages/Article";
-import { Cart } from "./pages/Cart";
+import { Cart } from "./pages/CartPage";
 import { Review } from "./pages/Review";
 import { IRouterChildren } from "./types/sidebar";
 import { TotalWineList } from "./pages/List/TotalWineList";

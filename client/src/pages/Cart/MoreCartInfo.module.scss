@@ -1,0 +1,64 @@
+@import 'src/styles/color.scss';
+
+.wrapper {
+  position: relative;
+  min-height: 942px;
+  
+  .innerWrapper {
+    padding-top: 75px;
+    position: absolute;
+    width: 100%;
+  }
+  
+  .slideDown {
+    position: sticky;
+    top: 170px;
+  }
+}
+
+.content {
+  padding: 20px;
+  background-color: $grey50;
+  border-radius: 5px;
+  border: 2px solid $grey200;
+
+  dl{
+    display: flex;
+
+    dd {
+      margin-bottom: 15px;
+    }
+  }
+
+  .freeDeliveryChargeInfo {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10px;
+    height: 30px;
+    
+    .highlighting {
+      color: $primary200;
+      font-weight: bold;
+    }
+  }
+
+  .none {
+    display: none;
+  }
+
+  .finalTotalPriceLine {
+    margin-top: 15px;
+    border-top: 1px dotted #000;
+    
+    .finalTotalPriceTerm {
+      margin-top: 15px;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .finalTotalPriceDesc {
+      @extend .finalTotalPriceTerm;
+    }
+  }
+}

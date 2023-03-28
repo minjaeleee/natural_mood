@@ -16,6 +16,7 @@ const persistConfig = {
 const rootReducer = combineReducers({cart})
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
+export type RootState = ReturnType<typeof rootReducer>
 
 export const store = createStore(persistedReducer, composeWithDevTools())
 export const persistor = persistStore(store)

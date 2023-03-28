@@ -1,3 +1,8 @@
+/* 모든 default 초기화
+body > * {
+  all: unset;
+} */
+
 body {
   /* header 높이에 맞게 지정 */
   padding-top: 72px; 
@@ -10,7 +15,8 @@ ul,
 li,
 div,
 p,
-span {
+span,
+dl {
   margin:0;
   padding: 0;
   list-style: none;
