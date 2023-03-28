@@ -1,11 +1,15 @@
 import React, { useCallback, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import numeral from 'numeral'
 import { AmountController } from '../../common/AmountController'
 import { Modal } from '../../common/Modal'
-import numeral from 'numeral'
+import { IWineCartState } from '../../types/cartTypes'
+import { addCart } from '../../store/modules/cart'
 
 import styles from './CartModal.module.scss'
 
-export const CartModal = ({price, wine, winery, setIsOpenModal}) => {
+export const CartModal = ({price, wine, winery, image, type, setIsOpenModal}) => {
+  const dispatch = useDispatch()
   const [changedPrice, setChangedPrice] = useState<number>(price)
   const [amount, setAmount] = useState<number>(1)
 
@@ -19,6 +23,11 @@ export const CartModal = ({price, wine, winery, setIsOpenModal}) => {
       setAmount(prev => prev+1)
     }
   },[amount])
+
+  const handleCartInfo = (args:IWineCartState) => {
+    dispatch(addCart(args))
+    setIsOpenModal(false)
+  }
 
   return (
     <Modal setIsOpen={setIsOpenModal}>
@@ -46,7 +55,12 @@ export const CartModal = ({price, wine, winery, setIsOpenModal}) => {
           >
             닫기
           </button>
-          <button className={styles.addCartBtn}>장바구니 담기</button>
+          <button 
+            className={styles.addCartBtn}
+            onClick={()=>handleCartInfo({image, winery, wine, amount, wineType: type, totalPrice: changedPrice})}
+          >
+            장바구니 담기
+          </button>
         </section>
       </div>
     </Modal>
