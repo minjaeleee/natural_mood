@@ -1,10 +1,11 @@
 import { useCallback, useState } from 'react'
-import { AmountController } from '../../common/AmountController'
+import { useDispatch } from 'react-redux'
 import numeral from 'numeral'
+import { AmountController } from '../../common/AmountController'
+import { removeCart, updateCart } from '../../store/modules/cart'
+import { AiOutlineClose } from 'react-icons/ai'
 
 import styles from './CartListItem.module.scss'
-import { useDispatch } from 'react-redux'
-import { removeCart, updateCart } from '../../store/modules/cart'
 
 export const CartListItem = ({
   image,
@@ -41,7 +42,7 @@ export const CartListItem = ({
   const onRemoveList = useCallback(()=>{
     dispatch(removeCart({image, winery, wine, wineType}))
     setDataList(prev => prev.filter(list => {
-      return list.image !== image && list.winery !== winery && list.wine !== wine && list.wineType !== wineType
+      return (list.image !== image) && (list.winery !== winery) && (list.wine !== wine)
     }))
     
   },[dispatch, image, setDataList, wine, wineType, winery])
@@ -75,7 +76,12 @@ export const CartListItem = ({
           </span>
         </div>
       </div>
-      <button onClick={onRemoveList}>XXX</button>
+      <div className={styles.removeBox}>
+        <AiOutlineClose 
+          className={styles.removeBtn}
+          onClick={onRemoveList}
+        />
+      </div>
     </li>
   )
 }

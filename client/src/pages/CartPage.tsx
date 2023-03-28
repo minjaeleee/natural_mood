@@ -17,7 +17,7 @@ export const Cart = () => {
         <CartList {...{dataList,setDataList}}/>
       </section>
       <aside className={styles.moreInfo}>
-        <MoreCartInfo />
+        <MoreCartInfo {...{dataList}}/>
       </aside>
     </div>
   )

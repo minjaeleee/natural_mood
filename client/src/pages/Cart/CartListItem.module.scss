@@ -54,6 +54,15 @@
   }
 }
 
+.removeBox {
+  padding: 10px 5px 0 0;
+  cursor: pointer;
+
+  .removeBtn {
+    font-size: 17px;
+  }
+}
+
 $winetypes: "Red", "White", "Sparkling", "Rose", "Port", "Dessert";
 
 @each $type in $winetypes {

@@ -1,9 +1,10 @@
+import { useDispatch } from 'react-redux'
 import { CartListItem } from './CartListItem'
 import { IWineCartState } from '../../types/cartTypes'
+import { removeCart } from '../../store/modules/cart'
+import { BsFillTrash3Fill } from 'react-icons/bs'
 
 import styles from './CartList.module.scss'
-import { useDispatch } from 'react-redux'
-import { removeCart } from '../../store/modules/cart'
 
 export const CartList = ({
   dataList, 
@@ -22,7 +23,12 @@ export const CartList = ({
         <span 
           className={styles.title}
           onClick={onClickAllResetbtn}
-        >장바구니 비우기</span>
+        >
+          <BsFillTrash3Fill />
+          <p className={styles.allRemoveText}>
+            장바구니 비우기
+          </p>
+        </span>
       </div>
       {dataList.map((list:IWineCartState) => 
         <ul key={list.image + list.wine}>

@@ -15,7 +15,8 @@ ul,
 li,
 div,
 p,
-span {
+span,
+dl {
   margin:0;
   padding: 0;
   list-style: none;
