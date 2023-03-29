@@ -1,30 +1,15 @@
 @import 'src/styles/color.scss';
 
 .itemWrapper {
-  display: none;
+  max-height: 0px;
+  height: 100%;
+  overflow: hidden;
+  transition: linear 0.5s;
 }
 
 .selectedWrapper {
-  // 열릴 때
-  animation-name: slide-down;
-  animation-duration: 1s;
-  animation-timing-function: linear;
-  overflow: hidden;
-  animation-fill-mode: forwards;
-
-  @keyframes slide-down {
-    0% {
-      max-height: 0;
-    }
-
-    95% {
-      max-height: 90px;
-    }
-
-    100% {
-      height: auto;
-    }
-  }
+  transition: linear 0.3s;
+  max-height: 3rem;
 }
 
 .item {

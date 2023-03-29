@@ -15,7 +15,7 @@ export const Layout: React.FC<ILayout> = ({children, isSideBar}) => {
       <Header/>
       <main className={styles.main}>
         { 
-          isSideBar &&
+          // isSideBar &&
           <>
             <SideBar/>
             <div className={styles.content}>

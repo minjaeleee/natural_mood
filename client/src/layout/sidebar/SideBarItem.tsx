@@ -12,16 +12,17 @@ export const SideBarItem = ({sideItems, sideBarPath}) => {
       {
         sideItems.map((item:IRouterChildren) =>
           <Fragment key={item.path}>
-            <ul 
+            <li 
+              // className={`${styles.itemWrapper} ${currentPath.includes(sideBarPath) ? styles.selectedWrapper: ""}`}
               className={`${currentPath.includes(sideBarPath) ? styles.selectedWrapper: styles.itemWrapper}`}
             >
-              <li
+              <span
                 className={`${styles.item} ${currentPath.includes(item.path) ? styles.selected : ''}`} 
                 onClick={ () => routeTo(item.path) }
               > 
                 {item.label} 
-              </li>
-            </ul>
+              </span>
+            </li>
           </Fragment>
           )
       }
