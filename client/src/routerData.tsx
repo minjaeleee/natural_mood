@@ -10,6 +10,7 @@ import { RoseWine } from "./pages/List/RoseWine";
 import { PortWine } from "./pages/List/PortWine";
 import { DessertWine } from "./pages/List/DessertWine";
 import { ListPage } from "./pages/ListPage";
+import { Home } from "./pages/Home";
 
 interface IRouterData {
   id: number, // 고유 id
@@ -21,6 +22,13 @@ interface IRouterData {
 }
 
 export const routerData: IRouterData[] = [
+  {
+    id: 0,
+    path: "/",
+    label: "Home",
+    element: <Home/>,
+    isSideBar: false
+  },
   {
     id: 1,
     path: "/beverage",

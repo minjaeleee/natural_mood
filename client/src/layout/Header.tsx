@@ -1,4 +1,5 @@
 import { useRouter } from "../useHook/useRouter"
+import { MdWineBar } from 'react-icons/md'
 
 import styles from './Header.module.scss'
 
@@ -8,14 +9,10 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.wrapper}>
+        <MdWineBar className={styles.icon}/>
         <h1 className={styles.title} onClick={()=>routeTo('/')}>
           Natural Mood
         </h1>
-        <div className={styles.headerImgs}>
-          <p>img1</p>
-          <p>img2</p>
-          <p>img3</p>
-        </div>
       </div>
     </header>
   )

@@ -12,8 +12,12 @@ export const CartList = ({
 }) => {
   const dispatch = useDispatch()
   const onClickAllResetbtn = () => {
-    dispatch(removeCart(null,"all"))
-    setDataList([])
+    if (!window.confirm("장바구니 목록을 모두 삭제하시겠습니까?")) {
+      return;
+    } else {
+      dispatch(removeCart(null,"all"))
+      setDataList([])
+    }
   }
 
   return (
@@ -25,7 +29,9 @@ export const CartList = ({
           onClick={onClickAllResetbtn}
         >
           <BsFillTrash3Fill />
-          <p className={styles.allRemoveText}>
+          <p 
+            className={styles.allRemoveText}
+          >
             장바구니 비우기
           </p>
         </span>

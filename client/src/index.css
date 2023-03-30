@@ -4,8 +4,6 @@ body > * {
 } */
 
 body {
-  /* header 높이에 맞게 지정 */
-  padding-top: 72px; 
   margin: 0;
   font-family: 'Noto Sans', sans-serif;
   color: #3d3d3d;
