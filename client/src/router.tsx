@@ -13,17 +13,24 @@ interface ISidebarContent {
 
 export const router = createBrowserRouter(
   routerData.map(route => {
+    if(route.withAuth) {
+      return {
+        path: route.path,
+        element: <Layout> {route.element} </Layout>,
+      }
+    } 
+
     if(route.children) {
       return {
         path: route.path,
-        element: <Layout isSideBar={route.isSideBar}> {route.element} </Layout>,
+        element: <Layout> {route.element} </Layout>,
         children: route.children
       }
     }
-      return {
-        path: route.path,
-        element: <Layout isSideBar={route.isSideBar}> {route.element} </Layout>,
-      }
+
+    return {
+      path: route.path
+    }
   })
 )
 
