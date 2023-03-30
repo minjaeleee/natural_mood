@@ -1,3 +1,7 @@
-json-server 4000번 포트로 열기
+json-sever get started
 
-json-server --watch db.json --port 4001
+// natural_mood 폴더에서 server폴더 이동
+cd server/
+
+// server start
+yarn start
