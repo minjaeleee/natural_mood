@@ -54,7 +54,7 @@ export const routerData: IRouterData[] = [
     element: <ListPage/>,
     isSideBar: true,
     isAdminPage: false,
-    withAuth: false,
+    withAuth: true,
     children: [
       {
         path: 'all',
@@ -100,7 +100,7 @@ export const routerData: IRouterData[] = [
     element: <Article/>,
     isSideBar: true,
     isAdminPage: false,
-    withAuth: false,
+    withAuth: true
   },
   {
     id: 3,
@@ -109,7 +109,7 @@ export const routerData: IRouterData[] = [
     element: <Review/>,
     isSideBar: true,
     isAdminPage: false,
-    withAuth: false,
+    withAuth: true
   },
   {
     id: 4,
@@ -118,7 +118,7 @@ export const routerData: IRouterData[] = [
     element: <Cart/>,
     isSideBar: true,
     isAdminPage: false,
-    withAuth: false,
+    withAuth: true
   },
 
 ]

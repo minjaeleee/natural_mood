@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom'
 import styles from './Layout.module.scss'
 
 interface ILayout {
-  children: React.ReactNode,
+  children: React.ReactNode
 }
 
 export const Layout: React.FC<ILayout> = ({children}) => {
