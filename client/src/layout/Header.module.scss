@@ -11,16 +11,35 @@
 
 .wrapper {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding-left: 15px;
+  padding: 0 20px;
 
-  .icon {
-    font-size: 43px;
-    margin-right: 5px;
-    cursor: pointer;
+  .mainLogo {
+    display: flex;
+    align-items: center;
+  
+    .icon {
+      font-size: 43px;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+  
+    .title {
+      cursor: pointer;
+    }
   }
-
-  .title {
+  .settingInfo {
+    position: relative;
     cursor: pointer;
+
+    .settingIcon {
+      font-size: 35px;
+      margin-right: 5px;
+    }
+
+    .arrowUpIcon .arrowDownIcon {
+      font-size: 20px;
+    }
   }
 }

@@ -1,4 +1,18 @@
+@import 'src/styles/color.scss';
+
 .wrapper {
-  margin: 0 auto;
-  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: $grey100;
+}
+
+.loginFormat {
+  min-width: 450px;
+  height: 400px;
+  border-radius: 5px;
+  background-color: #fff;
+  border: 2px solid $grey200;
 }

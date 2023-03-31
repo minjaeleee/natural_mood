@@ -19,7 +19,7 @@ export const removeCart = (args?:IWineCartState | null, type?: "all") => ({
   wineList: {...args, type}
 })
 
-const isStoredLocalStorage = localStorage.getItem('persist:cart')
+const isStoredLocalStorage = localStorage.getItem('persist:root')
 const getLocalStorageList = isStoredLocalStorage ? JSON.parse(JSON.parse(isStoredLocalStorage).cart) : []
 
 type CartAction = | ReturnType<typeof addCart> | ReturnType<typeof removeCart> | ReturnType<typeof updateCart>

@@ -1,0 +1,28 @@
+@import 'src/styles/color.scss';
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 6rem;
+
+  .label {
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .input {
+    width: 18rem;
+    height: 40px;
+    border: 1px solid $grey200;
+    border-radius: 5px;
+    padding: 0 10px;
+    margin: 10px 0 3px 0;
+  }
+
+  .errorMsg {
+    font-size: 11px;
+    color: $primary200;
+  }
+}

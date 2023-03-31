@@ -17,19 +17,14 @@ export const router = createBrowserRouter(
       return {
         path: route.path,
         element: <Layout> {route.element} </Layout>,
+        children: route.children
       }
     } 
 
-    if(route.children) {
-      return {
-        path: route.path,
-        element: <Layout> {route.element} </Layout>,
-        children: route.children
-      }
-    }
-
     return {
-      path: route.path
+      path: route.path,
+      element: route.element,
+      children: route.children
     }
   })
 )
