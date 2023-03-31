@@ -1,0 +1,33 @@
+@import '/src/styles/color.scss';
+
+.wrapper {
+  position: absolute;
+  top: 60px;
+  right: 5px;
+  width: 15rem;
+  height: 130px;
+  background-color: $grey50;
+  border: 1px solid $grey200;
+  border-radius: 5px;
+}
+
+.mainInfo {
+  padding: 0 10px;
+  .email {
+    margin-top: -15px;
+  }
+}
+
+.logout {
+  text-align: center;
+  margin-top: 15px;
+  
+  .logoutBtn {
+    width: 100px;
+    height: 35px;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid $grey200;
+    cursor: pointer;
+  }
+}

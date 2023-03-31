@@ -72,9 +72,7 @@ export const FormInput:React.FC<IFormInput> = ({
         onChange={(e)=> setFormData(prev => ({...prev, [id]:e.target.value }))}
         {...inputProps}
         {...(isShowErrorMsg && {onBlur: ()=> checkErrorMsg(id)})}
-        
-      >
-      </input>
+      />
       {
         isShowErrorMsg &&
         <div className={styles.errorMsg}>

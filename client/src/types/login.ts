@@ -13,6 +13,7 @@ export interface ILoginReq {
 export interface ILoginRes {
   id: number,
   email?: string,
+  isAdmin?: boolean,
   accessToken: string
 }
 

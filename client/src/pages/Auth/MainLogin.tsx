@@ -26,6 +26,7 @@ export const MainLogin = () => {
 
   return (
     <>
+      <h3 className={styles.mainTitle}> 회원가입 또는 로그인을 해주세요.</h3>
       <div className={styles.title}>
         <button className={styles.btn} onClick={directAdminLogin}>회원가입 없이 관리자 로그인</button>
       </div>

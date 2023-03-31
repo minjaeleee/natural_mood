@@ -43,6 +43,7 @@ export const SignUp = () => {
 
   return (
     <form className={styles.wrapper}>
+      <h1 className={styles.title}>회원가입</h1>
       <FormInput
         id={"id"}
         label={"아이디"}
