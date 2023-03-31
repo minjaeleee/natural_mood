@@ -12,7 +12,6 @@ export const HeaderSetting = () => {
   const dispatch = useDispatch()
   const auth = useSelector((state:RootState) => state.auth)
   const { routeTo } = useRouter()
-  console.log(auth)
 
   const onClickLogout = () => {
     dispatch(logout())

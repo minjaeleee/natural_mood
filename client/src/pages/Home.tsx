@@ -38,7 +38,7 @@ export const Home = () => {
         }
       }
     })()
-  },[])
+  },[data.accessToken, data.id, routeTo])
 
   return (
     <div className={styles.wrapper}>
