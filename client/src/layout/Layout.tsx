@@ -5,25 +5,19 @@ import styles from './Layout.module.scss'
 import { Outlet } from 'react-router-dom'
 
 interface ILayout {
-  children: React.ReactNode,
-  isSideBar: boolean
+  children: React.ReactNode
 }
 
-export const Layout: React.FC<ILayout> = ({children, isSideBar}) => {
+export const Layout: React.FC<ILayout> = ({children}) => {
   return (
     <div className={styles.layout}>
       <Header/>
       <main className={styles.main}>
-        { 
-          // isSideBar &&
-          <>
-            <SideBar/>
-            <div className={styles.content}>
-              {children}
-              <Outlet/>
-            </div>
-          </>
-        }
+        <SideBar/>
+        <div className={styles.content}>
+          {children}
+          <Outlet/>
+        </div>
       </main>
     </div>
   )

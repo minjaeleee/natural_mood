@@ -18,6 +18,8 @@ interface IRouterData {
   label: string, // 페이지 이름
   element: React.ReactNode // 페이지 엘리먼트
   isSideBar: boolean // 네비게이션 바에 포함 여부,
+  isAdminPage: boolean, // 관리자 페이지 여부
+  withAuth: boolean, // 로그인 인증 여부,
   children?: IRouterChildren[]
 }
 
@@ -27,7 +29,9 @@ export const routerData: IRouterData[] = [
     path: "/",
     label: "Home",
     element: <Home/>,
-    isSideBar: false
+    isSideBar: false,
+    isAdminPage: false,
+    withAuth: false,
   },
   {
     id: 1,
@@ -35,6 +39,8 @@ export const routerData: IRouterData[] = [
     label: "와인",
     element: <ListPage/>,
     isSideBar: true,
+    isAdminPage: false,
+    withAuth: true,
     children: [
       {
         path: 'all',
@@ -78,21 +84,27 @@ export const routerData: IRouterData[] = [
     path: "/article",
     label: "아티클",
     element: <Article/>,
-    isSideBar: true
+    isSideBar: true,
+    isAdminPage: false,
+    withAuth: true
   },
   {
     id: 3,
     path: "/review",
     label: "고객후기",
     element: <Review/>,
-    isSideBar: true
+    isSideBar: true,
+    isAdminPage: false,
+    withAuth: true
   },
   {
     id: 4,
     path: "/cart",
     label: "장바구니",
     element: <Cart/>,
-    isSideBar: true
+    isSideBar: true,
+    isAdminPage: false,
+    withAuth: true
   },
 
 ]
