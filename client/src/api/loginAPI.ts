@@ -1,7 +1,7 @@
-import { ISignUpArgs, ISignUpResult } from "../types/login";
+import { ILoginReq, ILoginRes, ISignUpResult } from "../types/login";
 import { BASE_URL } from "./const";
 
-export const signUp = async(args: ISignUpArgs): Promise<ISignUpResult> => {
+export const signUp = async(args: ILoginReq): Promise<ISignUpResult> => {
   const { email, password } = args
   const res = await fetch(`${BASE_URL}/register`, {
     method: "POST",
@@ -26,7 +26,7 @@ export const signUp = async(args: ISignUpArgs): Promise<ISignUpResult> => {
   }
 }
 
-export const login = async(args: ISignUpArgs) => {
+export const login = async(args: ILoginReq) => {
   const { email, password } = args
   const res = await fetch(`${BASE_URL}/login`,{
     method: "POST",
@@ -41,7 +41,7 @@ export const login = async(args: ISignUpArgs) => {
   if(res.ok) {
     return {
       result: "success",
-      userInfo: getUserInfo.user
+      userInfo: {...getUserInfo.user, accessToken: getUserInfo.accessToken}
     }
   }
 
@@ -49,4 +49,16 @@ export const login = async(args: ISignUpArgs) => {
     result: "fail",
     userInfo: null
   }
+}
+
+export const authLogin = async(args: ILoginRes) => {
+  const { id, accessToken } = args
+  const res = await fetch(`${BASE_URL}/640/users/${id}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  })
+  if(!res.ok) return "fail";
+  return "success"
 }

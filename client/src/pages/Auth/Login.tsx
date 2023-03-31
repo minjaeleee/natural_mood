@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { login } from '../../api/loginAPI'
 import { getAuth } from '../../store/modules/auth'
-import { IFormData, ISignUpArgs } from '../../types/login'
+import { IFormData, ILoginReq } from '../../types/login'
 import { useRouter } from '../../useHook/useRouter'
 import { FormInput } from './FormInput'
 
@@ -20,13 +20,13 @@ export const Login = () => {
 
   const onSubmit = async(e) => {
     e.preventDefault()
-    const loginReq: ISignUpArgs = {
+    const loginReq: ILoginReq = {
       "email": formData.id,
       "password": formData.pw
     }
     const loginResult = await login(loginReq)
     if(loginResult.result === "fail") return alert('로그인 또는 비밀번호가 유효하지 않습니다.')
-    dispatch(getAuth(loginReq))
+    dispatch(getAuth(loginResult.userInfo))
     routeTo('/beverage/all')
   }
 

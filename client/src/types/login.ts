@@ -4,10 +4,16 @@ export interface IFormData {
   confirmPw?: string
 }
 
-export interface ISignUpArgs {
+export interface ILoginReq {
   email: string,
   password: string,
   isAdmin?: boolean
+}
+
+export interface ILoginRes {
+  id: number,
+  email?: string,
+  accessToken: string
 }
 
 export type ISignUpResult= {
