@@ -1,0 +1,19 @@
+@import 'src/styles/color.scss';
+
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30%;
+
+  .btn {
+    min-width: 250px;
+    height: 60px;
+    border:none;
+    border-radius: 10px;
+    background-color: $primary100;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+  }
+}
