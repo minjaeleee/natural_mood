@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { signUp } from '../../api/loginAPI'
-import { IformData, ISignUpArgs } from '../../types/login'
+import { IFormData, ISignUpArgs } from '../../types/login'
 import { useRouter } from '../../useHook/useRouter'
 import { FormInput } from './FormInput'
 
 import styles from './SignUp.module.scss'
 
-const initialFormData = {
+const initialFormData: IFormData = {
   id: '',
   pw: '',
   confirmPw: ''
@@ -20,21 +20,21 @@ const initialErrorData = {
 
 export const SignUp = () => {
   const { routeTo } = useRouter()
-  const [formData, setFormData] = useState<IformData>(initialFormData)
-  const [errorData, setErrorData] = useState<IformData>(initialErrorData)
+  const [formData, setFormData] = useState<IFormData>(initialFormData)
+  const [errorData, setErrorData] = useState<IFormData>(initialErrorData)
 
   const onSubmit = async(e) => {
     e.preventDefault()
     const isValid = Object.values(errorData).every(
       entries => entries  === true
     )
-    const loginReq:ISignUpArgs =  {
+    const signUpReq:ISignUpArgs =  {
       "email": formData.id,
       "password": formData.pw
     }
     if (!isValid) return alert('입력한 값이 유효하지 않습니다.');
     if (isValid) {
-      const singUpResult = await signUp(loginReq)
+      const singUpResult = await signUp(signUpReq)
       if(singUpResult.result === "fail") return alert('회원가입에 실패했습니다. 다시 시도 해주세요.')
       alert('회원가입이 완료되었습니다. 축하합니다! 🎉')
       routeTo("login")
