@@ -11,10 +11,10 @@ export interface ILoginReq {
 }
 
 export interface ILoginRes {
-  id: number,
+  id?: number,
   email?: string,
   isAdmin?: boolean,
-  accessToken: string
+  accessToken?: string
 }
 
 export type ISignUpResult= {

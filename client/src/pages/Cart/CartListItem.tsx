@@ -2,10 +2,16 @@ import { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import numeral from 'numeral'
 import { AmountController } from '../../common/AmountController'
-import { removeCart, updateCart } from '../../store/modules/cart'
+// import { removeCart, updateCart } from '../../store/modules/cart'
 import { AiOutlineClose } from 'react-icons/ai'
 
 import styles from './CartListItem.module.scss'
+import { deleteCartItems, updateCartItems } from '../../store/modules/cart'
+import { ThunkDispatch } from 'redux-thunk';
+import { RootState } from '../../store/modules'
+import { Action } from 'redux';
+import { useSelector } from 'react-redux'
+import { ICartItems } from '../../types/cartTypes'
 
 export const CartListItem = ({
   image,
@@ -18,20 +24,26 @@ export const CartListItem = ({
   setDataList,
   dataList
 }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<ThunkDispatch<RootState, null, Action>>();
+  const data = useSelector((state:RootState) => state.cart)
+
   const [finalTotalPrice, setFinalTotalPrice] = useState<number>(totalPrice)
   const [finalAmount, setFinalAmount] = useState<number>(amount)
 
   const onChangeAmount = useCallback((operator:string, price: number)=>{
+    const isRepeated = data.find((list:ICartItems) => {
+      return list.image === image && list.winery === winery && list.wine === wine
+    })
+
     if(operator === "minus") {
       if(finalAmount<2) return; 
       setFinalTotalPrice(prev => prev-originalPrice)
       setFinalAmount(prev => prev-1)
-      dispatch(updateCart({image,winery,wine,amount:1,wineType, totalPrice:originalPrice},"minus"))
+      dispatch(updateCartItems({image,winery,wine,amount:1,wineType, totalPrice:originalPrice, id: isRepeated.id}, "minus"))
     } else {
       setFinalTotalPrice(prev => prev+originalPrice)
       setFinalAmount(prev => prev+1)
-      dispatch(updateCart({image,winery,wine,amount:1,wineType ,totalPrice:originalPrice},"plus"))
+      dispatch(updateCartItems({image,winery,wine,amount:1,wineType, totalPrice:originalPrice, id: isRepeated.id}, "plus"))
     }
   },[finalAmount, dispatch, image, winery, wine, wineType, originalPrice])
 
@@ -40,7 +52,11 @@ export const CartListItem = ({
   }
   
   const onRemoveList = useCallback(()=>{
-    dispatch(removeCart({image, winery, wine, wineType}))
+    const isRepeated = data.find((list:ICartItems) => {
+      return list.image === image && list.winery === winery && list.wine === wine
+    })
+
+    dispatch(deleteCartItems(isRepeated.id))
     setDataList(prev => prev.filter(list => {
       return (list.image !== image) && (list.winery !== winery) && (list.wine !== wine)
     }))
