@@ -1,7 +1,11 @@
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector} from 'react-redux'
+import { Action } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
+
 import { RootState } from '../store/modules'
-import { IWineCartState } from '../types/cartTypes'
+import { getCartItems } from '../store/modules/cart'
+import { ICartItems } from '../types/cartTypes'
 import { CartList } from './Cart/CartList'
 import { MoreCartInfo } from './Cart/MoreCartInfo'
 
@@ -9,7 +13,21 @@ import styles from './CartPage.module.scss'
 
 export const Cart = () => {
   const data = useSelector((state:RootState) => state.cart)
-  const [dataList, setDataList] = useState<IWineCartState[]|[]>(data)
+  const dispatch = useDispatch<ThunkDispatch<RootState, null, Action>>();
+  const [dataList, setDataList] = useState<ICartItems[]|[]>([])
+  
+  useEffect(()=>{
+    if(data.length === 0) {
+      dispatch(getCartItems())
+    }
+
+  },[data.length, dispatch])
+
+  useEffect(()=>{
+    if(data.length > 0) {
+      setDataList(data)
+    }
+  },[data])
 
   return (
     <div className={styles.wrapper}>

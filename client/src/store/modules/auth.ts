@@ -20,11 +20,10 @@ const getLocalStorageList = isStoredLocalStorage ? JSON.parse(JSON.parse(isStore
 
 type AuthAction = ReturnType<typeof getAuth> | ReturnType<typeof logout>
 
-export const auth = (state:ILoginRes, action: AuthAction) => {
+export const auth = (state:ILoginRes = getLocalStorageList , action: AuthAction) => {
   switch(action.type) {
     case GET_AUTH:
       const getAuth = {
-        ...state,
         id: action.data.id,
         email: action.data.email,
         isAdmin: action.data.isAdmin,
@@ -35,7 +34,7 @@ export const auth = (state:ILoginRes, action: AuthAction) => {
       return {};
     default:
       return {
-        ...getLocalStorageList
+        ...state
       }
   }
 }

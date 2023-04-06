@@ -6,7 +6,7 @@ export const signUp = async(args: ILoginReq): Promise<ISignUpResult> => {
   const res = await fetch(`${BASE_URL}/register`, {
     method: "POST",
     headers: {
-    "Content-Type": "application/json",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({email, password})
   })
