@@ -11,6 +11,7 @@ export const SideBarItem = ({sideItems, sideBarPath}) => {
     <>
       {
         sideItems.map((item:IRouterChildren) =>
+          item.childrenSideBar &&
           <Fragment key={item.path}>
             <li 
               // className={`${styles.itemWrapper} ${currentPath.includes(sideBarPath) ? styles.selectedWrapper: ""}`}

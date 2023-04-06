@@ -1,0 +1,35 @@
+@import '/src/styles/color.scss';
+
+.img {
+  height: 235px;
+}
+
+.btnBox {
+  margin-top: 4px;
+  
+  .prevBtn, .nextBtn {
+    padding: 10px 20px;
+    color: burlywood;
+    border: 1px solid burlywood;
+    border-radius: 10px;
+    
+    &:hover {
+      cursor: pointer;
+      background-color: burlywood;
+      color: #fff;
+    }
+  }
+  
+  .selectBtn {
+    padding: 10px 20px;
+    border: 1px solid $grey200;
+    border-radius: 10px;
+    background-color: $primary500;
+    color: #fff;
+    
+    &:hover {
+      cursor: pointer;
+      background-color: $primary600;
+    }
+  }
+}

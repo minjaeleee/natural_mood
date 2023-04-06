@@ -13,6 +13,9 @@ import { ListPage } from "./pages/ListPage";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Auth/Login";
 import { SignUp } from "./pages/Auth/SignUp";
+import { ArticleCreatePage } from "./pages/Article/ArticleCreatePage";
+import { ArticleEditPage } from "./pages/Article/ArticleEditPage";
+import { ArticleDetailPage } from "./pages/Article/ArticleDetailPage";
 
 interface IRouterData {
   id: number, // 고유 id
@@ -38,12 +41,14 @@ export const routerData: IRouterData[] = [
       {
         path: 'login',
         label: '로그인',
-        element: <Login/>
+        element: <Login/>,
+        childrenSideBar: false
       },
       {
         path: 'sign-up',
         label: '회원가입',
-        element: <SignUp/>
+        element: <SignUp/>,
+        childrenSideBar: false
       },
     ]
   },
@@ -59,37 +64,44 @@ export const routerData: IRouterData[] = [
       {
         path: 'all',
         label: '전체',
-        element: <TotalWineList/>
+        element: <TotalWineList/>,
+        childrenSideBar: true
       },
       {
         path: 'reds',
         label: '레드 와인',
-        element: <RedWine/>
+        element: <RedWine/>,
+        childrenSideBar: true
       },
       {
         path: 'whites',
         label: '화이트 와인',
-        element: <WhiteWine/>
+        element: <WhiteWine/>,
+        childrenSideBar: true
       },
       {
         path: 'sparkling',
         label: '스파클링 와인',
-        element: <SparklingWine/>
+        element: <SparklingWine/>,
+        childrenSideBar: true
       },
       {
         path: 'rose',
         label: '로제 와인',
-        element: <RoseWine/>
+        element: <RoseWine/>,
+        childrenSideBar: true
       },
       {
         path: 'port',
         label: '포트 와인',
-        element: <PortWine/>
+        element: <PortWine/>,
+        childrenSideBar: true
       },
       {
         path: 'dessert',
         label: '디저트 와인',
-        element: <DessertWine/>
+        element: <DessertWine/>,
+        childrenSideBar: true
       },
     ]
   },
@@ -100,10 +112,30 @@ export const routerData: IRouterData[] = [
     element: <Article/>,
     isSideBar: true,
     isAdminPage: false,
-    withAuth: true
+    withAuth: true,
+    children: [
+      {
+        path: ':id',
+        label: '아티클 상세',
+        element: <ArticleDetailPage/>,
+        childrenSideBar: false
+      },
+      {
+        path: 'post',
+        label: '아티클 추가하기',
+        element: <ArticleCreatePage/>,
+        childrenSideBar: false
+      },
+      {
+        path: 'edit',
+        label: '아티클 수정하기',
+        element: <ArticleEditPage/>,
+        childrenSideBar: false
+      },
+    ]
   },
   {
-    id: 3,
+    id: 4,
     path: "/review",
     label: "고객후기",
     element: <Review/>,
@@ -112,7 +144,7 @@ export const routerData: IRouterData[] = [
     withAuth: true
   },
   {
-    id: 4,
+    id: 5,
     path: "/cart",
     label: "장바구니",
     element: <Cart/>,
