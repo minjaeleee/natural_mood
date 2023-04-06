@@ -96,11 +96,9 @@ export const deleteCartItems = (id:number) => async(dispatch) => {
 }
 
 export const cart = (state:ICartItems[] = [], action:CartAction) => {
-  console.log("action",action)
-  console.log("state",state)
   switch(action.type) {
     case GET_CART_SUCCESS:
-      return [...state,...action.items]
+      return [...action.items]
     // case GET_CART_FAIL:
     //   return [...action.items, {error: action.error}]
     // case ADD_CART_SUCCESS:
