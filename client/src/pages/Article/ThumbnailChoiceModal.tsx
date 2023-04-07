@@ -50,6 +50,12 @@ export const ThumbnailChoiceModal = ({setIsOpen, setselectedThumbnail}) => {
           이전
         </button>
         <button
+          className={styles.cancelBtn}
+          onClick={()=>setIsOpen(false)}
+        >
+          취소하기 
+        </button>
+        <button
           className={styles.selectBtn}
           onClick={onSubmit}
         >
