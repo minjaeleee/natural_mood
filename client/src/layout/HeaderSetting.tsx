@@ -21,7 +21,7 @@ export const HeaderSetting = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.mainInfo}>
-        <h3>
+        <h3 className={styles.grade}>
           {
             auth.isAdmin ? "관리자" : "일반 회원"
           }

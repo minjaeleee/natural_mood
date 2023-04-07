@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { IPostItem } from '../../types/article'
@@ -11,7 +11,8 @@ import styles from './EditItem.module.scss'
 
 export const EditItem = ({
     articleItems,
-    fetchData
+    fetchData,
+    headerTitle
 }) => {
   const auth = useSelector((state:RootState) => state.auth)
   const { routeTo } = useRouter()
@@ -20,7 +21,7 @@ export const EditItem = ({
   const [isClickThumbnail, setIsClickThumbnail] = useState<boolean>(false)
 
   const { image, title, content } = items
-  
+
   const onSubmit = useCallback(async()=>{
     const onlyTextContent = content.replace(/<[/\w\s"=-]*>/gi, "")
     if(onlyTextContent.length === 0) {
@@ -33,23 +34,25 @@ export const EditItem = ({
           return;
         } 
       }
+      await fetchData(items)
+    }
+  },[content, fetchData, image, items, title])
 
+  useEffect(()=>{
+    if(items.created_at === 0) {
       setItems((prev:IPostItem) => ({
         ...prev,
         image: image === "" ? image : "https://www.k-startup.go.kr//images/homepage/prototype/noimage.gif",
         author: auth.email,
         created_at: Date.now()
       }))
-
-      fetchData(items)
-      setItems(prev => ({...articleItems}))
     }
-  },[articleItems, auth.email, content, fetchData, image, items, title])
-
+  },[auth.email, image, items])
+  
   const onChangeTitle = useCallback((e)=>{
     setItems((prev:IPostItem) => ({...prev, title:e.target.value}))
   },[])
-
+  
   const onChangeContent = useCallback((value:string)=>{
     setItems((prev:IPostItem)=> ({...prev, content: value}))
   },[])
@@ -58,7 +61,7 @@ export const EditItem = ({
     <div className={styles.wrapper}>
     <header className={styles.header}>
       <h1 className={styles.title}>
-        블로그 글 생성하기
+        {headerTitle}
       </h1>
     </header>
     <main className={styles.main}>

@@ -68,3 +68,19 @@ export const updatePost = async(args: IPostItem, id:number) => {
     result: updatePost
   }
 }
+
+export const deletePost = async(id:number) => {
+  const res = await fetch(`${BASE_URL}/posts/${id}`, {
+    method: "DELETE"
+  })
+
+  if(!res.ok) return {
+    status: "fail"
+  }
+
+  const deletePost = await res.json()
+  return {
+    status: "success",
+    result: deletePost
+  }
+}

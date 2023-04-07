@@ -12,14 +12,16 @@
     cursor: pointer;
     transition: .5s ease;
     border-bottom: 1px solid $grey100;
+    background-color: $primary100;
+    border-radius: 10px;
 
     &:hover {
-      background-color: $grey100;
+      background-color: $primary200;
     }
   }
   
   .selected {
-    background-color: $primary100;
+    background-color: $primary200;
     border-radius: 10px;
     color: $primary500;
     font-weight: bold;

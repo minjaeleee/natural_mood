@@ -1,11 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { EditItem } from './EditItem'
-import { getAllPosts, getPost, updatePost } from '../../api/articleAPI'
+import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+
+import { EditItem } from './EditItem'
+import { getPost, updatePost } from '../../api/articleAPI'
 import { IPostItem } from '../../types/article'
+import { RootState } from '../../store/modules'
+import { useRouter } from '../../useHook/useRouter'
 
 export const ArticleEditPage = () => {
   const {id} = useParams()
+  const { routeTo } = useRouter()
+  const auth = useSelector((state:RootState) => state.auth)
   const [articleItems, setArticleItems] = useState<IPostItem | {}>({})
 
   const getDetailPost = useCallback(async()=>{
@@ -26,8 +32,14 @@ export const ArticleEditPage = () => {
     getDetailPost()
   },[getDetailPost])
 
+  useEffect(()=>{
+    if(!auth.isAdmin) {
+      routeTo('/article')
+    }
+  },[auth, routeTo])
+
   return (
     Object.keys(articleItems).length > 0 && 
-    <EditItem articleItems={articleItems} fetchData={fetchData}/> 
+    <EditItem articleItems={articleItems} fetchData={fetchData} headerTitle={"아티클 글 수정하기"}/> 
   )
 }
