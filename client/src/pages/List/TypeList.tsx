@@ -14,7 +14,7 @@ export const TypeList = ({title, typeList, selectedWineLabels}) => {
 
   return (
     <aside className={styles.wrapper}>
-      <h1> 어떤 {title}을 찾으시나요? </h1>
+      <h1 className={styles.title}> 어떤 {title}을 찾으시나요? </h1>
       <ul className={styles.itemWrapper}>
         {
           typeList.map((list:IWineType) => {

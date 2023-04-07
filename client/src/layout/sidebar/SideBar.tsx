@@ -10,7 +10,7 @@ export const SideBar = () => {
   const {currentPath, routeTo} = useRouter()
 
   const onClickSideBarContent = (path:string, sideBarItem:IRouterChildren[] | undefined) => {
-    if(!sideBarItem) return routeTo(path)
+    if(!sideBarItem || !sideBarItem[0].childrenSideBar) return routeTo(path)
     routeTo(`${path}/${sideBarItem[0]?.path}`)
   }
 

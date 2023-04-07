@@ -17,7 +17,7 @@ export const Header = () => {
       <div className={styles.wrapper}>
         <div className={styles.mainLogo}> 
           <MdWineBar className={styles.icon}/>
-          <h1 className={styles.title} onClick={()=>routeTo('/')}>
+          <h1 className={styles.title} onClick={()=>routeTo('/beverage/all')}>
             Natural Mood
           </h1>
         </div>

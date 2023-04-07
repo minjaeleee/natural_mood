@@ -51,7 +51,7 @@ export const WineListLayout = ({value, label}) => {
     params.set('_order', arg)
     routeTo(`?${params.toString()}`)
   }
-
+  console.log(orderParams)
   return (
     <div>
       <header className={styles.header}>
@@ -60,8 +60,12 @@ export const WineListLayout = ({value, label}) => {
       <section className={styles.itemNavWrapper}>
         <div>총 <span className={styles.highlightingNum}>100</span> 개</div>
         <ul className={styles.itemSort}>
-          <li onClick={()=>onClickSorting("desc")}>높은 가격순</li>
-          <li onClick={()=>onClickSorting("asc")}>낮은 가격순</li>
+          <li 
+            className={`${orderParams === "desc" ? styles.checkedOrder:""}`}
+            onClick={()=>onClickSorting("desc")}>높은 가격순</li>
+          <li 
+            className={`${orderParams === "desc" ? "": styles.checkedOrder}`}
+            onClick={()=>onClickSorting("asc")}>낮은 가격순</li>
         </ul>
       </section>
       <main className={styles.itemWrapper}>

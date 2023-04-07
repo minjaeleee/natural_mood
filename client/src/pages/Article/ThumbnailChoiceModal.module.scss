@@ -1,0 +1,49 @@
+@import '/src/styles/color.scss';
+
+.img {
+  margin-top: -7px;
+  height: 235px;
+}
+
+.btnBox {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  
+  .prevBtn, .nextBtn {
+    padding: 10px 20px;
+    color: burlywood;
+    border: 1px solid burlywood;
+    border-radius: 10px;
+    
+    &:hover {
+      cursor: pointer;
+      background-color: burlywood;
+      color: #fff;
+    }
+  }
+  
+  .selectBtn {
+    padding: 10px 20px;
+    border: 1px solid $grey200;
+    border-radius: 10px;
+    background-color: $primary500;
+    color: #fff;
+    
+    &:hover {
+      cursor: pointer;
+      background-color: $primary600;
+    }
+  }
+
+  .cancelBtn {
+    @extend .selectBtn;
+    background-color: #fff;
+    color: #000;
+
+    &:hover {
+      background-color: $grey50;
+      color: #000;
+    }
+  }
+}

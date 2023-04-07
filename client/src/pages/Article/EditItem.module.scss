@@ -1,0 +1,64 @@
+@import '/src/styles/color.scss';
+
+.main {
+  margin: 10px 0;
+}
+
+.selectedThumbnailInput {
+  display: none;
+}
+
+.titleInput {
+  width: 98%;
+  padding: 0.5rem;
+  border: 1px solid $grey300;
+}
+
+.plusBtn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid $grey500;
+  margin: 15px 0;
+  width: 240px;
+  height: 160px;
+  cursor: pointer;
+}
+
+.none {
+  display: none;
+}
+
+.thumbnailBox {
+  margin: 15px 0;
+  cursor: pointer;
+
+  .thumbnail {
+    height: 160px;
+  }
+}
+
+.editorBox {
+  height: 750px;
+}
+
+.buttonBox {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 40px;
+
+  .cancelBtn, .submitBtn {
+    padding: 10px 20px;
+    border: 1px solid $grey200;
+    border-radius: 10px;
+    background-color: $primary500;
+    color: #fff;
+    
+    &:hover {
+      cursor: pointer;
+      background-color: $primary600;
+    }
+  }
+}
