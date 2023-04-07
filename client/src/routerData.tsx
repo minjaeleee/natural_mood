@@ -127,7 +127,7 @@ export const routerData: IRouterData[] = [
         childrenSideBar: false
       },
       {
-        path: 'edit',
+        path: ':id/edit',
         label: '아티클 수정하기',
         element: <ArticleEditPage/>,
         childrenSideBar: false

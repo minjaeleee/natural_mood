@@ -48,3 +48,23 @@ export const createPost = async(args: IPostItem) => {
     result: createPost
   }
 }
+
+export const updatePost = async(args: IPostItem, id:number) => {
+  const res= await fetch(`${BASE_URL}/posts/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(args)
+  })
+
+  if(!res.ok) return {
+    status: "fail"
+  }
+
+  const updatePost = await res.json()
+  return {
+    status: "success",
+    result: updatePost
+  }
+}
