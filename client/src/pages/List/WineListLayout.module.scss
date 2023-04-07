@@ -22,8 +22,11 @@
     padding: 0 5px;
     gap: 25px;
     color: $grey500;
-    // font-weight: bold;
     font-size: 14px;
+
+    .checkedOrder {
+      font-weight: 900;
+    }
 
     li {
       cursor: pointer;

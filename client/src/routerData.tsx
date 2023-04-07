@@ -134,15 +134,15 @@ export const routerData: IRouterData[] = [
       },
     ]
   },
-  {
-    id: 4,
-    path: "/review",
-    label: "고객후기",
-    element: <Review/>,
-    isSideBar: true,
-    isAdminPage: false,
-    withAuth: true
-  },
+  // {
+  //   id: 4,
+  //   path: "/review",
+  //   label: "고객후기",
+  //   element: <Review/>,
+  //   isSideBar: true,
+  //   isAdminPage: false,
+  //   withAuth: true
+  // },
   {
     id: 5,
     path: "/cart",
