@@ -9,11 +9,11 @@ import { useRouter } from '../useHook/useRouter'
 
 import styles from './Layout.module.scss'
 
-interface ILayout {
+interface IProps {
   children: React.ReactNode
 }
 
-export const Layout: React.FC<ILayout> = ({children}) => {
+export const Layout = ({children}: IProps) => {
   const auth = useSelector((state:RootState) => state.auth)
   const { routeTo } = useRouter()
 

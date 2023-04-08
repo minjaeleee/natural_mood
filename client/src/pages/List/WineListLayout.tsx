@@ -1,17 +1,23 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { useLocation } from 'react-router-dom'
+
+import { ListItem } from './ListItem'
 import { getSingletWine } from '../../api/wineAPI'
 import { IWine, IWineSingleApiOpt } from '../../types/wine'
 import useInfiniteScroll from '../../useHook/useInfiniteScroll'
 import { useRouter } from '../../useHook/useRouter'
-import { ListItem } from './ListItem'
 
 import styles from './WineListLayout.module.scss'
 
-export const WineListLayout = ({value, label}) => {
+interface IProps {
+  value: string,
+  label: string
+}
+
+export const WineListLayout = ({value, label}: IProps) => {
   const {search} = useLocation()
   const params = new URLSearchParams(search)
-  const orderParams = params.get('_order')
+  const orderParams: string = params.get('_order')
   // redux-persist로 기본값 변경해야함
   const [data, setData] = useState<IWine[] | []>([])
   const fetchMoreEl = useRef<HTMLDivElement | null>(null)
@@ -51,7 +57,7 @@ export const WineListLayout = ({value, label}) => {
     params.set('_order', arg)
     routeTo(`?${params.toString()}`)
   }
-  console.log(orderParams)
+
   return (
     <div>
       <header className={styles.header}>

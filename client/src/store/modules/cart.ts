@@ -1,7 +1,7 @@
 import { Dispatch } from "redux"
 import { RootState } from "."
-import { createUsersCartItems, deleteUsersCartItems, getUsersCartItems, updateUsersCartItems } from "../../api/cartAPI"
-import { ICartItems, ICreateUsersCartItemsRes } from "../../types/cartTypes"
+import { createUsersCartItems, deleteUsersCartAllItems, deleteUsersCartItems, getUsersCartItems, updateUsersCartItems } from "../../api/cartAPI"
+import { ICartItems } from "../../types/cartTypes"
 
 // 액션 타입
 const GET_CART_SUCCESS = "cart/GET_CART_SUCCESS" as const
@@ -10,7 +10,8 @@ const ADD_CART_SUCCESS = "cart/ADD_CART_SUCCESS" as const
 const ADD_CART_FAIL = "cart/ADD_CART_FAIL" as const
 const UPDATE_CART_SUCCESS = "cart/UPDATE_CART_SUCCESS" as const
 // const UPDATE_CART_FAIL = "cart/UPDATE_CART_FAIL" as const
-const DELETE_CART_SUCCESS = 'cart/DELETE_CART_SUCCESS' as const
+const DELETE_CART_SUCCESS = "cart/DELETE_CART_SUCCESS" as const
+const DELETE_ALL_CART_SUCCESS = "cart/DELETE_ALL_CART_SUCCESS" as const
 
 interface IGetCartItemState {
   type: typeof GET_CART_SUCCESS | typeof GET_CART_FAIL,
@@ -34,11 +35,15 @@ interface IDeleteCartItemState {
   items: number
 }
 
-type CartAction = IGetCartItemState | IAddCartItemState | IUpdateCartItemState | IDeleteCartItemState
+interface IDeleteCartAllItemState {
+  type: typeof DELETE_ALL_CART_SUCCESS,
+  items: number
+}
+
+type CartAction = IGetCartItemState | IAddCartItemState | IUpdateCartItemState | IDeleteCartItemState | IDeleteCartAllItemState
 
 export const getCartItems = () => async(dispatch:Dispatch<CartAction>, getState:()=>RootState) => {
   const auth = {...getState().auth}
-  console.log("auth",auth)
   try {
     const getItems = await getUsersCartItems(auth.id)
     dispatch({type: GET_CART_SUCCESS, items: getItems.result})
@@ -95,6 +100,15 @@ export const deleteCartItems = (id:number) => async(dispatch) => {
   }
 }
 
+export const deleteCartAllItems = (ids: number[]) => async(dispatch) => {
+  try {
+    await deleteUsersCartAllItems(ids)
+    dispatch({type:DELETE_ALL_CART_SUCCESS})
+  } catch(e) {
+
+  }
+}
+
 export const cart = (state:ICartItems[] = [], action:CartAction) => {
   switch(action.type) {
     case GET_CART_SUCCESS:
@@ -115,6 +129,8 @@ export const cart = (state:ICartItems[] = [], action:CartAction) => {
     case DELETE_CART_SUCCESS:
       const getPreviosItemsForDelete = [...state]
       return getPreviosItemsForDelete.filter(list => list.id !== action.items)
+    case DELETE_ALL_CART_SUCCESS:
+      return []
     default: 
       return []
   }   

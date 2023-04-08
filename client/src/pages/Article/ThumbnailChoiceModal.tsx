@@ -1,11 +1,11 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState } from 'react'
 import { Modal } from '../../common/Modal'
 import { thumbnailData } from './thumbnailData';
 
 import styles from './ThumbnailChoiceModal.module.scss'
 
 export const ThumbnailChoiceModal = ({setIsOpen, setselectedThumbnail}) => {
-  const TOTAL_SLIDES = thumbnailData.length -1
+  const TOTAL_SLIDES: number = thumbnailData.length -1
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const slideRef = useRef<HTMLImageElement>(null)
   

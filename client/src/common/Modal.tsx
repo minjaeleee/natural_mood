@@ -1,10 +1,20 @@
 import React, { useEffect,useMemo } from 'react'
-import { IModal, IPosition } from '../types/modal'
+import { IPosition } from '../types/modal'
 import { useKeyEscClose } from '../useHook/useKeyEscClose'
 
 import styles from './Modal.module.scss'
 
-export const Modal:React.FC<IModal> = ({
+interface IProps {
+  children: React.ReactNode,
+  isOpen?: boolean,
+  setIsOpen?: (arg:boolean)=> void,
+  width?: string,
+  height?: string,
+  xAxis?: "left" | "center" | "right",
+  yAxis?: "bottom" | "center" | "top",
+}
+
+export const Modal= ({
   children,
   isOpen = true,
   setIsOpen = ()=> {},
@@ -12,7 +22,7 @@ export const Modal:React.FC<IModal> = ({
   height = "320px",
   xAxis = "center",
   yAxis = "center"
-}) => {
+}: IProps) => {
 
   useEffect(()=>{
     if(isOpen) {

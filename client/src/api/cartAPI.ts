@@ -77,6 +77,20 @@ export const deleteUsersCartItems = async(id: number) => {
 
   const deleteCartItems = await res.json()
   return {
-    status: "success"
+    status: "success",
+    result: deleteCartItems
   }
+}
+
+export const deleteUsersCartAllItems = async(ids: number[]) => {
+  const list = []
+
+  ids.forEach(async(id)=>{
+    list.push(await fetch(`${BASE_URL}/cart/${id}`, {
+      method: "DELETE"
+    }))
+  })
+
+ await Promise.all(list)
+ alert("장바구니를 모두 비웠습니다.")
 }

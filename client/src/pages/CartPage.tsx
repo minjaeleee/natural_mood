@@ -13,14 +13,13 @@ import styles from './CartPage.module.scss'
 
 export const Cart = () => {
   const data = useSelector((state:RootState) => state.cart)
-  const dispatch = useDispatch<ThunkDispatch<RootState, null, Action>>();
-  const [dataList, setDataList] = useState<ICartItems[]|[]>([])
+  const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>();
+  const [dataList, setDataList] = useState<ICartItems[]>([])
   
   useEffect(()=>{
     if(data.length === 0) {
       dispatch(getCartItems())
     }
-
   },[data.length, dispatch])
 
   useEffect(()=>{

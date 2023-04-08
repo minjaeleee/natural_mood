@@ -10,7 +10,7 @@ import styles from './Header.module.scss'
 
 export const Header = () => {
   const{ routeTo } = useRouter()
-  const [isClickSetting, setIsClickSetting] = useState(false)
+  const [isClickSetting, setIsClickSetting] = useState<boolean>(false)
 
   return (
     <header className={styles.header}>

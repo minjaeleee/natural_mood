@@ -8,7 +8,7 @@ interface IInputProps {
   placeholder: string,
   autoFocus?: boolean
 }
-interface IFormInput {
+interface IProps {
   id: string,
   label: string,
   formData: IFormData,
@@ -19,7 +19,14 @@ interface IFormInput {
   isShowErrorMsg?: boolean
 }
 
-export const FormInput:React.FC<IFormInput> = ({
+interface IErrorMessage {
+  required: string,
+  invalidId: string,
+  invalidPw: string,
+  invalidPwCheck: string
+}
+
+export const FormInput = ({
   id, 
   label, 
   formData, 
@@ -28,11 +35,11 @@ export const FormInput:React.FC<IFormInput> = ({
   setErrorData,
   inputProps,
   isShowErrorMsg
-}) => {
+}: IProps) => {
   const idRegex = /[A-Za-z0-9]*@[A-Za-z.]*.[a-z]{2,6}$/
   const pwRegex = /[A-Za-z0-9]{8,16}/
 
-  const errorMessage = {
+  const errorMessage: IErrorMessage = {
       required: "필수 정보입니다.",
       invalidId: "영문 대 소문자, 숫자를 사용하여 이메일 형식으로 만드세요.",
       invalidPw: "8~16자 영문 대 소문자, 숫자를 사용하세요.",
@@ -40,7 +47,7 @@ export const FormInput:React.FC<IFormInput> = ({
   }
 
   const checkErrorMsg = (inputId: string) => {
-    const value = formData[inputId]
+    const value: string = formData[inputId]
     let result: boolean | string
     if(value?.length === 0) {
       return "required"

@@ -17,7 +17,7 @@ export const EditItem = ({
   const auth = useSelector((state:RootState) => state.auth)
   const { routeTo } = useRouter()
   
-  const [items, setItems] = useState(articleItems)
+  const [items, setItems] = useState<IPostItem>(articleItems)
   const [isClickThumbnail, setIsClickThumbnail] = useState<boolean>(false)
 
   const { image, title, content } = items
@@ -49,7 +49,7 @@ export const EditItem = ({
     }
   },[auth.email, image, items])
   
-  const onChangeTitle = useCallback((e)=>{
+  const onChangeTitle = useCallback((e:React.ChangeEvent<HTMLInputElement>)=>{
     setItems((prev:IPostItem) => ({...prev, title:e.target.value}))
   },[])
   

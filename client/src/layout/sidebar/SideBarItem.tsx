@@ -4,17 +4,21 @@ import { IRouterChildren } from '../../types/sidebar'
 
 import styles from './SideBarItem.module.scss'
 
-export const SideBarItem = ({sideItems, sideBarPath}) => {
+interface IProps {
+  sideItems: IRouterChildren[],
+  sideBarPath:  string
+}
+
+export const SideBarItem = ({sideItems, sideBarPath}: IProps) => {
  const{ routeTo, currentPath } = useRouter()
 
   return (
     <>
       {
-        sideItems.map((item:IRouterChildren) =>
+        sideItems.map(item =>
           item.childrenSideBar &&
           <Fragment key={item.path}>
             <li 
-              // className={`${styles.itemWrapper} ${currentPath.includes(sideBarPath) ? styles.selectedWrapper: ""}`}
               className={`${currentPath.includes(sideBarPath) ? styles.selectedWrapper: styles.itemWrapper}`}
             >
               <span

@@ -23,9 +23,10 @@ export const Article = () => {
     fetchData()
   },[fetchData])
 
-  const handleErrorImg = (e) => {
-    e.target.src = "https://www.k-startup.go.kr//images/homepage/prototype/noimage.gif"
+  const handleErrorImg = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = "https://www.k-startup.go.kr//images/homepage/prototype/noimage.gif"
   }
+  
   return (
     currentPath === '/article' &&
     <div>

@@ -6,12 +6,14 @@ import { CartModal } from '../Cart/CartModal'
 
 import styles from './ListItem.module.scss'
 
-export const ListItem:React.FC<IWine> = ({image, price, wine, winery, type}) => {
-  const [isOpenModal, setIsOpenModal] = useState(false)
-  const handleErrorImg = (e) => {
-    e.target.src = "/img/default.png"
+export const ListItem = ({image, price, wine, winery, type}: IWine) => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
+
+  const handleErrorImg = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = "/img/default.png"
   }
-  const simpleType = type.split(' ')[0]
+
+  const simpleType: string = type.split(' ')[0]
   return (
     <>
       <div className={styles.item}>

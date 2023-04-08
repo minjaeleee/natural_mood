@@ -26,11 +26,10 @@ export const ArticleCreatePage = () => {
   }
 
   useEffect(()=>{
-    console.log("auth",auth)
     if(!auth.isAdmin) {
       routeTo('/article')
     }
-  },[auth])
+  },[auth, routeTo])
 
   return (
     <>

@@ -1,17 +1,17 @@
 import { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import numeral from 'numeral'
-import { AmountController } from '../../common/AmountController'
-// import { removeCart, updateCart } from '../../store/modules/cart'
+import { useSelector } from 'react-redux'
+import { Action } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
 import { AiOutlineClose } from 'react-icons/ai'
+import numeral from 'numeral'
+
+import { deleteCartItems, updateCartItems } from '../../store/modules/cart'
+import { AmountController } from '../../common/AmountController'
+import { RootState } from '../../store/modules'
+import { ICartItems } from '../../types/cartTypes'
 
 import styles from './CartListItem.module.scss'
-import { deleteCartItems, updateCartItems } from '../../store/modules/cart'
-import { ThunkDispatch } from 'redux-thunk';
-import { RootState } from '../../store/modules'
-import { Action } from 'redux';
-import { useSelector } from 'react-redux'
-import { ICartItems } from '../../types/cartTypes'
 
 export const CartListItem = ({
   image,
@@ -22,15 +22,14 @@ export const CartListItem = ({
   originalPrice = 0,
   totalPrice = 0,
   setDataList,
-  dataList
 }) => {
-  const dispatch = useDispatch<ThunkDispatch<RootState, null, Action>>();
+  const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>();
   const data = useSelector((state:RootState) => state.cart)
 
   const [finalTotalPrice, setFinalTotalPrice] = useState<number>(totalPrice)
   const [finalAmount, setFinalAmount] = useState<number>(amount)
 
-  const onChangeAmount = useCallback((operator:string, price: number)=>{
+  const onChangeAmount = useCallback((operator:string)=>{
     const isRepeated = data.find((list:ICartItems) => {
       return list.image === image && list.winery === winery && list.wine === wine
     })
@@ -45,10 +44,10 @@ export const CartListItem = ({
       setFinalAmount(prev => prev+1)
       dispatch(updateCartItems({image,winery,wine,amount:1,wineType, totalPrice:originalPrice, id: isRepeated.id}, "plus"))
     }
-  },[finalAmount, dispatch, image, winery, wine, wineType, originalPrice])
+  },[data, image, winery, wine, finalAmount, dispatch, wineType, originalPrice])
 
-  const handleErrorImg = (e) => {
-    e.target.src = "/img/default.png"
+  const handleErrorImg = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = "/img/default.png"
   }
   
   const onRemoveList = useCallback(()=>{
@@ -57,13 +56,13 @@ export const CartListItem = ({
     })
 
     dispatch(deleteCartItems(isRepeated.id))
-    setDataList(prev => prev.filter(list => {
+    setDataList(prev => prev.filter((list:ICartItems) => {
       return (list.image !== image) && (list.winery !== winery) && (list.wine !== wine)
     }))
     
-  },[dispatch, image, setDataList, wine, wineType, winery])
+  },[data, dispatch, image, setDataList, wine, winery])
   
-  const simpleType = wineType.split(' ')[0]
+  const simpleType: string = wineType.split(' ')[0]
   
   return (
     <li className={styles.listWrapper}>

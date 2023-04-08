@@ -13,7 +13,7 @@ export const ArticleDetailPage = () => {
   const auth = useSelector((state:RootState) => state.auth)
   const {id} = useParams()
   const { routeTo } = useRouter()
-  const [data, setData] = useState<IPostItem | {}>({})
+  const [data, setData] = useState({} as IPostItem)
 
   const fetchData = useCallback(async()=>{
     const getPostData = await getPost(parseInt(id))
@@ -37,14 +37,15 @@ export const ArticleDetailPage = () => {
   }
 
   return (
+    Object.keys(data).length> 0 &&
     <div>
       <header className={styles.header}>
         <h1>
-          {"title" in data && data.title}
+          {data.title}
         </h1>
       </header>
       <aside className={styles.information}>
-        <span className={styles.author}>{`Natural Mood | ${"created_at" in data && new Date(data.created_at).toLocaleDateString()}`}</span>
+        <span className={styles.author}>{`Natural Mood | ${new Date(data.created_at).toLocaleDateString()}`}</span>
         {
           auth.isAdmin &&
           <div className={styles.editBtnBox}>
@@ -64,7 +65,7 @@ export const ArticleDetailPage = () => {
       <main className={styles.contentWrapper}>
         <div
           className={styles.content}
-          dangerouslySetInnerHTML={{__html: "content" in data && data.content}}
+          dangerouslySetInnerHTML={{__html: data.content}}
         >
         </div>
       </main>
