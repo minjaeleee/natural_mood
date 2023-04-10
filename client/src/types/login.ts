@@ -4,23 +4,28 @@ export interface IFormData {
   confirmPw?: string
 }
 
-export interface ILoginReq {
+export interface ISignUpForm {
   email: string,
   password: string,
   isAdmin?: boolean
 }
 
-export interface ILoginRes {
+export interface IAuthData {
   id?: number,
   email?: string,
   isAdmin?: boolean,
   accessToken?: string
 }
 
-export type ISignUpResult= {
+export type ISignUpRes= {
   result: "success",
   accessToken: string
 } | {
     result: "fail",
     accessToken: string
   }
+
+export interface IloginAPIRes {
+  result: "success" | "fail",
+  userInfo: IAuthData | null
+}

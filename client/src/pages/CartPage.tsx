@@ -5,7 +5,7 @@ import { ThunkDispatch } from 'redux-thunk';
 
 import { RootState } from '../store/modules'
 import { getCartItems } from '../store/modules/cart'
-import { ICartItems } from '../types/cartTypes'
+import { ICartState } from '../types/cartTypes'
 import { CartList } from './Cart/CartList'
 import { MoreCartInfo } from './Cart/MoreCartInfo'
 
@@ -14,21 +14,22 @@ import styles from './CartPage.module.scss'
 export const Cart = () => {
   const data = useSelector((state:RootState) => state.cart)
   const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>();
-  const [dataList, setDataList] = useState<ICartItems[]>([])
+  const [dataList, setDataList] = useState({} as ICartState)
   
   useEffect(()=>{
-    if(data.length === 0) {
+    if(data.status === "IDLE") {
       dispatch(getCartItems())
     }
-  },[data.length, dispatch])
-
+  },[data, data.status, dispatch])
+  
   useEffect(()=>{
-    if(data.length > 0) {
-      setDataList(data)
+    if(data.status !== "IDLE") {
+      setDataList(prev => data)
     }
   },[data])
 
   return (
+    Object.keys(dataList).length > 0 &&
     <div className={styles.wrapper}>
       <section className={styles.content}>
         <CartList {...{dataList,setDataList}}/>

@@ -20,9 +20,8 @@ export const CartList = ({
     if (!window.confirm("장바구니 목록을 모두 삭제하시겠습니까?")) {
       return;
     } else {
-      const ids = dataList.map((data:ICartItems) => data.id)
+      const ids = dataList.data.map((data:ICartItems) => data.id)
       dispatch(deleteCartAllItems(ids))
-      setDataList([])
     }
   }
 
@@ -42,10 +41,10 @@ export const CartList = ({
           </p>
         </span>
       </div>
-      {dataList.map((list:ICartItems) => 
-        <ul key={list.image + list.wine}>
-          <CartListItem {...{...list, dataList, setDataList}}/>
-        </ul>
+      {dataList.data.map((list:ICartItems) => 
+          <ul key={list.image + list.wine}>
+            <CartListItem {...{...list}}/>
+          </ul>
       )}
     </div>
   )

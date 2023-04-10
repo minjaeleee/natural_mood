@@ -8,9 +8,9 @@ export const MoreCartInfo = ({dataList}) => {
   const fetchMoreEl = useRef<HTMLDivElement | null>(null)
   const intersecting = useInfiniteScroll(fetchMoreEl)
 
-  const totalPrice = dataList.reduce((prev, cur)=> {
+  const totalPrice = dataList.data.reduce((prev, cur)=> {
     return prev + cur.totalPrice
-  },0)
+  },0 as number)
 
   const freeDeliveryChargeCondition = 50000
   const needToDeliveryFree =  freeDeliveryChargeCondition - totalPrice > 0 ? freeDeliveryChargeCondition - totalPrice : 0

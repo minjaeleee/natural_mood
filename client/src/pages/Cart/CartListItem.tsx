@@ -6,7 +6,8 @@ import { ThunkDispatch } from 'redux-thunk';
 import { AiOutlineClose } from 'react-icons/ai'
 import numeral from 'numeral'
 
-import { deleteCartItems, updateCartItems } from '../../store/modules/cart'
+import { CART_ITEM_AMOUNT } from './CartModal';
+import { deleteCartItems, updateCartItems} from '../../store/modules/cart'
 import { AmountController } from '../../common/AmountController'
 import { RootState } from '../../store/modules'
 import { ICartItems } from '../../types/cartTypes'
@@ -14,6 +15,7 @@ import { ICartItems } from '../../types/cartTypes'
 import styles from './CartListItem.module.scss'
 
 export const CartListItem = ({
+  id = 0,
   image,
   wine,
   winery,
@@ -21,49 +23,36 @@ export const CartListItem = ({
   amount = 1,
   originalPrice = 0,
   totalPrice = 0,
-  setDataList,
 }) => {
   const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>();
   const data = useSelector((state:RootState) => state.cart)
-
-  const [finalTotalPrice, setFinalTotalPrice] = useState<number>(totalPrice)
-  const [finalAmount, setFinalAmount] = useState<number>(amount)
-
-  const onChangeAmount = useCallback((operator:string)=>{
-    const isRepeated = data.find((list:ICartItems) => {
-      return list.image === image && list.winery === winery && list.wine === wine
-    })
-
-    if(operator === "minus") {
-      if(finalAmount<2) return; 
-      setFinalTotalPrice(prev => prev-originalPrice)
-      setFinalAmount(prev => prev-1)
-      dispatch(updateCartItems({image,winery,wine,amount:1,wineType, totalPrice:originalPrice, id: isRepeated.id}, "minus"))
-    } else {
-      setFinalTotalPrice(prev => prev+originalPrice)
-      setFinalAmount(prev => prev+1)
-      dispatch(updateCartItems({image,winery,wine,amount:1,wineType, totalPrice:originalPrice, id: isRepeated.id}, "plus"))
-    }
-  },[data, image, winery, wine, finalAmount, dispatch, wineType, originalPrice])
 
   const handleErrorImg = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = "/img/default.png"
   }
   
   const onRemoveList = useCallback(()=>{
-    const isRepeated = data.find((list:ICartItems) => {
+    const isRepeated = data.data.find((list:ICartItems) => {
       return list.image === image && list.winery === winery && list.wine === wine
     })
 
     dispatch(deleteCartItems(isRepeated.id))
-    setDataList(prev => prev.filter((list:ICartItems) => {
-      return (list.image !== image) && (list.winery !== winery) && (list.wine !== wine)
-    }))
-    
-  },[data, dispatch, image, setDataList, wine, winery])
+  },[data, dispatch, image, wine, winery])
   
   const simpleType: string = wineType.split(' ')[0]
+
+  const onClickDecrease = () => {
+    const newTotalPrice = (amount-1) * originalPrice
+    if(amount <= CART_ITEM_AMOUNT.MIN) return;
+    dispatch(updateCartItems({id, amount:amount-1, totalPrice: newTotalPrice}))
+  }
   
+  const onClickIncrease = () => {
+    const newTotalPrice = (amount+1) * originalPrice
+    if(amount >= CART_ITEM_AMOUNT.MAX) return;
+    dispatch(updateCartItems({id, amount:amount+1, totalPrice: newTotalPrice}))
+  }
+
   return (
     <li className={styles.listWrapper}>
       <div className={styles.imageBox}>
@@ -82,12 +71,13 @@ export const CartListItem = ({
         <span className={styles.wine}>{wine}</span>
         <div className={styles.priceAndAmountBox}>
           <AmountController
-            changeAmount={onChangeAmount}
-            price={finalTotalPrice}
-            amount={finalAmount}
+            onClickDecrease={onClickDecrease}
+            onClickIncrease={onClickIncrease}
+            price={originalPrice}
+            amount={amount}
           />
           <span className={styles.totalPrice}>
-            {`${numeral(finalTotalPrice).format(0,0)} 원`}
+            {`${numeral(totalPrice).format(0,0)} 원`}
           </span>
         </div>
       </div>

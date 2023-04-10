@@ -1,4 +1,4 @@
-import { ICartItems, ICreateUsersCartItemsRes, IGetUsersCartItemsReq, IGetUsersCartItemsRes, IUpdateUsersCartItmesRes } from "../types/cartTypes"
+import { ICartItems, ICreateUsersCartItemsRes, IDeleteUserCartItemsRes, IGetUsersCartItemsReq, IGetUsersCartItemsRes, IUpdateUsersCartItemsReqArgs, IUpdateUsersCartItmesRes } from "../types/cartTypes"
 import { BASE_URL } from "./const"
 
 export const getUsersCartItems= async(userId:IGetUsersCartItemsReq): Promise<IGetUsersCartItemsRes>  => {
@@ -41,13 +41,16 @@ export const createUsersCartItems = async(args:ICartItems): Promise<ICreateUsers
   }
 }
 
-export const updateUsersCartItems = async(args:ICartItems): Promise<IUpdateUsersCartItmesRes> => {
+export const updateUsersCartItems = async(args:IUpdateUsersCartItemsReqArgs): Promise<IUpdateUsersCartItmesRes> => {
   const res = await fetch(`${BASE_URL}/cart/${args.id}`, {
-    method: "PUT",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({...args})
+    body: JSON.stringify({
+      amount: args.amount,
+      totalPrice: args.totalPrice
+    })
   })
 
   if(!res.ok) {
@@ -63,7 +66,7 @@ export const updateUsersCartItems = async(args:ICartItems): Promise<IUpdateUsers
   }
 }
 
-export const deleteUsersCartItems = async(id: number) => {
+export const deleteUsersCartItems = async(id: number): Promise<IDeleteUserCartItemsRes> => {
   const res = await fetch(`${BASE_URL}/cart/${id}`,{
     method: "DELETE"
     }
@@ -75,14 +78,13 @@ export const deleteUsersCartItems = async(id: number) => {
     }
   }
 
-  const deleteCartItems = await res.json()
   return {
     status: "success",
-    result: deleteCartItems
+    result: id
   }
 }
 
-export const deleteUsersCartAllItems = async(ids: number[]) => {
+export const deleteUsersCartAllItems = async(ids: number[]): Promise<void> => {
   const list = []
 
   ids.forEach(async(id)=>{
