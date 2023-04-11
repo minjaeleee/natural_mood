@@ -94,5 +94,4 @@ export const deleteUsersCartAllItems = async(ids: number[]): Promise<void> => {
   })
 
  await Promise.all(list)
- alert("장바구니를 모두 비웠습니다.")
 }

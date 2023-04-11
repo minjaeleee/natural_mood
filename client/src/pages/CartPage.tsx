@@ -24,7 +24,7 @@ export const Cart = () => {
   
   useEffect(()=>{
     if(data.status !== "IDLE") {
-      setDataList(prev => data)
+      setDataList(prev => ({...data}))
     }
   },[data])
 
@@ -32,10 +32,10 @@ export const Cart = () => {
     Object.keys(dataList).length > 0 &&
     <div className={styles.wrapper}>
       <section className={styles.content}>
-        <CartList {...{dataList,setDataList}}/>
+        <CartList dataList={dataList}/>
       </section>
       <aside className={styles.moreInfo}>
-        <MoreCartInfo {...{dataList}}/>
+        <MoreCartInfo dataList={dataList}/>
       </aside>
     </div>
   )

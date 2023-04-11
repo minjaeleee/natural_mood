@@ -1,16 +1,18 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { AiOutlineClose } from 'react-icons/ai'
 import numeral from 'numeral'
+import { useSnackbar } from 'notistack';
 
 import { CART_ITEM_AMOUNT } from './CartModal';
 import { deleteCartItems, updateCartItems} from '../../store/modules/cart'
 import { AmountController } from '../../common/AmountController'
 import { RootState } from '../../store/modules'
 import { ICartItems } from '../../types/cartTypes'
+import MESSAGE from '../../common/messages';
 
 import styles from './CartListItem.module.scss'
 
@@ -26,6 +28,7 @@ export const CartListItem = ({
 }) => {
   const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>();
   const data = useSelector((state:RootState) => state.cart)
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleErrorImg = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = "/img/default.png"
@@ -37,21 +40,27 @@ export const CartListItem = ({
     })
 
     dispatch(deleteCartItems(isRepeated.id))
-  },[data, dispatch, image, wine, winery])
+    .then(()=>enqueueSnackbar(MESSAGE.DELETED_CART_ITEM_SUCCESS))
+    .catch(()=>enqueueSnackbar(MESSAGE.DELETED_CART_ITEM_FAILURE))
+
+  },[data.data, dispatch, enqueueSnackbar, image, wine, winery])
   
   const simpleType: string = wineType.split(' ')[0]
 
-  const onClickDecrease = () => {
+  const onClickDecrease = useCallback(() => {
     const newTotalPrice = (amount-1) * originalPrice
     if(amount <= CART_ITEM_AMOUNT.MIN) return;
-    dispatch(updateCartItems({id, amount:amount-1, totalPrice: newTotalPrice}))
-  }
+
+    dispatch(
+      updateCartItems({id, amount:amount-1, totalPrice: newTotalPrice})
+    )
+  },[amount, dispatch, id, originalPrice])
   
-  const onClickIncrease = () => {
+  const onClickIncrease = useCallback(() => {
     const newTotalPrice = (amount+1) * originalPrice
     if(amount >= CART_ITEM_AMOUNT.MAX) return;
     dispatch(updateCartItems({id, amount:amount+1, totalPrice: newTotalPrice}))
-  }
+  },[amount, dispatch, id, originalPrice])
 
   return (
     <li className={styles.listWrapper}>
@@ -73,7 +82,6 @@ export const CartListItem = ({
           <AmountController
             onClickDecrease={onClickDecrease}
             onClickIncrease={onClickIncrease}
-            price={originalPrice}
             amount={amount}
           />
           <span className={styles.totalPrice}>

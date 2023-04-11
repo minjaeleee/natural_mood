@@ -32,6 +32,11 @@ type UpdateCartItemsAction = IUpdateCartItemsRequestAction | IUpdateCartItemsSuc
 type DeleteCartItemsAction = IDeleteCartItemsRequestAction | IDeleteCartItemsSuccessAction | IDeleteCartItemsFailAction
 type DeleteCartAllItemsAction = IDeleteCartAllItemsRequestAction | IDeleteCartAllItemsSuccessAction | IDeleteCartAllItemsFailAction
 
+const getErrorMessage= (error: unknown) => {
+  if (error instanceof Error) return error.message;
+  return String(error);
+}
+
 export const getCartItems = () => async(dispatch:Dispatch<GetCartItemsAction>, getState:()=>RootState) => {
   dispatch({type: GET_CART_REQUEST})
   
@@ -40,7 +45,7 @@ export const getCartItems = () => async(dispatch:Dispatch<GetCartItemsAction>, g
     const getItems = await getUsersCartItems(auth.id)
     dispatch({type: GET_CART_SUCCESS, items: getItems.result})
   } catch(error) {
-    dispatch({type: GET_CART_FAIL, error})
+    dispatch({type: GET_CART_FAIL, error: getErrorMessage(error)})
   }
 }
 
@@ -52,7 +57,8 @@ export const addCartItem = (args:ICartItems) => async(dispatch:Dispatch<AddCartI
     const getAddItem = await createUsersCartItems({...args, userId})
     dispatch({type: ADD_CART_SUCCESS, items: [getAddItem.result]})
   } catch(error) {
-    dispatch({type: ADD_CART_FAIL, error})
+    dispatch({type: ADD_CART_FAIL, error: getErrorMessage(error)})
+    throw error
   }
 }
 
@@ -63,7 +69,7 @@ export const updateCartItems = (args: IUpdateUsersCartItemsReqArgs) => async(dis
     const getUpdateItem = await updateUsersCartItems(args)
     dispatch({type:UPDATE_CART_SUCCESS, items: [getUpdateItem.result]})
   } catch(error) {
-    dispatch({type: UPDATE_CART_FAIL, error})
+    dispatch({type: UPDATE_CART_FAIL, error: getErrorMessage(error)})
   }
 }
 
@@ -74,7 +80,7 @@ export const deleteCartItems = (id:number) => async(dispatch:Dispatch<DeleteCart
     await deleteUsersCartItems(id)
     dispatch({type:DELETE_CART_SUCCESS, itemId: id})
   } catch(error) {
-    dispatch({type:DELETE_CART_FAIL, error})
+    dispatch({type:DELETE_CART_FAIL, error: getErrorMessage(error)})
   }
 }
 
@@ -85,7 +91,7 @@ export const deleteCartAllItems = (ids: number[]) => async(dispatch:Dispatch<Del
     await deleteUsersCartAllItems(ids)
     dispatch({type:DELETE_ALL_CART_SUCCESS, items: []})
   } catch(error) {
-    dispatch({type:DELETE_ALL_CART_FAIL, error})
+    dispatch({type:DELETE_ALL_CART_FAIL, error: getErrorMessage(error)})
   }
 }
 

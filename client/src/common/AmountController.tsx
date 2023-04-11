@@ -1,6 +1,6 @@
 import styles from './AmountController.module.scss';
 
-export const AmountController = ({onClickIncrease, onClickDecrease, price, amount}) => {
+export const AmountController = ({onClickIncrease, onClickDecrease, amount}) => {
   return (
     <div className={styles.wrapper}>
       <button

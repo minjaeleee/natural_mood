@@ -11,7 +11,7 @@ import styles from './ArticleDetailPage.module.scss'
 
 export const ArticleDetailPage = () => {
   const auth = useSelector((state:RootState) => state.auth)
-  const {id} = useParams()
+  const { id } = useParams()
   const { routeTo } = useRouter()
   const [data, setData] = useState({} as IPostItem)
 
@@ -19,7 +19,8 @@ export const ArticleDetailPage = () => {
     const getPostData = await getPost(parseInt(id))
     if(getPostData.status === "fail") return routeTo("/article")
     setData(prev => getPostData.result)
-  },[id, routeTo])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[id])
 
   useEffect(()=>{
     fetchData()

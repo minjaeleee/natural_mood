@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
 
+import { DefaultPage } from "./Article/DefaultPage"
 import { getAllPosts } from "../api/articleAPI"
 import { IPostItem } from "../types/article"
 import { useRouter } from "../useHook/useRouter"
@@ -48,7 +49,8 @@ export const Article = () => {
       </header>
       <section className={styles.postWrapper}>
         {
-          data.map((list:IPostItem) => {
+          data.length > 0
+          ? data.map((list:IPostItem) => {
             const summaryFirst = list.content.split("/")[0] + "/" + list.content.split(">")[0] + ">"
             return (
               <div 
@@ -88,6 +90,7 @@ export const Article = () => {
               </div>
             )
           })
+          :  <DefaultPage/>
         }
       </section>
     </div>

@@ -48,7 +48,7 @@ export interface IGetCartItemsRequestAction {
 
 export interface IGetCartItemsFailAction {
   type: typeof GET_CART_FAIL,
-  error: Error
+  error: string | null
 }
 export interface IGetCartItemsSuccessAction {
   type: typeof GET_CART_SUCCESS,
@@ -63,7 +63,7 @@ export interface IAddCartItemsSuccessACtion {
 }
 export interface IAddCartItemsFailAction {
   type: typeof ADD_CART_FAIL,
-  error: Error
+  error: string | null
 }
 
 export interface IUpdateCartItemsRequestAction {
@@ -75,7 +75,7 @@ export interface IUpdateCartItemsSuccessAction {
 }
 export interface IUpdateCartItemsFailAction {
   type: typeof UPDATE_CART_FAIL,
-  error: Error
+  error: string | null
 }
 export interface IDeleteCartItemsRequestAction {
   type: typeof DELETE_CART_REQUEST
@@ -86,7 +86,7 @@ export interface IDeleteCartItemsSuccessAction {
 }
 export interface IDeleteCartItemsFailAction {
   type: typeof DELETE_CART_FAIL,
-  error: Error
+  error: string | null
 }
 export interface IDeleteCartAllItemsRequestAction {
   type: typeof DELETE_ALL_CART_REQUEST
@@ -97,11 +97,11 @@ export interface IDeleteCartAllItemsSuccessAction {
 }
 export interface IDeleteCartAllItemsFailAction {
   type: typeof DELETE_ALL_CART_FAIL
-  error: Error
+  error: string | null
 }
 
 export type ICartState = {
   status: string,
-  error: Error | null,
+  error: string | null,
   data: ICartItems[]
 }
