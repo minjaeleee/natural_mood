@@ -51,7 +51,7 @@ export const login = async(args: ISignUpForm): Promise<IloginAPIRes> => {
   }
 }
 
-export const authLogin = async(args: IAuthData): Promise<string> => {
+export const autoLogin = async(args: IAuthData): Promise<string> => {
   const { id, accessToken } = args
   const res = await fetch(`${BASE_URL}/640/users/${id}`, {
     method: 'GET',

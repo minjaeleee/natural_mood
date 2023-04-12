@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { authLogin } from '../api/loginAPI'
+import { autoLogin } from '../api/loginAPI'
 import { RootState } from '../store/modules'
 import { useRouter } from '../useHook/useRouter'
 import { Login } from './Auth/Login'
@@ -31,7 +31,7 @@ export const Home = () => {
   useEffect(()=>{
     (async()=>{
       if(data.accessToken) {
-        const getTokenValid = await authLogin({id: data.id, accessToken:data.accessToken })
+        const getTokenValid = await autoLogin({id: data.id, accessToken:data.accessToken })
         if(getTokenValid === "success") {
           routeTo('/beverage/all')
           alert('자동 로그인이 되었습니다. 계정 변경을 원하시면 우측 상단 로그아웃 버튼을 클릭해주세요.')
