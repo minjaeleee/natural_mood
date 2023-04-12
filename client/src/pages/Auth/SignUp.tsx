@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { signUp } from '../../api/loginAPI'
-import { IFormData, ILoginReq } from '../../types/login'
+import { IFormData, ISignUpForm } from '../../types/login'
 import { useRouter } from '../../useHook/useRouter'
 import { FormInput } from './FormInput'
 
@@ -28,7 +28,7 @@ export const SignUp = () => {
     const isValid = Object.values(errorData).every(
       entries => entries  === true
     )
-    const signUpReq:ILoginReq =  {
+    const signUpReq:ISignUpForm =  {
       "email": formData.id,
       "password": formData.pw
     }

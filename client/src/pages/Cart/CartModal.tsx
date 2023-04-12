@@ -3,54 +3,81 @@ import { Action } from 'redux';
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { ThunkDispatch } from 'redux-thunk';
+import { useSnackbar } from 'notistack';
 import numeral from 'numeral'
 
 import { ICartItems } from '../../types/cartTypes'
 import { RootState } from '../../store/modules'
-import { createCartItem, getCartItems, updateCartItems } from '../../store/modules/cart'
+import { addCartItem, getCartItems, updateCartItems } from '../../store/modules/cart'
 import { AmountController } from '../../common/AmountController'
+import MESSAGE from '../../common/messages';
 import { Modal } from '../../common/Modal'
 
 import styles from './CartModal.module.scss'
 
+export const CART_ITEM_AMOUNT = {
+  MIN: 1,
+  MAX: 99,
+};
+
 export const CartModal = ({price, wine, winery, image, type, setIsOpenModal}) => {
   const dispatch = useDispatch<ThunkDispatch<RootState, null, Action>>();
   const data = useSelector((state:RootState) => state.cart)
-  const [changedPrice, setChangedPrice] = useState<number>(price)
   const [amount, setAmount] = useState<number>(1)
+  const { enqueueSnackbar } = useSnackbar();
 
-  const onChangeAmount = useCallback((operator:string, price: number)=>{
-    if(operator === "minus") {
-      if(amount<2) return; 
-      setChangedPrice(prev => prev-price)
-      setAmount(prev => prev-1)
-    } else {
-      setChangedPrice(prev => prev+price)
-      setAmount(prev => prev+1)
-    }
-  },[amount])
-
-  const handleCartInfo = (args:ICartItems) => {
-    const isRepeated = data.find((list:ICartItems) => {
-      return list.image === args.image && list.winery === args.winery && list.wine === args.wine
+  const onClickToAddCart = () => {
+    const isRepeated = data.data.find((list:ICartItems) => {
+      return list.wine === wine && list.winery === winery
     })
 
     if(isRepeated) {
       const getItemId = isRepeated.id
-      dispatch(updateCartItems({...args, id: getItemId}, "plus"))
+      const newAmount = amount + isRepeated.amount
+      const newTotalPrice = isRepeated.originalPrice * newAmount
+
+      dispatch(
+        updateCartItems({id: getItemId, amount: newAmount, totalPrice: newTotalPrice })
+      )
+      .then(()=> enqueueSnackbar(MESSAGE.ADDED_CART_ITEM_SUCCESS))
+      .catch(()=> enqueueSnackbar(MESSAGE.ADDED_CART_ITEM_FAILURE))
+
       setIsOpenModal(false)
     }else {
-      dispatch(createCartItem(args))
+      const newTotalPrice = price * amount
+      dispatch(addCartItem({
+        image,
+        wine,
+        winery,
+        wineType: type,
+        originalPrice: price,
+        amount,
+        totalPrice: newTotalPrice
+      }))
+      .then(()=> enqueueSnackbar(MESSAGE.ADDED_CART_ITEM_SUCCESS))
+      .catch(()=> enqueueSnackbar(MESSAGE.ADDED_CART_ITEM_FAILURE))
+
       setIsOpenModal(false)
     }
   }
 
+  const onClickDecrease = useCallback(() => {
+    if(amount <= CART_ITEM_AMOUNT.MIN) return;
+    setAmount((prev:number) => prev-1)
+  },[amount])
+  
+  const onClickIncrease = useCallback(() => {
+    if(amount >= CART_ITEM_AMOUNT.MAX) return;
+    setAmount((prev:number) => prev+1)
+  },[amount])
+
   useEffect(()=>{
-    if(data.length === 0) {
+    if(data.status === "IDLE") {
       dispatch(getCartItems())
     }
-  },[])
-  
+  },[data.status, dispatch])
+
+  const totalPrice = amount * price
   return (
     <Modal setIsOpen={setIsOpenModal}>
       <div className={styles.modal}>
@@ -58,17 +85,17 @@ export const CartModal = ({price, wine, winery, image, type, setIsOpenModal}) =>
           <div className={styles.winery}>{`[Winery] ${winery}`}</div>
           <div className={styles.wine}>{wine}</div>
           <div className={styles.priceAndAmount}>
-            <div className={styles.price}>{price}원</div>
+            <div className={styles.price}>{`${numeral(price).format(0,0)} 원`}</div>
             <AmountController 
-              changeAmount={onChangeAmount}
-              price={price}
+              onClickDecrease={onClickDecrease}
+              onClickIncrease={onClickIncrease}
               amount={amount}
             />
           </div>
         </section>
         <section className={styles.totalPriceWrapper}>
           <div className={styles.total}>합계</div>
-          <div className={styles.totalPrice}>{`${numeral(changedPrice).format(0,0)} 원`}</div>
+          <div className={styles.totalPrice}>{`${numeral(totalPrice).format(0,0)} 원`}</div>
         </section>
         <section className={styles.buttonWrapper}>
           <button 
@@ -79,15 +106,7 @@ export const CartModal = ({price, wine, winery, image, type, setIsOpenModal}) =>
           </button>
           <button 
             className={styles.addCartBtn}
-            onClick={()=>handleCartInfo({
-              image, 
-              winery, 
-              wine, 
-              wineType: type, 
-              originalPrice: price,
-              amount, 
-              totalPrice: changedPrice,
-            })}
+            onClick={onClickToAddCart}
           >
             장바구니 담기
           </button>

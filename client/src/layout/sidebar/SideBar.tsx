@@ -1,7 +1,8 @@
 import { Fragment } from 'react'
-import { SidebarContent } from '../../router'
-import { useRouter } from '../../useHook/useRouter'
+
+import { SidebarContent } from './SidebarContent'
 import { SideBarItem } from './SideBarItem'
+import { useRouter } from '../../useHook/useRouter'
 import { IRouterChildren } from '../../types/sidebar'
 
 import styles from'./SideBar.module.scss'

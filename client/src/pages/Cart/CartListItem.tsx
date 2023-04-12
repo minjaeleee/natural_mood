@@ -1,19 +1,23 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import numeral from 'numeral'
-import { AmountController } from '../../common/AmountController'
-// import { removeCart, updateCart } from '../../store/modules/cart'
+import { useSelector } from 'react-redux'
+import { Action } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
 import { AiOutlineClose } from 'react-icons/ai'
+import numeral from 'numeral'
+import { useSnackbar } from 'notistack';
+
+import { CART_ITEM_AMOUNT } from './CartModal';
+import { deleteCartItems, updateCartItems} from '../../store/modules/cart'
+import { AmountController } from '../../common/AmountController'
+import { RootState } from '../../store/modules'
+import { ICartItems } from '../../types/cartTypes'
+import MESSAGE from '../../common/messages';
 
 import styles from './CartListItem.module.scss'
-import { deleteCartItems, updateCartItems } from '../../store/modules/cart'
-import { ThunkDispatch } from 'redux-thunk';
-import { RootState } from '../../store/modules'
-import { Action } from 'redux';
-import { useSelector } from 'react-redux'
-import { ICartItems } from '../../types/cartTypes'
 
 export const CartListItem = ({
+  id = 0,
   image,
   wine,
   winery,
@@ -21,50 +25,43 @@ export const CartListItem = ({
   amount = 1,
   originalPrice = 0,
   totalPrice = 0,
-  setDataList,
-  dataList
 }) => {
-  const dispatch = useDispatch<ThunkDispatch<RootState, null, Action>>();
+  const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>();
   const data = useSelector((state:RootState) => state.cart)
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [finalTotalPrice, setFinalTotalPrice] = useState<number>(totalPrice)
-  const [finalAmount, setFinalAmount] = useState<number>(amount)
-
-  const onChangeAmount = useCallback((operator:string, price: number)=>{
-    const isRepeated = data.find((list:ICartItems) => {
-      return list.image === image && list.winery === winery && list.wine === wine
-    })
-
-    if(operator === "minus") {
-      if(finalAmount<2) return; 
-      setFinalTotalPrice(prev => prev-originalPrice)
-      setFinalAmount(prev => prev-1)
-      dispatch(updateCartItems({image,winery,wine,amount:1,wineType, totalPrice:originalPrice, id: isRepeated.id}, "minus"))
-    } else {
-      setFinalTotalPrice(prev => prev+originalPrice)
-      setFinalAmount(prev => prev+1)
-      dispatch(updateCartItems({image,winery,wine,amount:1,wineType, totalPrice:originalPrice, id: isRepeated.id}, "plus"))
-    }
-  },[finalAmount, dispatch, image, winery, wine, wineType, originalPrice])
-
-  const handleErrorImg = (e) => {
-    e.target.src = "/img/default.png"
+  const handleErrorImg = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = "/img/default.png"
   }
   
   const onRemoveList = useCallback(()=>{
-    const isRepeated = data.find((list:ICartItems) => {
+    const isRepeated = data.data.find((list:ICartItems) => {
       return list.image === image && list.winery === winery && list.wine === wine
     })
 
     dispatch(deleteCartItems(isRepeated.id))
-    setDataList(prev => prev.filter(list => {
-      return (list.image !== image) && (list.winery !== winery) && (list.wine !== wine)
-    }))
-    
-  },[dispatch, image, setDataList, wine, wineType, winery])
+    .then(()=>enqueueSnackbar(MESSAGE.DELETED_CART_ITEM_SUCCESS))
+    .catch(()=>enqueueSnackbar(MESSAGE.DELETED_CART_ITEM_FAILURE))
+
+  },[data.data, dispatch, enqueueSnackbar, image, wine, winery])
   
-  const simpleType = wineType.split(' ')[0]
+  const simpleType: string = wineType.split(' ')[0]
+
+  const onClickDecrease = useCallback(() => {
+    const newTotalPrice = (amount-1) * originalPrice
+    if(amount <= CART_ITEM_AMOUNT.MIN) return;
+
+    dispatch(
+      updateCartItems({id, amount:amount-1, totalPrice: newTotalPrice})
+    )
+  },[amount, dispatch, id, originalPrice])
   
+  const onClickIncrease = useCallback(() => {
+    const newTotalPrice = (amount+1) * originalPrice
+    if(amount >= CART_ITEM_AMOUNT.MAX) return;
+    dispatch(updateCartItems({id, amount:amount+1, totalPrice: newTotalPrice}))
+  },[amount, dispatch, id, originalPrice])
+
   return (
     <li className={styles.listWrapper}>
       <div className={styles.imageBox}>
@@ -83,12 +80,12 @@ export const CartListItem = ({
         <span className={styles.wine}>{wine}</span>
         <div className={styles.priceAndAmountBox}>
           <AmountController
-            changeAmount={onChangeAmount}
-            price={finalTotalPrice}
-            amount={finalAmount}
+            onClickDecrease={onClickDecrease}
+            onClickIncrease={onClickIncrease}
+            amount={amount}
           />
           <span className={styles.totalPrice}>
-            {`${numeral(finalTotalPrice).format(0,0)} 원`}
+            {`${numeral(totalPrice).format(0,0)} 원`}
           </span>
         </div>
       </div>

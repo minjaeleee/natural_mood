@@ -21,10 +21,9 @@
   }
 
   .amount {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30px;
+    text-align: right;
+    background-color: #fff;
+    border: none;
     font-size: 18px;
     font-weight: bold;
   }

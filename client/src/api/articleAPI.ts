@@ -1,7 +1,7 @@
-import { IPostItem } from "../types/article"
+import { IAddPostRes, IDeletePostRes, IGetAllPostsRes, IGetPostRes, IPostItem, IUpdatePostRes } from "../types/article"
 import { BASE_URL } from "./const"
 
-export const getAllPosts = async() => {
+export const getAllPosts = async(): Promise<IGetAllPostsRes> => {
   const res = await fetch(`${BASE_URL}/posts`)
 
   if(!res.ok) return {
@@ -15,7 +15,7 @@ export const getAllPosts = async() => {
   }
 }
 
-export const getPost = async(id:number) => {
+export const getPost = async(id:number): Promise<IGetPostRes> => {
   const res = await fetch(`${BASE_URL}/posts/${id}`)
 
   if(!res.ok) return {
@@ -29,7 +29,7 @@ export const getPost = async(id:number) => {
   }
 }
 
-export const createPost = async(args: IPostItem) => {
+export const createPost = async(args: IPostItem): Promise<IAddPostRes> => {
   const res = await fetch(`${BASE_URL}/posts`, {
     method: "POST",
     headers: {
@@ -49,7 +49,7 @@ export const createPost = async(args: IPostItem) => {
   }
 }
 
-export const updatePost = async(args: IPostItem, id:number) => {
+export const updatePost = async(args: IPostItem, id:number): Promise<IUpdatePostRes> => {
   const res= await fetch(`${BASE_URL}/posts/${id}`, {
     method: "PUT",
     headers: {
@@ -69,7 +69,7 @@ export const updatePost = async(args: IPostItem, id:number) => {
   }
 }
 
-export const deletePost = async(id:number) => {
+export const deletePost = async(id:number): Promise<IDeletePostRes> => {
   const res = await fetch(`${BASE_URL}/posts/${id}`, {
     method: "DELETE"
   })

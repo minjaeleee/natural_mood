@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { login } from '../../api/loginAPI'
 import { getAuth } from '../../store/modules/auth'
-import { IFormData, ILoginReq } from '../../types/login'
+import { IFormData } from '../../types/login'
 import { useRouter } from '../../useHook/useRouter'
 import { FormInput } from './FormInput'
 
@@ -13,6 +13,11 @@ const initialFormData: IFormData = {
   pw: '',
 }
 
+interface ILoginForm {
+  email: string,
+  password: string
+}
+
 export const Login = () => {
   const { routeTo } = useRouter()
   const dispatch = useDispatch()
@@ -20,7 +25,7 @@ export const Login = () => {
 
   const onSubmit = async(e) => {
     e.preventDefault()
-    const loginReq: ILoginReq = {
+    const loginReq: ILoginForm = {
       "email": formData.id,
       "password": formData.pw
     }

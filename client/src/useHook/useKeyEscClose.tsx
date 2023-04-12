@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 
-export const useKeyEscClose = (closeThing) => {
+export const useKeyEscClose = (closeFunction: ()=>void) => {
+
   useEffect(() => {
     const escKeyModalClose = (e) => {
       if (e.keyCode === 27) {
-        closeThing();
+        closeFunction()
       }
     };
     window.addEventListener("keydown", escKeyModalClose);

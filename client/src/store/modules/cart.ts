@@ -1,121 +1,196 @@
 import { Dispatch } from "redux"
+import produce, { Draft } from 'immer';
+
 import { RootState } from "."
-import { createUsersCartItems, deleteUsersCartItems, getUsersCartItems, updateUsersCartItems } from "../../api/cartAPI"
-import { ICartItems, ICreateUsersCartItemsRes } from "../../types/cartTypes"
+import { createUsersCartItems, deleteUsersCartAllItems, deleteUsersCartItems, getUsersCartItems, updateUsersCartItems } from "../../api/cartAPI"
+import { IAddCartItemsRequestAction, IAddCartItemsSuccessACtion, IAddCartItemsFailAction, ICartItems, ICartState, IGetCartItemsFailAction, IGetCartItemsRequestAction, IGetCartItemsSuccessAction, IUpdateUsersCartItemsReqArgs, IUpdateCartItemsRequestAction, IUpdateCartItemsSuccessAction, IUpdateCartItemsFailAction, IDeleteCartItemsRequestAction, IDeleteCartItemsSuccessAction, IDeleteCartItemsFailAction, IDeleteCartAllItemsRequestAction, IDeleteCartAllItemsFailAction, IDeleteCartAllItemsSuccessAction } from "../../types/cartTypes"
 
 // 액션 타입
-const GET_CART_SUCCESS = "cart/GET_CART_SUCCESS" as const
-const GET_CART_FAIL = "cart/GET_CART_FAIL" as const
-const ADD_CART_SUCCESS = "cart/ADD_CART_SUCCESS" as const
-const ADD_CART_FAIL = "cart/ADD_CART_FAIL" as const
-const UPDATE_CART_SUCCESS = "cart/UPDATE_CART_SUCCESS" as const
-// const UPDATE_CART_FAIL = "cart/UPDATE_CART_FAIL" as const
-const DELETE_CART_SUCCESS = 'cart/DELETE_CART_SUCCESS' as const
+export const GET_CART_REQUEST = "cart/GET_CART_REQUEST" as const
+export const GET_CART_SUCCESS = "cart/GET_CART_SUCCESS" as const
+export const GET_CART_FAIL = "cart/GET_CART_FAIL" as const
 
-interface IGetCartItemState {
-  type: typeof GET_CART_SUCCESS | typeof GET_CART_FAIL,
-  items?: ICartItems[],
-  error?: string
+export const ADD_CART_REQUEST = "cart/ADD_CART_REQUEST" as const
+export const ADD_CART_SUCCESS = "cart/ADD_CART_SUCCESS" as const
+export const ADD_CART_FAIL = "cart/ADD_CART_FAIL" as const
+
+export const UPDATE_CART_REQUEST = "cart/UPDATE_CART_REQUEST" as const
+export const UPDATE_CART_SUCCESS = "cart/UPDATE_CART_SUCCESS" as const
+export const UPDATE_CART_FAIL = "cart/UPDATE_CART_FAIL" as const
+
+export const DELETE_CART_REQUEST = "cart/DELETE_CART_REQUEST" as const
+export const DELETE_CART_SUCCESS = "cart/DELETE_CART_SUCCESS" as const
+export const DELETE_CART_FAIL = "cart/DELETE_CART_FAIL" as const
+
+export const DELETE_ALL_CART_REQUEST = "cart/DELETE_ALL_CART_REQUEST" as const
+export const DELETE_ALL_CART_SUCCESS = "cart/DELETE_ALL_CART_SUCCESS" as const
+export const DELETE_ALL_CART_FAIL = "cart/DELETE_ALL_CART_FAIL" as const
+
+type GetCartItemsAction = IGetCartItemsRequestAction | IGetCartItemsSuccessAction | IGetCartItemsFailAction
+type AddCartItemsAction = IAddCartItemsRequestAction | IAddCartItemsSuccessACtion | IAddCartItemsFailAction
+type UpdateCartItemsAction = IUpdateCartItemsRequestAction | IUpdateCartItemsSuccessAction | IUpdateCartItemsFailAction
+type DeleteCartItemsAction = IDeleteCartItemsRequestAction | IDeleteCartItemsSuccessAction | IDeleteCartItemsFailAction
+type DeleteCartAllItemsAction = IDeleteCartAllItemsRequestAction | IDeleteCartAllItemsSuccessAction | IDeleteCartAllItemsFailAction
+
+const getErrorMessage= (error: unknown) => {
+  if (error instanceof Error) return error.message;
+  return String(error);
 }
 
-interface IAddCartItemState {
-  type: typeof ADD_CART_SUCCESS | typeof ADD_CART_FAIL,
-  items?: ICartItems[],
-  error?: string
-}
-
-interface IUpdateCartItemState {
-  type: typeof UPDATE_CART_SUCCESS,
-  items: ICartItems
-}
-
-interface IDeleteCartItemState {
-  type: typeof DELETE_CART_SUCCESS,
-  items: number
-}
-
-type CartAction = IGetCartItemState | IAddCartItemState | IUpdateCartItemState | IDeleteCartItemState
-
-export const getCartItems = () => async(dispatch:Dispatch<CartAction>, getState:()=>RootState) => {
-  const auth = {...getState().auth}
-  console.log("auth",auth)
+export const getCartItems = () => async(dispatch:Dispatch<GetCartItemsAction>, getState:()=>RootState) => {
+  dispatch({type: GET_CART_REQUEST})
+  
   try {
+    const auth = {...getState().auth}
     const getItems = await getUsersCartItems(auth.id)
     dispatch({type: GET_CART_SUCCESS, items: getItems.result})
   } catch(error) {
-    dispatch({type: GET_CART_FAIL, error})
+    dispatch({type: GET_CART_FAIL, error: getErrorMessage(error)})
   }
 }
 
-export const createCartItem = (args:ICartItems) => async(dispatch:Dispatch<CartAction>, getState:()=>RootState) => {
-  const userId = getState().auth.id
+export const addCartItem = (args:ICartItems) => async(dispatch:Dispatch<AddCartItemsAction>, getState:()=>RootState) => {
+  dispatch({type: ADD_CART_REQUEST})
 
   try {
-    await createUsersCartItems({...args, userId})
-    dispatch({type:ADD_CART_SUCCESS, items: [args]})
+    const userId = getState().auth.id
+    const getAddItem = await createUsersCartItems({...args, userId})
+    dispatch({type: ADD_CART_SUCCESS, items: [getAddItem.result]})
   } catch(error) {
-    dispatch({type:ADD_CART_FAIL, error})
+    dispatch({type: ADD_CART_FAIL, error: getErrorMessage(error)})
+    throw error
   }
 }
 
-export const updateCartItems = (args:ICartItems, operator) => async(dispatch:Dispatch<CartAction>, getState:()=>RootState) => {
-  // args에는 id와 userId를 반드시 포함홰서 넘겨주어야 한다.
-  // arg는 추가 되어야 할 list들
-  const getPreviousAllItems = [...getState().cart]
+export const updateCartItems = (args: IUpdateUsersCartItemsReqArgs) => async(dispatch:Dispatch<UpdateCartItemsAction>) => {
+  dispatch({type:UPDATE_CART_REQUEST})
+
   try {
-    // // 중복 추가 업데이트
-    if(operator === "plus") {
-      const updateItem = getPreviousAllItems.find(list => list.id === args.id)
-      updateItem.amount += args.amount
-      updateItem.totalPrice += args.totalPrice
-
-      await updateUsersCartItems(updateItem)
-      dispatch({type:UPDATE_CART_SUCCESS, items: updateItem})
-    }
-    if(operator === "minus") {
-      const updateItem = getPreviousAllItems.find(list => list.id === args.id)
-      updateItem.amount -= args.amount
-      updateItem.totalPrice -= args.totalPrice
-
-      await updateUsersCartItems(updateItem)
-      dispatch({type:UPDATE_CART_SUCCESS, items: updateItem})
-    }
-  } catch(e) {
-    // dispatch({type:UPDATE_CART_FAIL, error: e})
-    console.log(e, "update error")
+    const getUpdateItem = await updateUsersCartItems(args)
+    dispatch({type:UPDATE_CART_SUCCESS, items: [getUpdateItem.result]})
+  } catch(error) {
+    dispatch({type: UPDATE_CART_FAIL, error: getErrorMessage(error)})
   }
 }
 
-export const deleteCartItems = (id:number) => async(dispatch) => {
+export const deleteCartItems = (id:number) => async(dispatch:Dispatch<DeleteCartItemsAction>) => {
+  dispatch({type:DELETE_CART_REQUEST})
+
   try{
     await deleteUsersCartItems(id)
-    dispatch({type:DELETE_CART_SUCCESS, items: id})
-  } catch(e) {
-    console.log(e, "delete error")
+    dispatch({type:DELETE_CART_SUCCESS, itemId: id})
+  } catch(error) {
+    dispatch({type:DELETE_CART_FAIL, error: getErrorMessage(error)})
   }
 }
 
-export const cart = (state:ICartItems[] = [], action:CartAction) => {
+export const deleteCartAllItems = (ids: number[]) => async(dispatch:Dispatch<DeleteCartAllItemsAction>) => {
+  dispatch({type:DELETE_ALL_CART_REQUEST})
+
+  try {
+    await deleteUsersCartAllItems(ids)
+    dispatch({type:DELETE_ALL_CART_SUCCESS, items: []})
+  } catch(error) {
+    dispatch({type:DELETE_ALL_CART_FAIL, error: getErrorMessage(error)})
+  }
+}
+
+const statusType = {
+  req: "PENDING",
+  success: "SUCCESS",
+  fail: "FAILURE"
+}
+
+const initialState: ICartState= {
+  status: "IDLE",
+  error: null,
+  data: []
+}
+
+export const cart = (
+    state:
+      ICartState = initialState, 
+    action: 
+      GetCartItemsAction |
+      AddCartItemsAction |
+      UpdateCartItemsAction |
+      DeleteCartItemsAction |
+      DeleteCartAllItemsAction
+  ) => {
   switch(action.type) {
-    case GET_CART_SUCCESS:
-      return [...action.items]
-    // case GET_CART_FAIL:
-    //   return [...action.items, {error: action.error}]
-    // case ADD_CART_SUCCESS:
-    //   return [...state, ...action.items]
-    case UPDATE_CART_SUCCESS:
-      const getPreviosItems = [...state]
-      getPreviosItems.map(list => {
-        if(list.id === action.items.id) {
-          return list
-        }
-        return list
+    case GET_CART_REQUEST:
+      return produce(state, (draft: Draft<ICartState>) => {
+        draft.status = statusType.req
       })
-      return getPreviosItems
-    case DELETE_CART_SUCCESS:
-      const getPreviosItemsForDelete = [...state]
-      return getPreviosItemsForDelete.filter(list => list.id !== action.items)
+    case GET_CART_SUCCESS:
+      return produce(state, (draft: Draft<ICartState>) => {
+        draft.status = statusType.success
+        draft.data = [...action.items]
+      })
+    case GET_CART_FAIL:
+      return produce(state, (draft: Draft<ICartState>) => {
+        draft.status = statusType.fail
+        draft.error = action.error
+      })
+    case ADD_CART_REQUEST:
+      return produce(state, (draft: Draft<ICartState>) => {
+        draft.status = statusType.req
+      })
+    case ADD_CART_SUCCESS:
+      return produce(state, (draft: Draft<ICartState>) => {
+        draft.status = statusType.success
+        draft.data.push(...action.items)
+      })
+    case ADD_CART_FAIL:
+      return produce(state, (draft: Draft<ICartState>) => {
+        draft.status = statusType.fail
+        draft.error = action.error
+      })
+    case UPDATE_CART_REQUEST:
+      return produce(state, (draft: Draft<ICartState>) => {
+        draft.status = statusType.req
+      })
+    case UPDATE_CART_SUCCESS:
+      return produce(state, (draft: Draft<ICartState>) => {
+        const target = draft.data.find(item => item.id === action.items[0].id)
+        draft.status = statusType.req
+        target.amount = action.items[0].amount
+        target.totalPrice = action.items[0].totalPrice
+      })
+    case UPDATE_CART_FAIL:
+      return produce(state, (draft: Draft<ICartState>) => {
+        draft.status = statusType.fail
+        draft.error = action.error
+      })
+    case DELETE_CART_REQUEST:
+      return produce(state, (draft: Draft<ICartState>) => {
+        draft.status = statusType.req
+      })
+    case DELETE_CART_SUCCESS: 
+      return produce(state, (draft: Draft<ICartState>) => {
+        draft.status = statusType.success
+        draft.data = draft.data.filter(item => item.id !== action.itemId)
+      })
+    case DELETE_CART_FAIL:
+      return produce(state, (draft: Draft<ICartState>) => {
+        draft.status = statusType.fail
+        draft.error = action.error
+      })
+    case DELETE_ALL_CART_REQUEST:
+      return produce(state, (draft: Draft<ICartState>) => {
+        draft.status = statusType.req
+      })
+    case DELETE_ALL_CART_SUCCESS:
+      return produce(state, (draft: Draft<ICartState>) => {
+        draft.status = statusType.success
+        draft.data = []
+      })
+    case DELETE_ALL_CART_FAIL:
+      return produce(state, (draft: Draft<ICartState>) => {
+        draft.status = statusType.fail
+        draft.error = action.error
+      })
     default: 
-      return []
+      return {...state}
   }   
 }

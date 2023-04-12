@@ -9,13 +9,13 @@ import { RootState } from '../../store/modules'
 import { useRouter } from '../../useHook/useRouter'
 
 export const ArticleEditPage = () => {
-  const {id} = useParams()
+  const { id } = useParams()
   const { routeTo } = useRouter()
   const auth = useSelector((state:RootState) => state.auth)
-  const [articleItems, setArticleItems] = useState<IPostItem | {}>({})
+  const [articleItems, setArticleItems] = useState({} as IPostItem)
 
   const getDetailPost = useCallback(async()=>{
-    const data =  await getPost(parseInt(id))
+    const data=  await getPost(parseInt(id))
     if(data.status === "fail") return alert("글을 읽어오지 못했습니다.")
     setArticleItems(prev => data.result)
   },[id])

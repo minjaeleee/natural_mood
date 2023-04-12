@@ -1,6 +1,5 @@
 import { Article } from "./pages/Article";
 import { Cart } from "./pages/CartPage";
-import { Review } from "./pages/Review";
 import { IRouterChildren } from "./types/sidebar";
 import { TotalWineList } from "./pages/List/TotalWineList";
 import { RedWine } from "./pages/List/RedWine";
@@ -134,15 +133,6 @@ export const routerData: IRouterData[] = [
       },
     ]
   },
-  // {
-  //   id: 4,
-  //   path: "/review",
-  //   label: "고객후기",
-  //   element: <Review/>,
-  //   isSideBar: true,
-  //   isAdminPage: false,
-  //   withAuth: true
-  // },
   {
     id: 5,
     path: "/cart",

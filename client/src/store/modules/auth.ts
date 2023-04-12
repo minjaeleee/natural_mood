@@ -1,4 +1,4 @@
-import { ILoginRes } from "../../types/login"
+import { IAuthData } from "../../types/login"
 
 // 액션 타입
 const GET_AUTH =  'get/auth' as const
@@ -6,7 +6,7 @@ const LOGOUT = 'logout/auth' as const
 
 // 액션 생성 함수
 
-export const getAuth = (args:ILoginRes) => ({
+export const getAuth = (args:IAuthData) => ({
   type: GET_AUTH,
   data: args 
 })
@@ -20,7 +20,7 @@ const getLocalStorageList = isStoredLocalStorage ? JSON.parse(JSON.parse(isStore
 
 type AuthAction = ReturnType<typeof getAuth> | ReturnType<typeof logout>
 
-export const auth = (state:ILoginRes = getLocalStorageList , action: AuthAction) => {
+export const auth = (state:IAuthData = getLocalStorageList , action: AuthAction) => {
   switch(action.type) {
     case GET_AUTH:
       const getAuth = {
