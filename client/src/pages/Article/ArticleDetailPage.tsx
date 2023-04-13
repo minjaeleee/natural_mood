@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import DOMPurify from 'dompurify'
 
 import { deletePost, getPost } from '../../api/articleAPI'
 import { IPostItem } from '../../types/article'
@@ -10,6 +11,7 @@ import { RootState } from '../../store/modules'
 import styles from './ArticleDetailPage.module.scss'
 
 export const ArticleDetailPage = () => {
+  const sanitizer = DOMPurify.sanitize
   const auth = useSelector((state:RootState) => state.auth)
   const { id } = useParams()
   const { routeTo } = useRouter()
@@ -66,7 +68,7 @@ export const ArticleDetailPage = () => {
       <main className={styles.contentWrapper}>
         <div
           className={styles.content}
-          dangerouslySetInnerHTML={{__html: data.content}}
+          dangerouslySetInnerHTML={{__html: sanitizer(data.content)}}
         >
         </div>
       </main>
