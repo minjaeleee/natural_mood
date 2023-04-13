@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "json-server-auth --watch db.json --port 4001"
+    "start": "node index.js"
   },
   "devDependencies": {
     "json-server": "^0.17.3",
