@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom'
 import { ListItem } from './ListItem'
 import { getSingletWine } from '../../api/wineAPI'
 import { IWine, IWineSingleApiOpt } from '../../types/wine'
-import useInfiniteScroll from '../../useHook/useInfiniteScroll'
+import { useInfiniteScroll } from '../../useHook/useInfiniteScroll'
 import { useRouter } from '../../useHook/useRouter'
 
 import styles from './WineListLayout.module.scss'
