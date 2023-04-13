@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import useInfiniteScroll from '../../useHook/useInfiniteScroll'
+import { useInfiniteScroll } from '../../useHook/useInfiniteScroll'
 import numeral from 'numeral'
 
 import styles from './MoreCartInfo.module.scss'
