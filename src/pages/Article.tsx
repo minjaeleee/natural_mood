@@ -41,7 +41,7 @@ export const Article = () => {
           전체 아티클
         </h1>
         {
-          auth.isAdmin &&
+          auth.data.isAdmin &&
           <div className={styles.addArticle}>
             <button 
               className={styles.addArticleBtn}

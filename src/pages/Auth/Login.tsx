@@ -1,10 +1,15 @@
 import React, { useState } from 'react'
+import { Action } from 'redux';
 import { useDispatch } from 'react-redux'
-import { login } from '../../api/loginAPI'
-import { getAuth } from '../../store/modules/auth'
+import { ThunkDispatch } from 'redux-thunk'
+import { useSnackbar } from 'notistack';
+
+import { FormInput } from './FormInput'
+import { RootState } from '../../store/modules'
+import { AUTH_MESSAGE } from '../../common/snackbarMessages';
+import { getLoginAuth } from '../../store/modules/auth';
 import { IFormData } from '../../types/login'
 import { useRouter } from '../../useHook/useRouter'
-import { FormInput } from './FormInput'
 
 import styles from './Login.module.scss'
 
@@ -20,8 +25,9 @@ interface ILoginForm {
 
 export const Login = () => {
   const { routeTo } = useRouter()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>();
   const [formData, setFormData] = useState<IFormData>(initialFormData)
+  const { enqueueSnackbar } = useSnackbar()
 
   const onSubmit = async(e) => {
     e.preventDefault()
@@ -29,10 +35,12 @@ export const Login = () => {
       "email": formData.id,
       "password": formData.pw
     }
-    const loginResult = await login(loginReq)
-    if(loginResult.result === "fail") return alert('로그인 또는 비밀번호가 유효하지 않습니다.')
-    dispatch(getAuth(loginResult.userInfo))
-    routeTo('/beverage/all')
+    dispatch(getLoginAuth(loginReq))
+      .then(()=> {
+        enqueueSnackbar(AUTH_MESSAGE.LOGIN_SUCCESS)
+        routeTo('/beverage/all')
+      })
+      .catch(()=> enqueueSnackbar(AUTH_MESSAGE.LOGIN_FAILURE))
   }
 
   return (

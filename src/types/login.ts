@@ -10,6 +10,12 @@ export interface ISignUpForm {
   isAdmin?: boolean
 }
 
+export interface ILoginReq {
+  email: string,
+  password: string,
+  isAdmin?: boolean
+}
+
 export interface IAuthData {
   id?: number,
   email?: string,
@@ -17,13 +23,10 @@ export interface IAuthData {
   accessToken?: string
 }
 
-export type ISignUpRes= {
-  result: "success",
-  accessToken: string
-} | {
-    result: "fail",
-    accessToken: string
-  }
+export interface ISignUpRes {
+  result: "success" | "fail",
+  signUpRes: IAuthData | null
+}
 
 export interface IloginAPIRes {
   result: "success" | "fail",

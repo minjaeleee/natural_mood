@@ -1,11 +1,16 @@
-import { Fragment, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { autoLogin } from '../api/loginAPI'
-import { RootState } from '../store/modules'
-import { useRouter } from '../useHook/useRouter'
+import { Fragment, useEffect, useRef, useState } from 'react'
+import { Action } from 'redux'
+import { useSelector,useDispatch } from 'react-redux'
+import { ThunkDispatch } from 'redux-thunk'
+import { useSnackbar } from 'notistack'
+
 import { Login } from './Auth/Login'
 import { MainLogin } from './Auth/MainLogin'
 import { SignUp } from './Auth/SignUp'
+import { RootState } from '../store/modules'
+import { useRouter } from '../useHook/useRouter'
+import { getAutoLoginAuth } from '../store/modules/auth'
+import { AUTH_MESSAGE } from '../common/snackbarMessages'
 
 import styles from './Home.module.scss'
 
@@ -25,20 +30,31 @@ const homeAuthData = [
 ]
 
 export const Home = () => {
+  const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>()
   const { routeTo, currentPath } = useRouter()
-  const data = useSelector((state:RootState)=>state.auth)
+  const auth = useSelector((state:RootState)=>state.auth)
+  const { enqueueSnackbar } = useSnackbar()
 
   useEffect(()=>{
     (async()=>{
-      if(data.accessToken) {
-        const getTokenValid = await autoLogin({id: data.id, accessToken:data.accessToken })
-        if(getTokenValid === "success") {
-          routeTo('/beverage/all')
-          alert('자동 로그인이 되었습니다. 계정 변경을 원하시면 우측 상단 로그아웃 버튼을 클릭해주세요.')
-        }
+      const isStoredLocalStorage = localStorage.getItem('persist:root')
+      const getUserData = isStoredLocalStorage ? JSON.parse(JSON.parse(isStoredLocalStorage).auth) : []
+
+      if(
+        getUserData.status === "SUCCESS" &&
+        !Object.keys(auth?.data).length && 
+        Object.keys(getUserData.data).length > 0
+      ) {
+        dispatch(getAutoLoginAuth({id: getUserData.data.id, accessToken: getUserData.data.accessToken }))
+          .then(()=> {
+            enqueueSnackbar(AUTH_MESSAGE.AUTO_LOGIN_SUCCESS)
+            routeTo('/beverage/all')
+            }
+          )
       }
     })()
-  },[data.accessToken, data.id, routeTo])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
 
   return (
     <div className={styles.wrapper}>

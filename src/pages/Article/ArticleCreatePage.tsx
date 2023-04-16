@@ -34,7 +34,7 @@ export const ArticleCreatePage = () => {
   }
 
   useEffect(()=>{
-    if(!auth.isAdmin) {
+    if(!auth.data.isAdmin) {
       routeTo('/article')
     }
   },[auth, routeTo])

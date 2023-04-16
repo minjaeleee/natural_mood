@@ -39,7 +39,7 @@ export const ArticleEditPage = () => {
   },[article, dispatch, id])
 
   useEffect(()=>{
-    if(!auth.isAdmin) {
+    if(!auth.data.isAdmin) {
       routeTo('/article')
     }
   },[auth, routeTo])
