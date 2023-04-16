@@ -34,16 +34,15 @@ export const Home = () => {
   const { routeTo, currentPath } = useRouter()
   const auth = useSelector((state:RootState)=>state.auth)
   const { enqueueSnackbar } = useSnackbar()
-
+  
   useEffect(()=>{
     (async()=>{
       const isStoredLocalStorage = localStorage.getItem('persist:root')
       const getUserData = isStoredLocalStorage ? JSON.parse(JSON.parse(isStoredLocalStorage).auth) : []
-
       if(
+        auth.status === "IDLE" &&
         getUserData.status === "SUCCESS" &&
-        !Object.keys(auth?.data).length && 
-        Object.keys(getUserData.data).length > 0
+        !Object.keys(auth?.data).length 
       ) {
         dispatch(getAutoLoginAuth({id: getUserData.data.id, accessToken: getUserData.data.accessToken }))
           .then(()=> {
@@ -54,7 +53,7 @@ export const Home = () => {
       }
     })()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  },[currentPath])
 
   return (
     <div className={styles.wrapper}>
