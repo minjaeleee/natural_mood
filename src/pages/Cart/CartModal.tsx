@@ -72,9 +72,7 @@ export const CartModal = ({price, wine, winery, image, type, setIsOpenModal}) =>
   },[amount])
 
   useEffect(()=>{
-    if(data.status === "IDLE") {
       dispatch(getCartItems())
-    }
   },[data.status, dispatch])
 
   const totalPrice = amount * price

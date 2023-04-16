@@ -12,17 +12,17 @@ import { MoreCartInfo } from './Cart/MoreCartInfo'
 import styles from './CartPage.module.scss'
 
 export const Cart = () => {
-  const data = useSelector((state:RootState) => state.cart)
+  const cart = useSelector((state:RootState) => state.cart)
   const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>();
   const [dataList, setDataList] = useState({} as ICartState)
   
   useEffect(()=>{
-    data.status === "IDLE" && dispatch(getCartItems())
-  },[data, data.status, dispatch])
+   dispatch(getCartItems())
+  },[])
   
   useEffect(()=>{
-    data.status !== "IDLE" && setDataList(prev => ({...data}))
-  },[data])
+    cart.status !== "IDLE" && setDataList(prev => ({...cart}))
+  },[cart])
 
   return (
     Object.keys(dataList).length > 0 &&
