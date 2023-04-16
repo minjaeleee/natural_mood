@@ -1,0 +1,30 @@
+@import '/src/styles/color.scss';
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100px;
+  min-height: 30px;
+  border: 1px solid $grey200;
+  border-radius: 5px;
+
+  .btn {
+    width: 28px;
+    border: none;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+
+  .inactiveBtn {
+    color: $grey200;
+  }
+
+  .amount {
+    text-align: right;
+    background-color: #fff;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+  }
+}

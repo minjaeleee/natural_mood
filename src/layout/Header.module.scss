@@ -1,0 +1,45 @@
+@import '/src/styles/color.scss';
+
+.header {
+  position: sticky;
+  width: 100%;
+  z-index: 100;
+  top: 0;
+  background-color: $white;
+  border-bottom: 1px solid $grey200;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+
+  .mainLogo {
+    display: flex;
+    align-items: center;
+  
+    .icon {
+      font-size: 43px;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+  
+    .title {
+      cursor: pointer;
+    }
+  }
+  .settingInfo {
+    position: relative;
+    cursor: pointer;
+
+    .settingIcon {
+      font-size: 35px;
+      margin-right: 5px;
+    }
+
+    .arrowUpIcon .arrowDownIcon {
+      font-size: 20px;
+    }
+  }
+}

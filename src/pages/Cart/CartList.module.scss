@@ -1,0 +1,50 @@
+@import '/src/styles/color.scss';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  height: 60px;
+
+  .title {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .allRemoveText{
+      margin-left: 5px;
+    }
+  }
+}
+
+.noCartList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem;
+
+  .cartImg {
+    font-size: 40px;
+  }
+
+  .desc{
+    margin: 15px 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .moveToListBtn {
+    padding: 10px 20px;
+    border: 1px solid $grey300;
+    border-radius: 10px;
+    background-color: #fff;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $primary500;
+      color: #fff
+    }
+  }
+}
