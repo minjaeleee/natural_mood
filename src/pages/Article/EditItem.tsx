@@ -43,11 +43,11 @@ export const EditItem = ({
       setItems((prev:IPostItem) => ({
         ...prev,
         image: image === "" ? image : "https://www.k-startup.go.kr//images/homepage/prototype/noimage.gif",
-        author: auth.email,
+        author: auth.data.email,
         created_at: Date.now()
       }))
     }
-  },[auth.email, image, items])
+  },[auth.data.email, image, items])
   
   const onChangeTitle = useCallback((e:React.ChangeEvent<HTMLInputElement>)=>{
     setItems((prev:IPostItem) => ({...prev, title:e.target.value}))

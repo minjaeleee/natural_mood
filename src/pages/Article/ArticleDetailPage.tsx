@@ -53,7 +53,7 @@ export const ArticleDetailPage = () => {
       <aside className={styles.information}>
         <span className={styles.author}>{`Natural Mood | ${new Date(getArticleItem.created_at).toLocaleDateString()}`}</span>
         {
-          auth.isAdmin &&
+          auth.data.isAdmin &&
           <div className={styles.editBtnBox}>
             <button 
               onClick={()=>routeTo('edit')}

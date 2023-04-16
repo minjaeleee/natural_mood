@@ -18,8 +18,8 @@ export const Layout = ({children}: IProps) => {
   const { routeTo } = useRouter()
 
   useEffect(()=>{
-    if(!auth.email) return routeTo('/')
-  },[auth.email, routeTo])
+    if(!auth.data.email) return routeTo('/')
+  },[auth.data.email, routeTo])
 
   return (
     <div className={styles.layout}>

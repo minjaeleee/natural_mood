@@ -1,8 +1,15 @@
 import React, { useState } from 'react'
-import { signUp } from '../../api/loginAPI'
+import { Action } from 'redux'
+import { useDispatch } from 'react-redux'
+import { ThunkDispatch } from 'redux-thunk'
+import { useSnackbar } from 'notistack'
+
+import { FormInput } from './FormInput'
+import { RootState } from '../../store/modules'
 import { IFormData, ISignUpForm } from '../../types/login'
 import { useRouter } from '../../useHook/useRouter'
-import { FormInput } from './FormInput'
+import { getSignUpAuth } from '../../store/modules/auth'
+import { AUTH_MESSAGE } from '../../common/snackbarMessages'
 
 import styles from './SignUp.module.scss'
 
@@ -19,6 +26,8 @@ const initialErrorData = {
 }
 
 export const SignUp = () => {
+  const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>()
+  const { enqueueSnackbar } = useSnackbar()
   const { routeTo } = useRouter()
   const [formData, setFormData] = useState<IFormData>(initialFormData)
   const [errorData, setErrorData] = useState<IFormData>(initialErrorData)
@@ -34,10 +43,12 @@ export const SignUp = () => {
     }
     if (!isValid) return alert('입력한 값이 유효하지 않습니다.');
     if (isValid) {
-      const singUpResult = await signUp(signUpReq)
-      if(singUpResult.result === "fail") return alert('회원가입에 실패했습니다. 다시 시도 해주세요.')
-      alert('회원가입이 완료되었습니다. 축하합니다! 🎉')
-      routeTo("login")
+      dispatch(getSignUpAuth(signUpReq))
+        .then(()=>{
+          enqueueSnackbar(AUTH_MESSAGE.SIGN_UP_SUCCESS)
+          routeTo("login")
+        })
+        .catch(()=> enqueueSnackbar(AUTH_MESSAGE.SIGN_UP_FAIL))
     } 
   }
 

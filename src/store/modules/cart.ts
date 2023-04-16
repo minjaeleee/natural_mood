@@ -43,7 +43,7 @@ export const getCartItems = () => async(dispatch:Dispatch<GetCartItemsAction>, g
   
   try {
     const auth = {...getState().auth}
-    const getItems = await getUsersCartItems(auth.id)
+    const getItems = await getUsersCartItems(auth.data.id)
     dispatch({type: GET_CART_SUCCESS, items: getItems.result})
   } catch(error) {
     dispatch({type: GET_CART_FAIL, error: getErrorMessage(error)})
@@ -54,7 +54,7 @@ export const addCartItem = (args:ICartItems) => async(dispatch:Dispatch<AddCartI
   dispatch({type: ADD_CART_REQUEST})
 
   try {
-    const userId = getState().auth.id
+    const userId = getState().auth.data.id
     const getAddItem = await createUsersCartItems({...args, userId})
     dispatch({type: ADD_CART_SUCCESS, items: [getAddItem.result]})
   } catch(error) {

@@ -1,12 +1,16 @@
-import React from 'react'
+import { Action } from 'redux';
 import { useDispatch } from 'react-redux';
-import { login } from '../../api/loginAPI';
-import { getAuth } from '../../store/modules/auth';
+import { ThunkDispatch } from 'redux-thunk';
+import { useSnackbar } from 'notistack';
+
 import { useRouter } from '../../useHook/useRouter'
+import { RootState } from '../../store/modules';
+import { getLoginAuth } from '../../store/modules/auth';
+import { AUTH_MESSAGE } from '../../common/snackbarMessages';
 
 import styles from './MainLogin.module.scss';
 
-const adminAccount = {
+const ADMIN_ACCOUNT = {
   "email": "mood_employee13215@gmail.com",
   "password": "mood13215",
   "isAdmin": true
@@ -14,14 +18,16 @@ const adminAccount = {
 
 export const MainLogin = () => {
   const {routeTo} = useRouter()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>();
+  const { enqueueSnackbar } = useSnackbar()
 
   const directAdminLogin = async() => {
-    const loginResult = await login(adminAccount)
-    if(loginResult.result === "fail") return alert("다시 시도해주세요.")
-    alert("관리자 권한으로 로그인 하였습니다.")
-    dispatch(getAuth(loginResult.userInfo))
-    routeTo("/beverage/all")
+    dispatch(getLoginAuth(ADMIN_ACCOUNT))
+      .then(()=> {
+        enqueueSnackbar(AUTH_MESSAGE.ADMIN_LOGIN_SUCCESS)
+        routeTo("/beverage/all")
+      })
+      .catch(()=> enqueueSnackbar(AUTH_MESSAGE.ADMIN_LOGIN_FAILURE))
   }
 
   return (
