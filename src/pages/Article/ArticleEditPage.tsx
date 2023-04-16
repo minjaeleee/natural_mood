@@ -1,45 +1,51 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Action } from 'redux'
+import { ThunkDispatch } from 'redux-thunk'
+import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
 
 import { EditItem } from './EditItem'
-import { getPost, updatePost } from '../../api/articleAPI'
-import { IPostItem } from '../../types/article'
+import { IArticleItemState, IPostItem } from '../../types/article'
 import { RootState } from '../../store/modules'
 import { useRouter } from '../../useHook/useRouter'
+import { getArticleItems, updateArticleItem } from '../../store/modules/article'
+import { ARTICLE_MESSAGE } from '../../common/snackbarMessages'
 
 export const ArticleEditPage = () => {
   const { id } = useParams()
   const { routeTo } = useRouter()
+  const article = useSelector((state:RootState) => state.aritlce)
   const auth = useSelector((state:RootState) => state.auth)
-  const [articleItems, setArticleItems] = useState({} as IPostItem)
+  const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const getDetailPost = useCallback(async()=>{
-    const data=  await getPost(parseInt(id))
-    if(data.status === "fail") return alert("글을 읽어오지 못했습니다.")
-    setArticleItems(prev => data.result)
-  },[id])
+  const [articleItems, setArticleItems] = useState({} as IArticleItemState)
 
   const fetchData = async(args: IPostItem) => {
-    if(Object.keys(articleItems).length > 0) {
-     const getUpdatePost = await updatePost(args, parseInt(id))
-     if(getUpdatePost.status === "fail") return alert("다시 시도해주세요.")
-     return window.location.href = "/article"
-    }
+    dispatch(updateArticleItem(args, parseInt(id)))
+      .then(()=>enqueueSnackbar(ARTICLE_MESSAGE.UPDATED_ARTICLE_ITEM_SUCCESS))
+      .catch(()=>enqueueSnackbar(ARTICLE_MESSAGE.UPDATED_ARTICLE_ITEM_FAILURE))
+    routeTo('/article')
   }
 
   useEffect(()=>{
-    getDetailPost()
-  },[getDetailPost])
+    article.status === "IDLE" && dispatch(getArticleItems(parseInt(id)))
+  },[article.status, dispatch, id])
+
+  useEffect(()=>{
+    article.status !== "IDLE" && setArticleItems(prev => ({...article}))
+  },[article, dispatch, id])
 
   useEffect(()=>{
     if(!auth.isAdmin) {
       routeTo('/article')
     }
   },[auth, routeTo])
-
+  
   return (
-    Object.keys(articleItems).length > 0 && 
-    <EditItem articleItems={articleItems} fetchData={fetchData} headerTitle={"아티클 글 수정하기"}/> 
+    articleItems.status !== "IDLE" && articleItems.data?.length > 0 &&
+    <EditItem articleItems={articleItems.data[0]} fetchData={fetchData} headerTitle={"아티클 글 수정하기"}/> 
   )
 }

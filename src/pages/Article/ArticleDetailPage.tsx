@@ -1,54 +1,57 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Action } from 'redux'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { ThunkDispatch } from 'redux-thunk'
 import DOMPurify from 'dompurify'
+import { useSnackbar } from 'notistack'
 
-import { deletePost, getPost } from '../../api/articleAPI'
-import { IPostItem } from '../../types/article'
+import { IArticleItemState } from '../../types/article'
 import { useRouter } from '../../useHook/useRouter'
 import { RootState } from '../../store/modules'
+import { deleteArticleItem, getArticleItems } from '../../store/modules/article'
+import { ARTICLE_MESSAGE } from '../../common/snackbarMessages'
 
 import styles from './ArticleDetailPage.module.scss'
 
 export const ArticleDetailPage = () => {
   const sanitizer = DOMPurify.sanitize
-  const auth = useSelector((state:RootState) => state.auth)
+  const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>();
   const { id } = useParams()
   const { routeTo } = useRouter()
-  const [data, setData] = useState({} as IPostItem)
+  const { enqueueSnackbar } = useSnackbar();
+  const auth = useSelector((state:RootState) => state.auth)
+  const articleState = useSelector((state:RootState) => state.aritlce)
 
-  const fetchData = useCallback(async()=>{
-    const getPostData = await getPost(parseInt(id))
-    if(getPostData.status === "fail") return routeTo("/article")
-    setData(prev => getPostData.result)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[id])
+  const [data, setData] = useState({} as IArticleItemState)
 
   useEffect(()=>{
-    fetchData()
-  },[fetchData])
+    dispatch(getArticleItems(parseInt(id)))
+  },[dispatch, id])
+
+  useEffect(()=>{
+    setData(prev => ({...articleState}))
+  },[articleState])
 
   const deleteArticle = async() => {
-    const result = await deletePost(parseInt(id))
-    if(result.status === "fail") return alert("글이 삭제되지 못했습니다.")
-    if(window.confirm("정말 삭제하시겠습니까?")) {
-      alert("글이 삭제되었습니다.")
-      return window.location.href = "/article"
-    } else {
-      return;
-    }
+    dispatch(deleteArticleItem(parseInt(id)))
+      .then(()=>enqueueSnackbar(ARTICLE_MESSAGE.DELETED_ARTICLE_ITEM_SUCCESS))
+      .catch(()=>enqueueSnackbar(ARTICLE_MESSAGE.DELETED_ARTICLE_ITEM_FAILURE))
+    routeTo('/article')
   }
 
+  const getArticleItem = data.data?.length > 0 && data.data[0]
   return (
-    Object.keys(data).length> 0 &&
+    data.data?.length > 0 &&
     <div>
       <header className={styles.header}>
         <h1>
-          {data.title}
+          {getArticleItem.title}
         </h1>
       </header>
       <aside className={styles.information}>
-        <span className={styles.author}>{`Natural Mood | ${new Date(data.created_at).toLocaleDateString()}`}</span>
+        <span className={styles.author}>{`Natural Mood | ${new Date(getArticleItem.created_at).toLocaleDateString()}`}</span>
         {
           auth.isAdmin &&
           <div className={styles.editBtnBox}>
@@ -68,7 +71,7 @@ export const ArticleDetailPage = () => {
       <main className={styles.contentWrapper}>
         <div
           className={styles.content}
-          dangerouslySetInnerHTML={{__html: sanitizer(data.content)}}
+          dangerouslySetInnerHTML={{__html: sanitizer(getArticleItem.content)}}
         >
         </div>
       </main>

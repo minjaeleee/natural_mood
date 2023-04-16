@@ -17,15 +17,11 @@ export const Cart = () => {
   const [dataList, setDataList] = useState({} as ICartState)
   
   useEffect(()=>{
-    if(data.status === "IDLE") {
-      dispatch(getCartItems())
-    }
+    data.status === "IDLE" && dispatch(getCartItems())
   },[data, data.status, dispatch])
   
   useEffect(()=>{
-    if(data.status !== "IDLE") {
-      setDataList(prev => ({...data}))
-    }
+    data.status !== "IDLE" && setDataList(prev => ({...data}))
   },[data])
 
   return (

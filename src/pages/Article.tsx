@@ -1,36 +1,38 @@
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
+import { Action } from 'redux';
+import { useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
+import { ThunkDispatch } from "redux-thunk"
 import DOMPurify from "dompurify"
 
-
 import { DefaultPage } from "./Article/DefaultPage"
-import { getAllPosts } from "../api/articleAPI"
-import { IPostItem } from "../types/article"
+import { IArticleItemState, IPostItem } from "../types/article"
 import { useRouter } from "../useHook/useRouter"
-import { useSelector } from "react-redux"
 import { RootState } from "../store/modules"
+import { getArticleItems } from "../store/modules/article"
 
 import styles from './Article.module.scss'
 
 export const Article = () => {
-  const sanitizer = DOMPurify.sanitize
   const auth = useSelector((state:RootState) => state.auth)
+  const articleState = useSelector((state:RootState) => state.aritlce)
+  const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>();
+  const sanitizer = DOMPurify.sanitize
   const { currentPath, routeTo } = useRouter()
-  const [data, setData] = useState<IPostItem[] | []>([])
+  const [data, setData] = useState({} as IArticleItemState)
   
-  const fetchData = useCallback(async()=>{
-    const getPostData = await getAllPosts()
-    if(getPostData.status === "fail") throw new Error('값을 읽어오지 못했습니다.')
-    setData(prev => [...getPostData.result])
-  },[])
+  useEffect(()=>{
+    currentPath === '/article' && dispatch(getArticleItems())
+  },[currentPath, dispatch])
 
   useEffect(()=>{
-    fetchData()
-  },[fetchData])
+    currentPath === '/article' && setData(prev => ({...articleState}))
+  },[currentPath, dispatch, articleState])
 
   const handleErrorImg = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = "https://www.k-startup.go.kr//images/homepage/prototype/noimage.gif"
   }
-  
+
   return (
     currentPath === '/article' &&
     <div>
@@ -52,8 +54,8 @@ export const Article = () => {
       </header>
       <section className={styles.postWrapper}>
         {
-          data.length > 0
-          ? data.map((list:IPostItem) => {
+          data.data?.length > 0
+          ? data.data.map((list:IPostItem) => {
             const summaryFirst = list.content.split("/")[0] + "/" + list.content.split(">")[0] + ">"
             return (
               <div 

@@ -4,6 +4,7 @@ import produce, { Draft } from 'immer';
 import { RootState } from "."
 import { createUsersCartItems, deleteUsersCartAllItems, deleteUsersCartItems, getUsersCartItems, updateUsersCartItems } from "../../api/cartAPI"
 import { IAddCartItemsRequestAction, IAddCartItemsSuccessACtion, IAddCartItemsFailAction, ICartItems, ICartState, IGetCartItemsFailAction, IGetCartItemsRequestAction, IGetCartItemsSuccessAction, IUpdateUsersCartItemsReqArgs, IUpdateCartItemsRequestAction, IUpdateCartItemsSuccessAction, IUpdateCartItemsFailAction, IDeleteCartItemsRequestAction, IDeleteCartItemsSuccessAction, IDeleteCartItemsFailAction, IDeleteCartAllItemsRequestAction, IDeleteCartAllItemsFailAction, IDeleteCartAllItemsSuccessAction } from "../../types/cartTypes"
+import { statusType } from "./statusType";
 
 // 액션 타입
 export const GET_CART_REQUEST = "cart/GET_CART_REQUEST" as const
@@ -95,12 +96,6 @@ export const deleteCartAllItems = (ids: number[]) => async(dispatch:Dispatch<Del
   }
 }
 
-const statusType = {
-  req: "PENDING",
-  success: "SUCCESS",
-  fail: "FAILURE"
-}
-
 const initialState: ICartState= {
   status: "IDLE",
   error: null,
@@ -153,7 +148,7 @@ export const cart = (
     case UPDATE_CART_SUCCESS:
       return produce(state, (draft: Draft<ICartState>) => {
         const target = draft.data.find(item => item.id === action.items[0].id)
-        draft.status = statusType.req
+        draft.status = statusType.success
         target.amount = action.items[0].amount
         target.totalPrice = action.items[0].totalPrice
       })

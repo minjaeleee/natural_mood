@@ -10,7 +10,7 @@ import { ICartItems } from '../../types/cartTypes'
 import { RootState } from '../../store/modules'
 import { addCartItem, getCartItems, updateCartItems } from '../../store/modules/cart'
 import { AmountController } from '../../common/AmountController'
-import MESSAGE from '../../common/messages';
+import { CART_MESSAGE } from '../../common/snackbarMessages';
 import { Modal } from '../../common/Modal'
 
 import styles from './CartModal.module.scss'
@@ -39,8 +39,8 @@ export const CartModal = ({price, wine, winery, image, type, setIsOpenModal}) =>
       dispatch(
         updateCartItems({id: getItemId, amount: newAmount, totalPrice: newTotalPrice })
       )
-      .then(()=> enqueueSnackbar(MESSAGE.ADDED_CART_ITEM_SUCCESS))
-      .catch(()=> enqueueSnackbar(MESSAGE.ADDED_CART_ITEM_FAILURE))
+      .then(()=> enqueueSnackbar(CART_MESSAGE.ADDED_CART_ITEM_SUCCESS))
+      .catch(()=> enqueueSnackbar(CART_MESSAGE.ADDED_CART_ITEM_FAILURE))
 
       setIsOpenModal(false)
     }else {
@@ -54,8 +54,8 @@ export const CartModal = ({price, wine, winery, image, type, setIsOpenModal}) =>
         amount,
         totalPrice: newTotalPrice
       }))
-      .then(()=> enqueueSnackbar(MESSAGE.ADDED_CART_ITEM_SUCCESS))
-      .catch(()=> enqueueSnackbar(MESSAGE.ADDED_CART_ITEM_FAILURE))
+      .then(()=> enqueueSnackbar(CART_MESSAGE.ADDED_CART_ITEM_SUCCESS))
+      .catch(()=> enqueueSnackbar(CART_MESSAGE.ADDED_CART_ITEM_FAILURE))
 
       setIsOpenModal(false)
     }

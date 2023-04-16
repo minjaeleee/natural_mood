@@ -12,7 +12,7 @@ import { deleteCartItems, updateCartItems} from '../../store/modules/cart'
 import { AmountController } from '../../common/AmountController'
 import { RootState } from '../../store/modules'
 import { ICartItems } from '../../types/cartTypes'
-import MESSAGE from '../../common/messages';
+import { CART_MESSAGE } from '../../common/snackbarMessages';
 
 import styles from './CartListItem.module.scss'
 
@@ -31,6 +31,7 @@ export const CartListItem = ({
   const { enqueueSnackbar } = useSnackbar();
 
   const handleErrorImg = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.style.height = "60px"
     e.currentTarget.src = "/img/default.png"
   }
   
@@ -40,8 +41,8 @@ export const CartListItem = ({
     })
 
     dispatch(deleteCartItems(isRepeated.id))
-    .then(()=>enqueueSnackbar(MESSAGE.DELETED_CART_ITEM_SUCCESS))
-    .catch(()=>enqueueSnackbar(MESSAGE.DELETED_CART_ITEM_FAILURE))
+    .then(()=>enqueueSnackbar(CART_MESSAGE.DELETED_CART_ITEM_SUCCESS))
+    .catch(()=>enqueueSnackbar(CART_MESSAGE.DELETED_CART_ITEM_FAILURE))
 
   },[data.data, dispatch, enqueueSnackbar, image, wine, winery])
   

@@ -16,7 +16,7 @@ export const EditItem = ({
 }) => {
   const auth = useSelector((state:RootState) => state.auth)
   const { routeTo } = useRouter()
-  
+
   const [items, setItems] = useState<IPostItem>(articleItems)
   const [isClickThumbnail, setIsClickThumbnail] = useState<boolean>(false)
 
