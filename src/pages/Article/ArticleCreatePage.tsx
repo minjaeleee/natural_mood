@@ -1,11 +1,16 @@
 import { useEffect } from 'react'
+import { Action } from 'redux'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { ThunkDispatch } from 'redux-thunk'
+import { useSnackbar } from 'notistack'
 
 import { EditItem } from './EditItem'
-import { createPost } from '../../api/articleAPI'
 import { IPostItem } from '../../types/article'
 import { RootState } from '../../store/modules'
 import { useRouter } from '../../useHook/useRouter'
+import { addArticleItem } from '../../store/modules/article'
+import { ARTICLE_MESSAGE } from '../../common/snackbarMessages'
 
 const articleItems: IPostItem = {
   image: "",
@@ -18,11 +23,14 @@ const articleItems: IPostItem = {
 export const ArticleCreatePage = () => {
   const auth = useSelector((state:RootState) => state.auth)
   const { routeTo } = useRouter()
+  const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>();
+  const { enqueueSnackbar } = useSnackbar();
 
   const fetchData = async(args: IPostItem) => {
-    const getCreatedPost = await createPost(args)
-    if(getCreatedPost.status === "fail") return alert("다시 시도해주세요.")
-    return window.location.href = "/article"
+    dispatch(addArticleItem(args))
+      .then(()=>enqueueSnackbar(ARTICLE_MESSAGE.ADDED_ARTICLE_ITEM_SUCCESS))
+      .catch(()=>enqueueSnackbar(ARTICLE_MESSAGE.ADDED_ARTICLE_ITEM_FAILURE))
+    routeTo('/article')
   }
 
   useEffect(()=>{

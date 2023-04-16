@@ -10,7 +10,7 @@ import { RootState } from '../../store/modules'
 import { ICartItems } from '../../types/cartTypes'
 import { deleteCartAllItems } from '../../store/modules/cart'
 import { useRouter } from '../../useHook/useRouter'
-import MESSAGE from '../../common/messages'
+import { CART_MESSAGE } from '../../common/snackbarMessages'
 
 import styles from './CartList.module.scss'
 
@@ -29,8 +29,8 @@ export const CartList = ({
       const ids = dataList.data.map((data:ICartItems) => data.id)
 
       dispatch(deleteCartAllItems(ids))
-      .then(()=>enqueueSnackbar(MESSAGE.DELETED_CART_ALL_ITEM_SUCCESS))
-      .catch(()=>enqueueSnackbar(MESSAGE.DELETED_CART_ALL_ITEM_FAILURE))
+      .then(()=>enqueueSnackbar(CART_MESSAGE.DELETED_CART_ALL_ITEM_SUCCESS))
+      .catch(()=>enqueueSnackbar(CART_MESSAGE.DELETED_CART_ALL_ITEM_FAILURE))
     }
   }
 

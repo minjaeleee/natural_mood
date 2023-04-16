@@ -7,6 +7,7 @@ import { composeWithDevTools } from "redux-devtools-extension"
 
 import { cart } from "./cart";
 import { auth } from "./auth";
+import { aritlce } from "./article";
 
 const persistConfig = {
   key: "root",
@@ -15,7 +16,7 @@ const persistConfig = {
   whitelist: ["auth"],
 }
 
-const rootReducer = combineReducers({cart, auth})
+const rootReducer = combineReducers({cart, auth, aritlce})
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export type RootState = ReturnType<typeof rootReducer>

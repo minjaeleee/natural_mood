@@ -6,8 +6,8 @@ export const DefaultPage = () => {
   return (
     <>
       {
-      Array(4).fill(1).map(el => 
-        <div className={styles.list}>
+      Array(4).fill(1).map((el,idx) => 
+        <div key={el+idx}className={styles.list}>
           <div className={styles.imgBox}>
             <img 
               src={"https://www.k-startup.go.kr//images/homepage/prototype/noimage.gif"}  
