@@ -1,3 +1,5 @@
+@import '/src/styles/responsive.module.scss';
+
 .layout {
   height: 100vh;
 }
@@ -7,7 +9,15 @@
 
   .content {
     padding-top: 20px;
-    width: 784px;
+    width: 49rem;
     margin: 0 auto;
+
+    @include breakpoint(medium) {
+      width: 35rem;
+    }
+
+    @include breakpoint(small) {
+      width: 20rem;
+    }
   }
 }
