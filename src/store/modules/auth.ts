@@ -67,7 +67,12 @@ export const getSignUpAuth = (args:ISignUpForm) => async(dispatch:Dispatch<GetSi
   }
 }
 
-const initialState:IAuthState = {
+const isStoredLocalStorage = localStorage.getItem('persist:root')
+const getUserData = isStoredLocalStorage ? JSON.parse(JSON.parse(isStoredLocalStorage).auth) : []
+
+const initialState:IAuthState = getUserData 
+? getUserData 
+: {
   status: "IDLE",
   error: null,
   data: {}

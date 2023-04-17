@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { AiOutlineShoppingCart } from 'react-icons/ai'
-import { IWine } from '../../types/wine'
 import numeral from 'numeral'
+import { AiOutlineShoppingCart } from 'react-icons/ai'
+
+import { IWine } from '../../types/wine'
 import { CartModal } from '../Cart/CartModal'
 
 import styles from './ListItem.module.scss'

@@ -1,0 +1,20 @@
+$breakpoints: (
+  // 스마트폰
+  small: 576px,
+  // 타블렛
+  medium: 768px,
+  // 데스크탑
+  large: 1024px,
+);
+
+@mixin breakpoint($name) {
+  @if not map-has-key($breakpoints, $name) {
+    @warn "Warning: `#{$name}` is not a valid breakpoint name.";
+  }
+
+  @else {
+    @media (max-width: map-get($breakpoints, $name)) {
+      @content;
+    }
+  }
+}

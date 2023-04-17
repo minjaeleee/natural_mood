@@ -1,4 +1,4 @@
-import React, { useEffect,useMemo } from 'react'
+import React, { useEffect,useMemo, useRef } from 'react'
 import { IPosition } from '../types/modal'
 import { useKeyEscClose } from '../useHook/useKeyEscClose'
 
@@ -23,15 +23,22 @@ export const Modal= ({
   xAxis = "center",
   yAxis = "center"
 }: IProps) => {
-
+  const modalRef = useRef<HTMLDivElement>()
   useEffect(()=>{
     if(isOpen) {
+      document.addEventListener("mousedown", onClickOutside)
       document.body.style.cssText = "overflow:hidden"
       return () => {
-        document.body.style.cssText = "overflow:"
+        document.removeEventListener("mousedown", onClickOutside)
+        document.body.style.cssText = "overflow:unset"
       }
     }
-  },[isOpen])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[isOpen, setIsOpen])
+
+  const onClickOutside = (event) => {
+    !modalRef.current?.contains(event.target) && setIsOpen(false)
+  }
 
   const styledPosition = useMemo(() => {
     const style:IPosition = {
@@ -67,7 +74,7 @@ export const Modal= ({
     <div className={styles.wrapper}>
       {/* 컨텐츠 뼈대 위치, 크기 조절 */}
       <div className={styles.innerWrapper} style={styledPosition}>
-        <div className={styles.contentWrapper}>
+        <div className={styles.contentWrapper} ref={modalRef}>
           {children}
         </div>
       </div>

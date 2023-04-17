@@ -1,5 +1,6 @@
 @import 'src/styles/color.scss';
 @import 'src/styles/common.scss';
+@import 'src/styles/responsive.module.scss';
 
 .item{
   display: flex;
@@ -45,16 +46,29 @@
     font-size: 14px;
     color: $grey400;
     @include ellipsis(1);
+
+    @include breakpoint(medium) {
+      font-size: 12px;
+    }
   }
 
   .wine {
     font-size: 16px;
     @include ellipsis(1);
+
+    @include breakpoint(medium) {
+      max-width: 230px;
+      font-size: 14px;
+    }
   }
 
   .price {
    font-size: 17px;
    font-weight: bold; 
+
+   @include breakpoint(medium) {
+    font-size: 15px;
+  }
   }
 }
 
@@ -76,5 +90,10 @@ $winetypes: "Red", "White", "Sparkling", "Rose", "Port", "Dessert";
     } @else if $type == "Dessert" {
       color: #FFE100;
     }
+
+    @include breakpoint(medium) {
+      font-size: 14px;
+    }
   }
+
 }

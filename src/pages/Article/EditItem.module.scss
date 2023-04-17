@@ -1,4 +1,5 @@
 @import '/src/styles/color.scss';
+@import '/src/styles/responsive.module.scss';
 
 .main {
   margin: 10px 0;
@@ -48,6 +49,10 @@
   justify-content: flex-end;
   gap: 10px;
   margin-bottom: 40px;
+
+  @include breakpoint(small) {
+    margin: 100px 0;
+  }
 
   .cancelBtn, .submitBtn {
     padding: 10px 20px;

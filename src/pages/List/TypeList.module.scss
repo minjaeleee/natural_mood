@@ -1,20 +1,36 @@
 @import 'src/styles/color.scss';
+@import 'src/styles/responsive.module.scss';
 
 .wrapper {
   padding: 2rem;
   border: 1px solid $grey200;
   border-radius: 15px;
-  // height: 400px;
 }
 
 .title {
   margin: 1rem;
+
+  @include breakpoint(medium) {
+    text-align: center;
+   }
+ 
+   @include breakpoint(small) {
+    margin: 1rem 0;
+   }
 }
 
 .itemWrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: repeat(2, 150px);
+
+  @include breakpoint(medium) {
+   grid-template-columns: 1fr 1fr; 
+  }
+
+  @include breakpoint(small) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .list {

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Action } from 'redux'
 import { useSelector,useDispatch } from 'react-redux'
 import { ThunkDispatch } from 'redux-thunk'
@@ -37,14 +37,8 @@ export const Home = () => {
   
   useEffect(()=>{
     (async()=>{
-      const isStoredLocalStorage = localStorage.getItem('persist:root')
-      const getUserData = isStoredLocalStorage ? JSON.parse(JSON.parse(isStoredLocalStorage).auth) : []
-      if(
-        auth.status === "IDLE" &&
-        getUserData.status === "SUCCESS" &&
-        Object.keys(auth?.data).length 
-        ) {
-        dispatch(getAutoLoginAuth({id: getUserData.data.id, accessToken: getUserData.data.accessToken }))
+      if(auth.data.accessToken) {
+        dispatch(getAutoLoginAuth({id: auth.data.id, accessToken: auth.data.accessToken }))
           .then(()=> {
             enqueueSnackbar(AUTH_MESSAGE.AUTO_LOGIN_SUCCESS)
             routeTo('/beverage/all')
