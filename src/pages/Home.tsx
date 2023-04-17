@@ -39,10 +39,12 @@ export const Home = () => {
     (async()=>{
       const isStoredLocalStorage = localStorage.getItem('persist:root')
       const getUserData = isStoredLocalStorage ? JSON.parse(JSON.parse(isStoredLocalStorage).auth) : []
+
       if(
         auth.status === "IDLE" &&
         getUserData.status === "SUCCESS" &&
-        Object.keys(auth?.data).length 
+        !Object.keys(auth?.data).length &&
+        Object.keys(getUserData.data).length
         ) {
         dispatch(getAutoLoginAuth({id: getUserData.data.id, accessToken: getUserData.data.accessToken }))
           .then(()=> {

@@ -1,4 +1,5 @@
 @import 'src/styles/color.scss';
+@import 'src/styles/responsive.module.scss';
 
 .sideBar {
   width: 240px;
@@ -7,6 +8,10 @@
   box-shadow: 4px 0 8px 0 rgba(0,0,0,0.1);
   padding-top: 5px;
   
+  @include breakpoint(large) {
+    display: none;
+  }
+
   .menu {
     padding: 1rem;
     cursor: pointer;

@@ -18,6 +18,12 @@
   .mainLogo {
     display: flex;
     align-items: center;
+
+    .menu {
+      margin-right: 10px;
+      font-size: 30px;
+      cursor: pointer;
+    }
   
     .icon {
       font-size: 43px;
