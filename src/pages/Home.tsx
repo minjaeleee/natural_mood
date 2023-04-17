@@ -42,8 +42,8 @@ export const Home = () => {
       if(
         auth.status === "IDLE" &&
         getUserData.status === "SUCCESS" &&
-        !Object.keys(auth?.data).length 
-      ) {
+        Object.keys(auth?.data).length 
+        ) {
         dispatch(getAutoLoginAuth({id: getUserData.data.id, accessToken: getUserData.data.accessToken }))
           .then(()=> {
             enqueueSnackbar(AUTH_MESSAGE.AUTO_LOGIN_SUCCESS)
