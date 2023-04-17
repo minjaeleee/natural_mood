@@ -22,3 +22,9 @@
 <pre> yarn start:dev  </pre>
 - server 실행하기
 <pre> yarn start  </pre>
+
+<h1> 배포 </h1>
+
+<a href="https://natural-mood.herokuapp.com/">
+  <p> heroku로 배포한 사이트 보러가기 </p>
+</a>
